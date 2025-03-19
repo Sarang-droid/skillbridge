@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MBTI Results - SkillBridge</title>
+  <style>
+    body {
+      background-color: #2b2b2b; /* Dark gray background */
+      color: #d3d3d3; /* Light gray for text */
+      font-family: 'Arial', sans-serif;
+      margin: 0;
+      padding: 20px;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      box-sizing: border-box;
+      background: linear-gradient(135deg, #2b2b2b 0%, #3c3c3c 100%); /* Subtle dark gradient */
+    }
+  
+    .cards-container {
+      display: flex;
+      justify-content: center;
+      gap: 30px;
+      width: 100%;
+      max-width: 1200px;
+      flex-wrap: wrap;
+      perspective: 1000px; /* For 3D effects */
+    }
+  
+    .card {
+      width: 100%;
+      max-width: 500px;
+      padding: 25px;
+      background-color: #3c3c3c; /* Darker gray for cards */
+      border-radius: 12px;
+      border: 2px dashed #555; /* Darker dashed border */
+      box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.5), 
+                  -5px -5px 15px rgba(255, 255, 255, 0.1); /* Adjusted neumorphic shadow */
+      position: relative;
+      overflow: hidden;
+    }
+  
+    .left-card {
+      animation: slideInLeft 1.2s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+    }
+  
+    .right-card {
+      animation: slideInRight 1.2s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+    }
+  
+    @keyframes slideInLeft {
+      0% {
+        transform: translateX(-120%) rotateY(15deg);
+        opacity: 0;
+      }
+      100% {
+        transform: translateX(0) rotateY(0deg);
+        opacity: 1;
+      }
+    }
+  
+    @keyframes slideInRight {
+      0% {
+        transform: translateX(120%) rotateY(-15deg);
+        opacity: 0;
+      }
+      100% {
+        transform: translateX(0) rotateY(0deg);
+        opacity: 1;
+      }
+    }
+  
+    /* Card background effect */
+    .card::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle, rgba(232, 185, 35, 0.2) 0%, transparent 70%);
+      opacity: 0;
+      transition: opacity 0.5s ease;
+    }
+  
+    .card:hover::before {
+      opacity: 1;
+    }
+  
+    h1 {
+      color: #e8b923; /* Pastel yellow (unchanged) */
+      margin-bottom: 25px;
+      font-size: 2rem;
+      text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5); /* Stronger shadow for contrast */
+      text-align: center;
+      position: relative;
+      padding-bottom: 10px;
+    }
+  
+    h1::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 50px;
+      height: 3px;
+      background: #e8b923; /* Pastel yellow (unchanged) */
+      border-radius: 2px;
+    }
+  
+    .result-item {
+      background-color: #4a4a4a; /* Dark gray for items */
+      padding: 20px;
+      border-radius: 10px;
+      border: 2px dashed #555; /* Darker dashed border */
+      margin-bottom: 20px;
+      box-shadow: 3px 3px 6px rgba(0, 0, 0, 0.5);
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+  
+    .result-item:hover {
+      transform: translateY(-5px) scale(1.02);
+      box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.7);
+    }
+  
+    .result-item::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(
+        120deg,
+        transparent,
+        rgba(232, 185, 35, 0.3),
+        transparent
+      );
+      transition: all 0.5s ease;
+    }
+  
+    .result-item:hover::after {
+      left: 100%;
+    }
+  
+    .result-item h2 {
+      margin-top: 0;
+      color: #e8b923; /* Pastel yellow (unchanged) */
+      font-size: 1.5rem;
+      margin-bottom: 15px;
+      transition: color 0.3s ease;
+    }
+  
+    .result-item:hover h2 {
+      color: #d9a413; /* Slightly darker yellow (unchanged) */
+    }
+  
+    .result-item p {
+      margin: 10px 0;
+      color: #b0b0b0; /* Lighter gray for text */
+      line-height: 1.6;
+      font-size: 1rem;
+    }
+  
+    .list li {
+      background-color: #3c3c3c; /* Darker gray for list items */
+      padding: 12px;
+      border-radius: 8px;
+      border: 1px solid #555; /* Darker border */
+      margin-bottom: 10px;
+      color: #b0b0b0; /* Lighter gray for text */
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+  
+    .list li:hover {
+      background-color: #505050; /* Slightly lighter gray on hover */
+      transform: translateX(5px);
+    }
+  
+    .share-button {
+      display: block;
+      margin: 20px auto 0;
+      padding: 12px 25px;
+      background-color: #e8b923; /* Pastel yellow (unchanged) */
+      border: 2px dashed #555; /* Darker dashed border */
+      border-radius: 8px;
+      color: #2b2b2b; /* Dark gray text for contrast */
+      cursor: pointer;
+      font-weight: bold;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+  
+    .share-button:hover {
+      background-color: #d9a413; /* Slightly darker yellow (unchanged) */
+      transform: translateY(-3px) scale(1.05);
+      box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.5);
+    }
+  
+    .share-button::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 0;
+      height: 0;
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: 50%;
+      transform: translate(-50%, -50%);
+      transition: width 0.4s ease, height 0.4s ease;
+    }
+  
+    .share-button:hover::after {
+      width: 200%;
+      height: 200%;
+    }
+  
+    @media (max-width: 768px) {
+      .cards-container {
+        flex-direction: column;
+        align-items: center;
+        gap: 20px;
+      }
+  
+      .card {
+        max-width: 600px;
+      }
+  
+      .left-card, .right-card {
+        animation: slideInLeft 1s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+      }
+    }
+  
+    @media (max-width: 480px) {
+      .card {
+        padding: 15px;
+      }
+  
+      h1 {
+        font-size: 1.5rem;
+      }
+  
+      .result-item {
+        padding: 15px;
+      }
+  
+      .result-item h2 {
+        font-size: 1.2rem;
+      }
+    }
+  </style>
+  
+</head>
+<body>
+  <div class="cards-container">
+    <div class="card left-card">
+      <h1>Your MBTI Results</h1>
+      <div class="result-item">
+        <h2>Your MBTI Type</h2>
+        <p id="mbtiType"></p>
+      </div>
+      <div class="result-item">
+        <h2>Description</h2>
+        <p id="description"></p>
+      </div>
+      <div class="result-item">
+        <h2>Psychological Score</h2>
+        <p id="psychologicalScore"></p>
+      </div>
+      <div class="result-item">
+        <h2>Strengths</h2>
+        <ul class="list" id="strengthsList"></ul>
+      </div>
+      <div class="result-item">
+        <h2>Weaknesses</h2>
+        <ul class="list" id="weaknessesList"></ul>
+      </div>
+      <div class="result-item">
+        <h2>Famous Personalities</h2>
+        <ul class="list" id="famousPersonalitiesList"></ul>
+      </div>
+    </div>
+
+    <div class="card right-card">
+      <h1>Recommended For You</h1>
+      <div class="result-item">
+        <h2>Personality Insights</h2>
+        <p><strong>Keyword:</strong> <span id="keyword"></span></p>
+        <p><strong>Core Desire:</strong> <span id="coreDesire"></span></p>
+        <p><strong>Hidden Fear:</strong> <span id="hiddenFear"></span></p>
+        <p><strong>Core Motivations:</strong> <span id="coreMotivations"></span></p>
+        <p><strong>Communication Style:</strong> <span id="communicationStyle"></span></p>
+        <p><strong>Learning Style:</strong> <span id="learningStyle"></span></p>
+        <p><strong>Conflict Style:</strong> <span id="conflictStyle"></span></p>
+        <p><strong>Innovation vs Stability:</strong> <span id="innovationVsStability"></span></p>
+      </div>
+      <div class="result-item">
+        <h2>Work & Collaboration</h2>
+        <p><strong>Workplace Role:</strong> <span id="workplaceRole"></span></p>
+        <p><strong>Best Collaboration Match:</strong> <span id="bestCollaborationMatch"></span></p>
+        <ul class="list" id="bestIndustriesList"><strong>Best Industries:</strong></ul>
+        <ul class="list" id="stressTriggersList"><strong>Stress Triggers:</strong></ul>
+      </div>
+      <div class="result-item">
+        <h2>Recommended Projects</h2>
+        <ul class="list" id="projectList"></ul>
+      </div>
+      <div class="result-item">
+        <h2>Self-Improvement Tip</h2>
+        <p id="selfImprovementTip"></p>
+      </div>
+      <button class="share-button" id="shareButton">Share Results</button>
+    </div>
+  </div>
+
+  <script src="assets/result.js"></script>
+</body>
+</html>

@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Profile</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        /* General body styles */
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #2b2b2b 0%, #3c3c3c 100%);
+            color: #d3d3d3;
+            min-height: 100vh;
+        }
+
+        /* Profile Header Section */
+        .profile-header {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #3c3c3c;
+            padding: 20px;
+            border-radius: 12px;
+            border: 2px dashed #555;
+            box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.5),
+                       -5px -5px 15px rgba(255, 255, 255, 0.1);
+            margin: 20px;
+            position: relative;
+            overflow: hidden;
+            animation: fadeIn 0.8s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .profile-picture {
+            transition: transform 0.3s ease;
+        }
+
+        .profile-picture img {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 4px dashed #e8b923;
+        }
+
+        .profile-picture:hover img {
+            transform: scale(1.1);
+        }
+
+        .profile-info {
+            margin-left: 20px;
+        }
+
+        .profile-info h1 {
+            margin: 0;
+            font-size: 28px;
+            color: #e8b923;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+            position: relative;
+            padding-bottom: 10px;
+        }
+
+        .profile-info h1::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 60px;
+            height: 3px;
+            background: #e8b923;
+            border-radius: 2px;
+        }
+
+        .profile-info p {
+            margin: 5px 0;
+            color: #b0b0b0;
+        }
+
+        /* Profile Stats Section */
+        .profile-stats {
+            display: flex;
+            justify-content: space-around;
+            margin: 20px;
+        }
+
+        .stat-card {
+            background-color: #4a4a4a;
+            padding: 15px;
+            border-radius: 12px;
+            border: 2px dashed #555;
+            text-align: center;
+            box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.5),
+                       -5px -5px 15px rgba(255, 255, 255, 0.1);
+            transition: all 0.4s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-8px) scale(1.03);
+            box-shadow: 8px 8px 20px rgba(0, 0, 0, 0.7),
+                       -8px -8px 20px rgba(255, 255, 255, 0.2);
+        }
+
+        .stat-card i {
+            font-size: 24px;
+            color: #e8b923;
+        }
+
+        /* Edit Profile Section */
+        .profile-edit-form {
+            display: none;
+            margin: 20px;
+            padding: 20px;
+            background-color: #3c3c3c;
+            box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.5),
+                       -5px -5px 15px rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            border: 2px dashed #555;
+        }
+
+        .profile-edit-form h2 {
+            margin-bottom: 20px;
+            font-size: 24px;
+            color: #e8b923;
+            position: relative;
+            padding-bottom: 10px;
+            text-align: center;
+        }
+
+        .profile-edit-form h2::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 3px;
+            background: #e8b923;
+            border-radius: 2px;
+        }
+
+        .profile-edit-form label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #d3d3d3;
+        }
+
+        .profile-edit-form input,
+        .profile-edit-form textarea {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 15px;
+            border: 2px dashed #555;
+            border-radius: 8px;
+            background-color: #4a4a4a;
+            color: #d3d3d3;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            box-sizing: border-box;
+        }
+
+        .profile-edit-form input:focus,
+        .profile-edit-form textarea:focus {
+            outline: none;
+            border-color: #e8b923;
+            box-shadow: 0 0 5px rgba(232, 185, 35, 0.5);
+        }
+
+        .profile-edit-form textarea {
+            resize: vertical;
+        }
+
+        .profile-edit-form button {
+            padding: 12px 20px;
+            background-color: #e8b923;
+            color: #2b2b2b;
+            border: 2px dashed #555;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: bold;
+            position: relative;
+            overflow: hidden;
+            width: 100%;
+        }
+
+        .profile-edit-form button:hover {
+            background-color: #d9a413;
+            transform: translateY(-2px);
+            box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.5);
+        }
+
+        .profile-edit-form button::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: width 0.4s ease, height 0.4s ease;
+        }
+
+        .profile-edit-form button:hover::after {
+            width: 200%;
+            height: 200%;
+        }
+
+        /* Toggle Edit Button */
+        .toggle-edit-button {
+            display: block;
+            margin: 20px auto;
+            padding: 12px 20px;
+            background-color: #e8b923;
+            color: #2b2b2b;
+            border: 2px dashed #555;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: bold;
+            position: relative;
+            overflow: hidden;
+            max-width: 200px;
+        }
+
+        .toggle-edit-button:hover {
+            background-color: #d9a413;
+            transform: translateY(-2px);
+            box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.5);
+        }
+
+        .toggle-edit-button::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: width 0.4s ease, height 0.4s ease;
+        }
+
+        .toggle-edit-button:hover::after {
+            width: 200%;
+            height: 200%;
+        }
+
+        /* Completed Projects Section */
+        .completed-projects {
+            margin: 20px;
+            padding: 20px;
+            background-color: #3c3c3c;
+            border-radius: 12px;
+            border: 2px dashed #555;
+            box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.5),
+                       -5px -5px 15px rgba(255, 255, 255, 0.1);
+        }
+
+        .completed-projects h2 {
+            margin-bottom: 20px;
+            font-size: 24px;
+            color: #e8b923;
+            position: relative;
+            padding-bottom: 10px;
+            text-align: center;
+        }
+
+        .completed-projects h2::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 3px;
+            background: #e8b923;
+            border-radius: 2px;
+        }
+
+        .completed-projects-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 25px;
+        }
+
+        .completed-project {
+            background-color: #4a4a4a;
+            padding: 15px;
+            border-radius: 12px;
+            border: 2px dashed #555;
+            box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.5),
+                       -5px -5px 15px rgba(255, 255, 255, 0.1);
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .completed-project:hover {
+            transform: translateY(-8px) scale(1.03);
+            box-shadow: 8px 8px 20px rgba(0, 0, 0, 0.7),
+                       -8px -8px 20px rgba(255, 255, 255, 0.2);
+            background-color: #555;
+        }
+
+        .completed-project::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(232, 185, 35, 0.2) 0%, transparent 70%);
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        .completed-project:hover::before {
+            opacity: 1;
+        }
+
+        .completed-project p {
+            margin: 5px 0;
+            color: #b0b0b0;
+        }
+
+        .completed-project p strong {
+            color: #d3d3d3;
+        }
+
+        /* Badges Grid Section */
+        .badges-grid {
+            margin: 20px;
+            padding: 20px;
+            background-color: #3c3c3c;
+            border-radius: 12px;
+            border: 2px dashed #555;
+            box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.5),
+                       -5px -5px 15px rgba(255, 255, 255, 0.1);
+        }
+
+        .badges-grid h2 {
+            margin-bottom: 20px;
+            font-size: 24px;
+            color: #e8b923;
+            position: relative;
+            padding-bottom: 10px;
+            text-align: center;
+        }
+
+        .badges-grid h2::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 3px;
+            background: #e8b923;
+            border-radius: 2px;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+            gap: 15px;
+        }
+
+        .badge-item {
+            background-color: #4a4a4a;
+            padding: 10px;
+            border-radius: 12px;
+            border: 2px dashed #555;
+            text-align: center;
+            box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.5),
+                       -5px -5px 15px rgba(255, 255, 255, 0.1);
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .badge-item:hover {
+            transform: translateY(-8px) scale(1.03);
+            box-shadow: 8px 8px 20px rgba(0, 0, 0, 0.7),
+                       -8px -8px 20px rgba(255, 255, 255, 0.2);
+            background-color: #555;
+        }
+
+        .badge-item::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(232, 185, 35, 0.2) 0%, transparent 70%);
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        .badge-item:hover::before {
+            opacity: 1;
+        }
+    </style>
+</head>
+<body>
+    <!-- Profile Header Section -->
+    <div class="profile-header">
+        <div class="profile-picture">
+            <img id="profile-image" src="assets/profile.jpg" alt="Profile Picture">
+        </div>
+        <div class="profile-info">
+            <h1 id="profile-name">User Name</h1>
+            <p id="profile-bio">User Bio</p>
+            <p><strong><i class="fas fa-school"></i> School:</strong> <span id="profile-school">User School</span></p>
+            <p><strong><i class="fas fa-graduation-cap"></i> Education:</strong> <span id="profile-education">User Education</span></p>
+            <p><strong><i class="fas fa-star"></i> Points:</strong> <span id="profile-points">0</span></p>
+            <p><strong><i class="fas fa-medal"></i> Badges:</strong> <span id="profile-badges-count">0</span></p>
+        </div>
+    </div>
+
+    <!-- Edit Profile Button -->
+    <button class="toggle-edit-button" onclick="toggleEditProfile()">Edit Profile</button>
+
+    <!-- Edit Profile Form -->
+    <div class="profile-edit-form" id="edit-profile-form">
+        <h2>Edit Profile</h2>
+        <form id="profile-form">
+            <label for="name">Name:</label>
+            <input type="text" id="name" name="name" required>
+            
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" required>
+
+            <label for="bio">Bio:</label>
+            <textarea id="bio" name="bio" rows="3"></textarea>
+            
+            <label for="profile-picture-upload">Upload Profile Picture:</label>
+            <input type="file" id="profile-picture-upload" name="profilePicture" accept="image/*" onchange="previewImage(event)">
+            <img id="image-preview" src="" alt="Image Preview" style="display:none; width:150px; height:150px; border-radius:50%; margin-top:10px;">
+            
+            <label for="password">New Password:</label>
+            <input type="password" id="password" name="password">
+
+            <label for="school">School:</label>
+            <input type="text" id="school" name="school">
+            
+            <label for="education">Education:</label>
+            <input type="text" id="education" name="education">
+            
+            <button type="submit">Save Changes</button>
+        </form>
+    </div>
+
+    <!-- Completed Projects Section -->
+    <div class="completed-projects">
+        <h2>Projects Completed</h2>
+        <div class="completed-projects-list" id="completed-projects-list"></div>
+    </div>
+    
+    <!-- Badges Grid Section -->
+    <div class="badges-grid">
+        <h2>Your Badges</h2>
+        <div class="grid" id="badge-grid"></div>
+    </div>
+   
+    <script src="/assets/profile.js"></script>
+    <script>
+        function toggleEditProfile() {
+            const editForm = document.getElementById('edit-profile-form');
+            if (editForm.style.display === 'none' || editForm.style.display === '') {
+                editForm.style.display = 'block'; // Show the form
+            } else {
+                editForm.style.display = 'none'; // Hide the form
+            }
+        }
+
+        function previewImage(event) {
+            const imagePreview = document.getElementById('image-preview');
+            imagePreview.src = URL.createObjectURL(event.target.files[0]);
+            imagePreview.style.display = 'block';
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Settings</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* General Styles */
+        body {
+            background: linear-gradient(135deg, #2b2b2b 0%, #3c3c3c 100%);
+            color: #d3d3d3;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .settings-container {
+            max-width: 400px;
+            width: 100%;
+            padding: 20px;
+            background-color: #3c3c3c;
+            border-radius: 12px;
+            border: 2px dashed #555;
+            box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.5),
+                       -5px -5px 15px rgba(255, 255, 255, 0.1);
+            animation: fadeIn 0.8s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        h2 {
+            text-align: center;
+            color: #e8b923;
+            font-size: 2rem;
+            margin-bottom: 20px;
+            position: relative;
+            padding-bottom: 10px;
+        }
+
+        h2::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 3px;
+            background: #e8b923;
+            border-radius: 2px;
+        }
+
+        h3 {
+            color: #e8b923;
+            font-size: 1.5rem;
+            margin: 20px 0 10px;
+            position: relative;
+            padding-bottom: 8px;
+        }
+
+        h3::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 40px;
+            height: 2px;
+            background: #e8b923;
+            border-radius: 2px;
+        }
+
+        form div {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: #d3d3d3;
+            font-weight: bold;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="password"] {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 15px;
+            border: 2px dashed #555;
+            border-radius: 8px;
+            background-color: #4a4a4a;
+            color: #d3d3d3;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            box-sizing: border-box;
+        }
+
+        input[type="text"]:focus,
+        input[type="email"]:focus,
+        input[type="password"]:focus {
+            outline: none;
+            border-color: #e8b923;
+            box-shadow: 0 0 5px rgba(232, 185, 35, 0.5);
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            background-color: #e8b923;
+            color: #2b2b2b;
+            border: 2px dashed #555;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        button:hover {
+            background-color: #d9a413;
+            transform: translateY(-2px);
+            box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.5);
+        }
+
+        button::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: width 0.4s ease, height 0.4s ease;
+        }
+
+        button:hover::after {
+            width: 200%;
+            height: 200%;
+        }
+
+        #response-message {
+            margin-top: 15px;
+            text-align: center;
+            color: #b0b0b0;
+            font-size: 1rem;
+        }
+
+        #response-message.error {
+            color: #d32f2f;
+            font-weight: bold;
+        }
+
+        @media (max-width: 480px) {
+            .settings-container {
+                padding: 15px;
+            }
+
+            h2 {
+                font-size: 1.5rem;
+            }
+
+            h3 {
+                font-size: 1.2rem;
+            }
+
+            input[type="text"],
+            input[type="email"],
+            input[type="password"],
+            button {
+                padding: 10px;
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="settings-container">
+        <h2>User Settings</h2>
+
+        <form id="settings-form">
+            <div>
+                <label for="username">Username:</label>
+                <input type="text" id="username" name="username" required>
+            </div>
+            <div>
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" required>
+            </div>
+
+            <h3>Change Password</h3>
+            <div>
+                <label for="old-password">Old Password:</label>
+                <input type="password" id="old-password" name="old-password">
+            </div>
+            <div>
+                <label for="new-password">New Password:</label>
+                <input type="password" id="new-password" name="new-password">
+            </div>
+
+            <button type="submit">Update Settings</button>
+        </form>
+
+        <div id="response-message"></div>
+    </div>
+
+    <script src="/assets/settings.js"></script>
+</body>
+</html>

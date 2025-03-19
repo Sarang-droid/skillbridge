@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project Workspace</title>
+    <!-- Quill CSS -->
+    <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            background: linear-gradient(135deg, #2b2b2b 0%, #3c3c3c 100%);
+            color: #d3d3d3;
+            font-family: 'Arial', sans-serif;
+            display: flex;
+            height: 100vh;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+        }
+
+        .sidebar {
+            width: 250px;
+            background-color: #3c3c3c;
+            padding: 20px;
+            border-radius: 12px;
+            border: 2px dashed #555;
+            margin: 20px;
+            box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.5),
+                       -5px -5px 15px rgba(255, 255, 255, 0.1);
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            transition: all 0.4s ease;
+        }
+
+        .sidebar:hover {
+            box-shadow: 8px 8px 20px rgba(0, 0, 0, 0.7),
+                       -8px -8px 20px rgba(255, 255, 255, 0.2);
+        }
+
+        .sidebar button {
+            background-color: #e8b923;
+            color: #2b2b2b;
+            border: 2px dashed #555;
+            padding: 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            width: 100%;
+            font-size: 16px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            text-align: left;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .sidebar button:hover {
+            background-color: #d9a413;
+            transform: translateX(5px);
+            box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.5);
+        }
+
+        .sidebar button::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: width 0.4s ease, height 0.4s ease;
+        }
+
+        .sidebar button:hover::after {
+            width: 200%;
+            height: 200%;
+        }
+
+        .main-content {
+            flex-grow: 1;
+            padding: 20px;
+            margin: 20px;
+            border-radius: 12px;
+            background-color: #3c3c3c;
+            border: 2px dashed #555;
+            box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.5),
+                       -5px -5px 15px rgba(255, 255, 255, 0.1);
+            overflow-y: auto;
+            animation: fadeIn 0.8s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        h1, h2 {
+            color: #e8b923;
+            font-weight: bold;
+            margin-bottom: 20px;
+            position: relative;
+            padding-bottom: 8px;
+        }
+
+        h1::after, h2::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 60px;
+            height: 3px;
+            background: #e8b923;
+            border-radius: 2px;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+        }
+
+        h2 {
+            font-size: 1.8rem;
+        }
+
+        .timer {
+            font-size: 1.5rem;
+            color: #b0b0b0;
+            margin-bottom: 20px;
+            font-weight: bold;
+            background: #4a4a4a;
+            padding: 10px;
+            border-radius: 8px;
+            border: 2px dashed #555;
+        }
+
+        .task {
+            margin: 10px 0;
+            display: flex;
+            align-items: center;
+            padding: 15px;
+            background-color: #4a4a4a;
+            border-radius: 12px;
+            border: 2px dashed #555;
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .task:hover {
+            transform: translateX(5px);
+            box-shadow: 8px 8px 20px rgba(0, 0, 0, 0.7),
+                       -8px -8px 20px rgba(255, 255, 255, 0.2);
+            background-color: #555;
+        }
+
+        .task::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(232, 185, 35, 0.2) 0%, transparent 70%);
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        .task:hover::before {
+            opacity: 1;
+        }
+
+        .task input {
+            margin-right: 10px;
+        }
+
+        #notes-section, #qa-section, #upload-section, #github-section {
+            margin-top: 20px;
+            padding: 20px;
+            border-radius: 12px;
+            background-color: #4a4a4a;
+            border: 2px dashed #555;
+            box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.5);
+        }
+
+        #editor-container {
+            background-color: #3c3c3c;
+            border-radius: 8px;
+            border: 2px dashed #555;
+            margin-top: 10px;
+        }
+
+        .ql-toolbar {
+            background-color: #4a4a4a;
+            border-radius: 8px 8px 0 0;
+            border-bottom: 2px dashed #555;
+        }
+
+        .ql-container {
+            border-radius: 0 0 8px 8px;
+            border: none;
+            background-color: #3c3c3c;
+        }
+
+        .ql-editor {
+            color: #d3d3d3;
+            font-family: Arial, sans-serif;
+            font-size: 14px;
+        }
+
+        #drop-area {
+            border: 2px dashed #e8b923;
+            padding: 40px;
+            text-align: center;
+            margin-top: 20px;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            color: #b0b0b0;
+            font-size: 16px;
+            background-color: #4a4a4a;
+        }
+
+        #drop-area:hover {
+            background-color: #555;
+            border-color: #d9a413;
+        }
+
+        #file-list {
+            margin-top: 20px;
+            padding: 15px;
+            border: 2px dashed #555;
+            border-radius: 8px;
+            background-color: #4a4a4a;
+        }
+
+        #file-list-items li {
+            margin-bottom: 8px;
+            color: #b0b0b0;
+            list-style-type: none;
+            padding: 8px;
+            border-radius: 5px;
+            background: #555;
+            transition: all 0.3s ease;
+        }
+
+        #file-list-items li:hover {
+            transform: translateX(3px);
+            background-color: #666;
+        }
+
+        button {
+            font-size: 14px;
+            font-weight: bold;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        #final-submit-button, #submit-question, #upload-files-button, #submit-github-link {
+            background-color: #e8b923;
+            color: #2b2b2b;
+            border: 2px dashed #555;
+            margin-top: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        #final-submit-button:hover, #submit-question:hover, #upload-files-button:hover, #submit-github-link:hover {
+            background-color: #d9a413;
+            transform: translateY(-2px);
+            box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.5);
+        }
+
+        #final-submit-button::after, #submit-question::after, #upload-files-button::after, #submit-github-link::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: width 0.4s ease, height 0.4s ease;
+        }
+
+        #final-submit-button:hover::after, #submit-question:hover::after, #upload-files-button:hover::after, #submit-github-link:hover::after {
+            width: 200%;
+            height: 200%;
+        }
+
+        #project-description, #project-status {
+            color: #b0b0b0;
+            line-height: 1.5;
+            margin-bottom: 15px;
+        }
+
+        #github-link-input, #question-input {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 15px;
+            border: 2px dashed #555;
+            border-radius: 8px;
+            background-color: #4a4a4a;
+            color: #d3d3d3;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            box-sizing: border-box;
+        }
+
+        #github-link-input:focus, #question-input:focus {
+            outline: none;
+            border-color: #e8b923;
+            box-shadow: 0 0 5px rgba(232, 185, 35, 0.5);
+        }
+
+        #submission-result {
+            margin-top: 20px;
+            color: #b0b0b0;
+        }
+
+        @media (max-width: 768px) {
+            body {
+                flex-direction: column;
+                overflow-y: auto;
+            }
+
+            .sidebar {
+                width: 100%;
+                margin: 10px;
+                padding: 15px;
+            }
+
+            .main-content {
+                margin: 10px;
+                padding: 15px;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+
+            h2 {
+                font-size: 1.5rem;
+            }
+        }
+        #resources-section {
+            margin-top: 20px;
+            padding: 20px;
+            border-radius: 12px;
+            background-color: #4a4a4a;
+            border: 2px dashed #555;
+            box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.5);
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .resource-item {
+            margin: 10px 0;
+            padding: 15px;
+            background-color: #555;
+            border-radius: 8px;
+            border: 2px dashed #666;
+            transition: all 0.3s ease;
+        }
+
+        .resource-item:hover {
+            transform: translateX(5px);
+            background-color: #666;
+            box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.5);
+        }
+
+        .resource-item a {
+            color: #e8b923;
+            text-decoration: none;
+        }
+
+        .resource-item a:hover {
+            text-decoration: underline;
+        }
+
+        #qa-section, #resources-section {
+            margin-top: 20px;
+            padding: 20px;
+            border-radius: 12px;
+            background-color: #4a4a4a;
+            border: 2px dashed #555;
+            box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.5);
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .qa-item, .resource-item {
+            margin-bottom: 20px;
+            padding: 15px;
+            background-color: #555;
+            border-radius: 8px;
+            border: 2px dashed #666;
+            transition: all 0.3s ease;
+        }
+
+        .qa-item:hover, .resource-item:hover {
+            transform: translateX(5px);
+            background-color: #666;
+            box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.5);
+        }
+    </style>
+</head>
+<body>
+    <div class="sidebar">
+        <button id="notes-button">Notes</button>
+        <button id="github-button">GitHub Link</button>
+        <button id="qa-button">Q&A</button>
+        <button id="resources-button">Resources</button> <!-- New Resources Button -->
+        <button id="submit-button">Submit Project</button>
+    </div>
+    <div class="main-content">
+        <h1 id="project-title">Project Workspace</h1>
+        <p id="project-description">Loading project details...</p>
+        <p id="project-status"></p>
+        <div id="timer" class="timer">Time Remaining: <span id="countdown"></span></div>
+
+        <div class="section" id="task-section">
+            <h2>Task Management</h2>
+            <div id="task-list"></div>
+        </div>
+
+        <div id="submit-section">
+            <h2>Submit Project</h2>
+            <div>
+                <input type="checkbox" id="force-submit-checkbox" />
+                <label for="force-submit-checkbox">Force Submit</label>
+            </div>
+            <button id="final-submit-button">Finalize and Submit</button>
+        </div>
+    </div>
+
+    <div id="github-section" style="display: none;">
+        <h2>Submit GitHub Project</h2>
+        <p>Paste your GitHub repository link below (e.g., https://github.com/username/repo).</p>
+        <input type="text" id="github-link-input" placeholder="Enter GitHub repository URL">
+        <button id="submit-github-link">Submit GitHub Link</button>
+        <div id="submission-result"></div>
+    </div>
+
+    <div id="qa-section" style="display: none;">
+        <h2>Q&A</h2>
+        <div id="qa-list"></div>
+        <div id="qa-form">
+            <textarea id="question-input" rows="4" placeholder="Answer here ..."></textarea>
+            <button id="submit-question">Submit Answer</button>
+        </div>
+    </div>
+
+    <div id="upload-section" style="display: none;">
+        <h2>Upload Files</h2>
+        <input type="file" id="file-input" webkitdirectory multiple>
+        <div id="drop-area">
+            Drag and drop files here, or click to upload.
+        </div>
+        <div id="file-list">
+            <h3>Uploaded Files</h3>
+            <ul id="file-list-items"></ul>
+        </div>
+        <button id="upload-files-button">Load Uploaded Files</button>
+    </div>
+
+    <div id="notes-section" style="display: none;">
+        <h2>Notes</h2>
+        <div id="editor-container"></div>
+    </div>
+    <div id="resources-section" style="display: none;">
+        <h2>Project Resources</h2>
+        <div id="resources-list">
+            <p>Loading resources...</p>
+        </div>
+    </div>
+
+    <!-- JS Libraries -->
+    <script src="https://cdn.quilljs.com/1.3.6/quill.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <script src="/assets/workspace.js"></script>
+</body>
+</html>

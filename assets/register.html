@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* General Styles */
+        body {
+            background: linear-gradient(135deg, #2b2b2b 0%, #3c3c3c 100%);
+            color: #d3d3d3;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .container {
+            max-width: 400px;
+            width: 100%;
+            margin: auto;
+            padding: 20px;
+            background-color: #3c3c3c;
+            border-radius: 12px;
+            border: 2px dashed #555;
+            box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.5),
+                       -5px -5px 15px rgba(255, 255, 255, 0.1);
+            animation: fadeIn 0.8s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        h2 {
+            text-align: center;
+            color: #e8b923;
+            font-size: 2rem;
+            margin-bottom: 20px;
+            position: relative;
+            padding-bottom: 10px;
+        }
+
+        h2::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 3px;
+            background: #e8b923;
+            border-radius: 2px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: #d3d3d3;
+            font-weight: bold;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="tel"],
+        input[type="password"],
+        input[type="number"],
+        select {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 15px;
+            border: 2px dashed #555;
+            border-radius: 8px;
+            background-color: #4a4a4a;
+            color: #d3d3d3;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            box-sizing: border-box;
+        }
+
+        input[type="text"]:focus,
+        input[type="email"]:focus,
+        input[type="tel"]:focus,
+        input[type="password"]:focus,
+        input[type="number"]:focus,
+        select:focus {
+            outline: none;
+            border-color: #e8b923;
+            box-shadow: 0 0 5px rgba(232, 185, 35, 0.5);
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            background-color: #e8b923;
+            color: #2b2b2b;
+            border: 2px dashed #555;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            margin-bottom: 10px;
+        }
+
+        button:hover {
+            background-color: #d9a413;
+            transform: translateY(-2px);
+            box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.5);
+        }
+
+        button::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: width 0.4s ease, height 0.4s ease;
+        }
+
+        button:hover::after {
+            width: 200%;
+            height: 200%;
+        }
+
+        .login-button {
+            background-color: #e8b923;
+        }
+
+        .login-button:hover {
+            background-color: #d9a413;
+        }
+
+        .error {
+            color: #d32f2f;
+            text-align: center;
+            margin: 10px 0;
+            font-weight: bold;
+        }
+
+        /* Collapsible List Styles */
+        .collapsible-list {
+            border: 2px dashed #555;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            background-color: #4a4a4a;
+        }
+
+        .list-header {
+            padding: 12px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #3c3c3c;
+            border-radius: 8px 8px 0 0;
+            color: #d3d3d3;
+            transition: all 0.3s ease;
+        }
+
+        .list-header:hover {
+            background-color: #505050;
+            transform: translateY(-2px);
+        }
+
+        .list-header .arrow {
+            font-size: 12px;
+            transition: transform 0.3s;
+        }
+
+        .list-content {
+            padding: 10px;
+            display: none;
+            color: #b0b0b0;
+        }
+
+        .list-content div {
+            margin-bottom: 5px;
+            display: flex;
+            align-items: center;
+        }
+
+        .list-content input[type="checkbox"] {
+            margin-right: 10px;
+        }
+
+        /* Selected Items */
+        .selected-items {
+            margin-top: 10px;
+            padding: 10px;
+            background-color: #4a4a4a;
+            border-radius: 8px;
+            border: 2px dashed #555;
+        }
+
+        .selected-items span {
+            display: inline-block;
+            margin: 5px;
+            padding: 5px 10px;
+            background-color: #e8b923;
+            border-radius: 8px;
+            color: #2b2b2b;
+            font-weight: bold;
+        }
+
+        .selected-items span.plus-sign {
+            color: #e8b923;
+            font-weight: bold;
+            background-color: transparent;
+            margin-left: 5px;
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 15px;
+            }
+
+            h2 {
+                font-size: 1.5rem;
+            }
+
+            input[type="text"],
+            input[type="email"],
+            input[type="tel"],
+            input[type="password"],
+            input[type="number"],
+            select,
+            button {
+                padding: 10px;
+                font-size: 0.9rem;
+            }
+        }
+        .tagline {
+    text-align: center;
+    color: #e8b923; /* Matches the heading color */
+    font-size: 1.2rem; /* Slightly smaller than the heading */
+    font-style: italic; /* Adds a touch of elegance */
+    margin-top: -15px; /* Pulls it closer to the heading */
+    margin-bottom: 25px; /* Adds space before the form */
+    opacity: 0; /* For fade-in effect */
+    animation: fadeInTagline 1s ease-out forwards; /* Animation */
+}
+
+@keyframes fadeInTagline {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Register</h2>
+        <p class="tagline">Skillexa: Real Skills, Real Projects</p>
+        <form id="registerForm">
+            <label for="name">Name:</label>
+            <input type="text" id="name" required>
+
+            <label for="email">Email:</label>
+            <input type="email" id="email" required>
+
+            <label for="phone">Phone Number:</label>
+            <input type="tel" id="phone" required>
+
+            <label for="password">Password:</label>
+            <input type="password" id="password" required>
+
+            <label for="confirmPassword">Confirm Password:</label>
+            <input type="password" id="confirmPassword" required>
+
+            <!-- Skills Section -->
+            <label for="skills">Skills:</label>
+            <div class="collapsible-list">
+                <div class="list-header" onclick="toggleList('skillsList')">
+                    <span>Select Skills</span>
+                    <span class="arrow">▼</span>
+                </div>
+                <div id="skillsList" class="list-content">
+                    <!-- Existing Skills -->
+                    <div>
+                        <input type="checkbox" id="skillPython" value="Python">
+                        <label for="skillPython">Python</label>
+                    </div>
+                    <div>
+                        <input type="checkbox" id="skillJava" value="Java">
+                        <label for="skillJava">Java</label>
+                    </div>
+                    <div>
+                        <input type="checkbox" id="skillCpp" value="C++">
+                        <label for="skillCpp">C++</label>
+                    </div>
+                    <div>
+                        <input type="checkbox" id="skillJavaScript" value="JavaScript">
+                        <label for="skillJavaScript">JavaScript</label>
+                    </div>
+                    <div>
+                        <input type="checkbox" id="skillReact" value="React.js">
+                        <label for="skillReact">React.js</label>
+                    </div>
+                    <div>
+                        <input type="checkbox" id="skillNode" value="Node.js">
+                        <label for="skillNode">Node.js</label>
+                    </div>
+                    <!-- Healthcare -->
+                    <div>
+                        <input type="checkbox" id="skillMedicalCoding" value="Medical Coding">
+                        <label for="skillMedicalCoding">Medical Coding</label>
+                    </div>
+                    <div>
+                        <input type="checkbox" id="skillEHR" value="EHR Management">
+                        <label for="skillEHR">EHR Management</label>
+                    </div>
+                    <!-- Finance -->
+                    <div>
+                        <input type="checkbox" id="skillFinancialModeling" value="Financial Modeling">
+                        <label for="skillFinancialModeling">Financial Modeling</label>
+                    </div>
+                    <div>
+                        <input type="checkbox" id="skillBlockchain" value="Blockchain Technology">
+                        <label for="skillBlockchain">Blockchain Technology</label>
+                    </div>
+                    <!-- Education -->
+                    <div>
+                        <input type="checkbox" id="skillLMS" value="Learning Management Systems">
+                        <label for="skillLMS">Learning Management Systems</label>
+                    </div>
+                    <div>
+                        <input type="checkbox" id="skillInstructionalDesign" value="Instructional Design">
+                        <label for="skillInstructionalDesign">Instructional Design</label>
+                    </div>
+                    <!-- IT Services -->
+                    <div>
+                        <input type="checkbox" id="skillCloud" value="Cloud Computing">
+                        <label for="skillCloud">Cloud Computing</label>
+                    </div>
+                    <div>
+                        <input type="checkbox" id="skillCybersecurity" value="Cybersecurity">
+                        <label for="skillCybersecurity">Cybersecurity</label>
+                    </div>
+                    <!-- Fintech -->
+                    <div>
+                        <input type="checkbox" id="skillPaymentGateway" value="Payment Gateway Integration">
+                        <label for="skillPaymentGateway">Payment Gateway Integration</label>
+                    </div>
+                    <div>
+                        <input type="checkbox" id="skillSmartContracts" value="Smart Contract Development">
+                        <label for="skillSmartContracts">Smart Contract Development</label>
+                    </div>
+                </div>
+            <div id="selectedSkills" class="selected-items"></div>
+
+            <!-- Interests Section -->
+            <label for="interests">Interests:</label>
+            <div class="collapsible-list">
+                <div class="list-header" onclick="toggleList('interestsList')">
+                    <span>Select Interests</span>
+                    <span class="arrow">▼</span>
+                </div>
+                <div id="interestsList" class="list-content">
+                    <!-- Existing Interests -->
+                    <div>
+                        <input type="checkbox" id="interestTech" value="Technology">
+                        <label for="interestTech">Technology</label>
+                    </div>
+                    <div>
+                        <input type="checkbox" id="interestAI" value="Artificial Intelligence">
+                        <label for="interestAI">Artificial Intelligence</label>
+                    </div>
+                    <div>
+                        <input type="checkbox" id="interestML" value="Machine Learning">
+                        <label for="interestML">Machine Learning</label>
+                    </div>
+                    <div>
+                        <input type="checkbox" id="interestWebDev" value="Web Development">
+                        <label for="interestWebDev">Web Development</label>
+                    </div>
+                    <div>
+                        <input type="checkbox" id="interestCloud" value="Cloud Computing">
+                        <label for="interestCloud">Cloud Computing</label>
+                    </div>
+                    <!-- Healthcare -->
+                    <div>
+                        <input type="checkbox" id="interestPrecisionMedicine" value="Precision Medicine">
+                        <label for="interestPrecisionMedicine">Precision Medicine</label>
+                    </div>
+                    <div>
+                        <input type="checkbox" id="interestHealthInformatics" value="Health Informatics">
+                        <label for="interestHealthInformatics">Health Informatics</label>
+                    </div>
+                    <!-- Finance -->
+                    <div>
+                        <input type="checkbox" id="interestQuantFinance" value="Quantitative Finance">
+                        <label for="interestQuantFinance">Quantitative Finance</label>
+                    </div>
+                    <div>
+                        <input type="checkbox" id="interestAlgoTrading" value="Algorithmic Trading">
+                        <label for="interestAlgoTrading">Algorithmic Trading</label>
+                    </div>
+                    <!-- Education -->
+                    <div>
+                        <input type="checkbox" id="interestEdTech" value="EdTech Innovation">
+                        <label for="interestEdTech">EdTech Innovation</label>
+                    </div>
+                    <div>
+                        <input type="checkbox" id="interestSTEM" value="STEM Education">
+                        <label for="interestSTEM">STEM Education</label>
+                    </div>
+                    <!-- IT Services -->
+                    <div>
+                        <input type="checkbox" id="interestIoT" value="Internet of Things">
+                        <label for="interestIoT">Internet of Things</label>
+                    </div>
+                    <div>
+                        <input type="checkbox" id="interestBigData" value="Big Data">
+                        <label for="interestBigData">Big Data</label>
+                    </div>
+                    <!-- Fintech -->
+                    <div>
+                        <input type="checkbox" id="interestDeFi" value="Decentralized Finance">
+                        <label for="interestDeFi">Decentralized Finance</label>
+                    </div>
+                    <div>
+                        <input type="checkbox" id="interestDigitalBanking" value="Digital Banking">
+                        <label for="interestDigitalBanking">Digital Banking</label>
+                    </div>
+                </div>
+            <div id="selectedInterests" class="selected-items"></div>
+
+            <label for="degree">Degree:</label>
+            <input type="text" id="degree" required>
+
+            <label for="experience">Experience (in years):</label>
+            <input type="number" id="experience" min="0" required>
+
+            <div id="errorMessage" class="error"></div>
+
+            <button type="submit">Register</button>
+        </form>
+
+        <button id="loginButton" class="login-button">Already have an account? Login</button>
+    </div>
+
+    <script src="/assets/register.js"></script>
+    <script>
+        function toggleList(listId) {
+            const listContent = document.getElementById(listId);
+            const arrow = listContent.previousElementSibling.querySelector('.arrow');
+            if (listContent.style.display === 'block') {
+                listContent.style.display = 'none';
+                arrow.style.transform = 'rotate(0deg)';
+            } else {
+                listContent.style.display = 'block';
+                arrow.style.transform = 'rotate(180deg)';
+            }
+        }
+    </script>
+</body>
+</html>
