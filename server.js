@@ -58,12 +58,33 @@ app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 // MongoDB Connection with Debugging
 console.log('MONGO_URI loaded:', process.env.MONGO_URI); // Verify URI
+if (!process.env.MONGO_URI) {
+    console.error('MONGO_URI is not defined in .env file');
+    process.exit(1);
+}
+
 mongoose.connect(process.env.MONGO_URI, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
+    serverSelectionTimeoutMS: 10000,
+    socketTimeoutMS: 45000,
+    family: 4,
+    maxPoolSize: 10,
+    minPoolSize: 5,
+    connectTimeoutMS: 10000,
+    heartbeatFrequencyMS: 10000
 })
-    .then(() => console.log('Connected to MongoDB:', mongoose.connection.name))
-    .catch((error) => console.error('MongoDB connection error:', error));
+.then(() => {
+    console.log('Connected to MongoDB:', mongoose.connection.name);
+    mongoose.connection.on('error', err => {
+        console.error('MongoDB connection error:', err);
+    });
+    mongoose.connection.on('disconnected', () => {
+        console.log('MongoDB disconnected. Attempting to reconnect...');
+    });
+})
+.catch((error) => {
+    console.error('MongoDB connection error:', error);
+    process.exit(1);
+});
 
 // Routes
 app.use('/api/auth', authRoutes);
