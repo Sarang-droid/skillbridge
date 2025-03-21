@@ -13,7 +13,7 @@ document.getElementById('loginForm').addEventListener('submit', async function (
 
     try {
         // Send a POST request to the login API endpoint
-        const response = await fetch('/api/auth/login', {
+        const response = await fetch('https://skillexa.in/api/auth/login', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

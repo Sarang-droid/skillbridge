@@ -17,7 +17,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 async function loadProfileData(token) {
     console.log('Loading profile data with token:', token);
     try {
-        const response = await fetch('http://localhost:5000/api/profile/me', {
+        const response = await fetch('https://skillexa.in/api/profile/me', {
             method: 'GET',
             headers: {
                 'Authorization': `Bearer ${token}`
@@ -40,7 +40,7 @@ async function loadProfileData(token) {
             const profileImageElement = document.getElementById('profile-image');
             if (profileImageElement) {
                 const profilePictureUrl = data.profilePicture 
-                    ? `http://localhost:5000${data.profilePicture}?t=${Date.now()}` 
+                    ? `https://skillexa.in${data.profilePicture}?t=${Date.now()}` 
                     : '/assets/default-profile.png';
                 console.log('Profile picture URL set:', profilePictureUrl);
                 profileImageElement.src = profilePictureUrl;
@@ -90,7 +90,7 @@ async function handleUnauthorized() {
 
     try {
         console.log('Attempting to refresh token...');
-        const response = await fetch('/api/auth/refreshToken', {
+        const response = await fetch('https://skillexa.in/api/auth/refreshToken', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -186,7 +186,7 @@ document.getElementById('profile-form').addEventListener('submit', async (event)
     try {
         console.log('Sending profile update request...');
         let token = localStorage.getItem('accessToken');
-        const response = await fetch('/api/profile/update', {
+        const response = await fetch('https://skillexa.in/api/profile/update', {
             method: 'PUT',
             headers: {
                 'Authorization': `Bearer ${token}`
@@ -206,36 +206,33 @@ document.getElementById('profile-form').addEventListener('submit', async (event)
             console.log('Unauthorized access detected during profile update');
             token = await handleUnauthorized();
             if (token) {
-                const retryResponse = await fetch('/api/profile/update', {
+                const retryResponse = await fetch('https://skillexa.in/api/profile/update', {
                     method: 'PUT',
                     headers: {
                         'Authorization': `Bearer ${token}`
                     },
                     body: formData
                 });
-                const retryData = await retryResponse.json();
+
                 if (retryResponse.ok) {
-                    console.log('Profile updated successfully after token refresh');
+                    console.log('Profile updated successfully on retry');
                     alert('Profile updated successfully!');
                     await loadProfileData(token);
                     document.getElementById('edit-profile-form').style.display = 'none';
                 } else {
-                    console.error('Error updating profile after refresh:', retryData.message);
-                    alert(`Error: ${retryData.message}`);
+                    console.error('Failed to update profile on retry');
+                    alert('Failed to update profile. Please try again later.');
+                    document.getElementById('edit-profile-form').style.display = 'none';
                 }
             }
         } else {
             console.error('Error updating profile:', data.message);
             alert(`Error: ${data.message}`);
+            document.getElementById('edit-profile-form').style.display = 'none';
         }
     } catch (error) {
-        console.error('Error updating profile:', error);
-        alert(`Error: ${error.message || 'An error occurred while updating your profile.'}`);
-    } finally {
-        submitButton.disabled = false;
-        document.body.removeChild(loadingIndicator);
-        console.log('Loading indicator removed');
+        console.error('Fetch error:', error);
+        alert('An error occurred while updating your profile.');
+        document.getElementById('edit-profile-form').style.display = 'none';
     }
 });
-
-document.getElementById('profile-picture-upload').addEventListener('change', previewImage);
