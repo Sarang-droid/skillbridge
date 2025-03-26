@@ -76,31 +76,24 @@ async function fetchResults() {
   }
 }
 
-// Share Results
-shareButton.addEventListener('click', () => {
-  const results = `My MBTI Type: ${mbtiTypeElement.textContent}\n` +
-    `Description: ${descriptionElement.textContent}\n` +
-    `Psychological Score: ${psychologicalScoreElement.textContent}\n` +
-    `Keyword: ${keywordElement.textContent}\n` +
-    `Core Desire: ${coreDesireElement.textContent}\n` +
-    `Hidden Fear: ${hiddenFearElement.textContent}\n` +
-    `Core Motivations: ${coreMotivationsElement.textContent}\n` +
-    `Communication Style: ${communicationStyleElement.textContent}\n` +
-    `Learning Style: ${learningStyleElement.textContent}\n` +
-    `Conflict Style: ${conflictStyleElement.textContent}\n` +
-    `Innovation vs Stability: ${innovationVsStabilityElement.textContent}\n` +
-    `Workplace Role: ${workplaceRoleElement.textContent}\n` +
-    `Best Collaboration Match: ${bestCollaborationMatchElement.textContent}\n` +
-    `Best Industries:\n${Array.from(bestIndustriesListElement.children).map(li => li.textContent).join('\n')}\n` +
-    `Stress Triggers:\n${Array.from(stressTriggersListElement.children).map(li => li.textContent).join('\n')}\n` +
-    `Strengths:\n${Array.from(strengthsListElement.children).map(li => li.textContent).join('\n')}\n` +
-    `Weaknesses:\n${Array.from(weaknessesListElement.children).map(li => li.textContent).join('\n')}\n` +
-    `Famous Personalities:\n${Array.from(famousPersonalitiesListElement.children).map(li => li.textContent).join('\n')}\n` +
-    `Recommended Projects:\n${Array.from(projectListElement.children).map(li => li.textContent).join('\n')}\n` +
-    `Self-Improvement Tip: ${selfImprovementTipElement.textContent}`;
-  navigator.clipboard.writeText(results)
-    .then(() => alert('Results copied to clipboard!'))
-    .catch(() => alert('Failed to copy results.'));
+// Share Results as Screenshot
+shareButton.addEventListener('click', async () => {
+  shareButton.disabled = true;
+  shareButton.textContent = 'Generating...';
+  try {
+    const canvas = await html2canvas(document.querySelector('.cards-container'));
+    const dataUrl = canvas.toDataURL('image/png');
+    const link = document.createElement('a');
+    link.href = dataUrl;
+    link.download = 'mbti-results.png';
+    link.click();
+  } catch (error) {
+    console.error('Failed to generate screenshot:', error);
+    alert('Failed to generate screenshot. Please try again.');
+  } finally {
+    shareButton.disabled = false;
+    shareButton.textContent = 'Share Results';
+  }
 });
 
 // Initialize
