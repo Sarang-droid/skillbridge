@@ -4,28 +4,22 @@ const Project = require('../models/project');
 
 exports.getCompanies = async (req, res) => {
     const searchQuery = req.query.search || '';
-    const industry = req.query.industry ? req.query.industry.trim() : ''; // Trim whitespace
-
+    const industry = req.query.industry || '';
+    console.log("Raw Industry Value:", JSON.stringify(industry)); // Log exact value with quotes
     console.log("Search Query:", searchQuery);
     console.log("Industry Filter:", industry);
 
     try {
         let query = {};
-
         if (searchQuery) {
             query.name = { $regex: searchQuery, $options: 'i' };
         }
-
         if (industry) {
-            query.industry = { $regex: new RegExp(`^${industry}$`, 'i') }; // Case-insensitive exact match
+            query.industry = industry.trim(); // Remove leading/trailing whitespace
         }
-
         console.log("Database Query:", query);
-
         const companies = await Company.find(query).lean();
-
         console.log("Fetched Companies:", companies);
-
         res.status(200).json(companies);
     } catch (error) {
         console.error("Error fetching companies:", error);

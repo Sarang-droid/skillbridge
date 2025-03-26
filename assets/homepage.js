@@ -139,21 +139,29 @@ async function fetchCompanies(event) {
     const container = document.getElementById('companyCardsContainer');
     container.innerHTML = '<div class="loading">Loading companies...</div>';
 
-    let apiUrl = '/api/homepage/companies?';
+    let apiUrl = '/api/homepage/companies';
+    let params = [];
     if (searchQuery) {
-        apiUrl += `search=${encodeURIComponent(searchQuery)}&`;
+        params.push(`search=${encodeURIComponent(searchQuery)}`);
     }
     if (industry) {
-        apiUrl += `industry=${encodeURIComponent(industry)}`;
+        params.push(`industry=${encodeURIComponent(industry)}`);
     }
+    if (params.length > 0) {
+        apiUrl += `?${params.join('&')}`;
+    }
+
+    console.log("Fetching from URL:", apiUrl); // Log the URL
 
     try {
         const response = await fetch(apiUrl);
+        console.log("Response Status:", response.status); // Log status
         if (!response.ok) {
             throw new Error(`HTTP error! Status: ${response.status}`);
         }
         const companies = await response.json();
-        console.log("Fetched companies:", companies);
+        console.log("Raw API Response:", companies); // Log raw response
+        console.log("Response Length:", companies.length); // Log length
         renderCompanyCards(companies);
     } catch (error) {
         console.error("Error fetching companies:", error);
