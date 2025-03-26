@@ -4,10 +4,10 @@ const Project = require('../models/project');
 
 exports.getCompanies = async (req, res) => {
     const searchQuery = req.query.search || '';
-    const industry = req.query.industry || '';
+    const industry = req.query.industry ? req.query.industry.trim() : ''; // Trim whitespace
 
-    console.log("Search Query:", searchQuery); // Debug log
-    console.log("Industry Filter:", industry); // Debug log
+    console.log("Search Query:", searchQuery);
+    console.log("Industry Filter:", industry);
 
     try {
         let query = {};
@@ -17,14 +17,14 @@ exports.getCompanies = async (req, res) => {
         }
 
         if (industry) {
-            query.industry = industry;
+            query.industry = { $regex: new RegExp(`^${industry}$`, 'i') }; // Case-insensitive exact match
         }
 
-        console.log("Database Query:", query); // Debug log
+        console.log("Database Query:", query);
 
         const companies = await Company.find(query).lean();
 
-        console.log("Fetched Companies:", companies); // Debug log
+        console.log("Fetched Companies:", companies);
 
         res.status(200).json(companies);
     } catch (error) {
