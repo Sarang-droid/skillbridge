@@ -104,11 +104,22 @@ app.use('/api/badges', badgeRoutes);
 app.use('/api/mbti', mbtiRoutes);
 app.use('/api/personality', personalityRoutes);
 
-const pages = ['/', '/homepage', '/profile', '/register', '/login', '/settings', '/notification', '/personality', '/result'];
+// Static page routes
+const pages = ['/', '/homepage', '/register', '/login', '/settings', '/notification', '/personality', '/result'];
 pages.forEach((route) => {
     app.get(route, (req, res) => {
         res.sendFile(path.join(__dirname, `assets${route === '/' ? '/register' : route}.html`));
     });
+});
+
+// Public profile route (must come before /profile to take precedence)
+app.get('/profile/:userId', (req, res) => {
+    res.sendFile(path.join(__dirname, 'assets/public-profile.html'));
+});
+
+// Authenticated user profile route
+app.get('/profile', (req, res) => {
+    res.sendFile(path.join(__dirname, 'assets/profile.html'));
 });
 
 app.get('/workspace', (req, res) => {
