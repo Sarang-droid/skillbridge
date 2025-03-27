@@ -213,26 +213,105 @@ document.getElementById('profile-form').addEventListener('submit', async (event)
                     },
                     body: formData
                 });
-
+                const retryData = await retryResponse.json();
                 if (retryResponse.ok) {
-                    console.log('Profile updated successfully on retry');
+                    console.log('Profile updated successfully after token refresh');
                     alert('Profile updated successfully!');
                     await loadProfileData(token);
                     document.getElementById('edit-profile-form').style.display = 'none';
                 } else {
-                    console.error('Failed to update profile on retry');
-                    alert('Failed to update profile. Please try again later.');
-                    document.getElementById('edit-profile-form').style.display = 'none';
+                    console.error('Error updating profile after refresh:', retryData.message);
+                    alert(`Error: ${retryData.message}`);
                 }
             }
         } else {
             console.error('Error updating profile:', data.message);
             alert(`Error: ${data.message}`);
-            document.getElementById('edit-profile-form').style.display = 'none';
         }
     } catch (error) {
-        console.error('Fetch error:', error);
-        alert('An error occurred while updating your profile.');
-        document.getElementById('edit-profile-form').style.display = 'none';
+        console.error('Error updating profile:', error);
+        alert(`Error: ${error.message || 'An error occurred while updating your profile.'}`);
+    } finally {
+        submitButton.disabled = false;
+        document.body.removeChild(loadingIndicator);
+        console.log('Loading indicator removed');
     }
 });
+
+async function shareProfile() {
+    console.log('Share profile initiated');
+    const token = localStorage.getItem('accessToken');
+    if (!token) {
+        console.error('No token found for sharing profile');
+        alert('Please log in to share your profile.');
+        return;
+    }
+
+    try {
+        // Fetch the user's profile to get the ID
+        const profileResponse = await fetch('https://skillexa.in/api/profile/me', {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        });
+
+        if (!profileResponse.ok) {
+            console.error('Failed to fetch profile for sharing:', profileResponse.status);
+            throw new Error('Failed to fetch profile data');
+        }
+
+        const profileData = await profileResponse.json();
+        const userId = profileData._id; // Ensure _id is returned by /api/profile/me
+
+        // Fetch the public profile data
+        const publicProfileResponse = await fetch(`https://skillexa.in/api/profile/${userId}`, {
+            method: 'GET'
+        });
+
+        if (!publicProfileResponse.ok) {
+            console.error('Failed to fetch public profile:', publicProfileResponse.status);
+            throw new Error('Failed to fetch public profile');
+        }
+
+        const publicProfileData = await publicProfileResponse.json();
+        const shareableUrl = publicProfileData.shareableUrl || `https://skillexa.in/profile/${userId}`; // Fallback if shareableUrl isn't returned
+
+        // Use Web Share API if available
+        if (navigator.share) {
+            await navigator.share({
+                title: `${publicProfileData.name || 'My'}'s Profile on SkillExa`,
+                text: `Check out my profile on SkillExa: ${publicProfileData.bio || 'An awesome user profile!'}`,
+                url: shareableUrl
+            });
+            console.log('Profile shared via Web Share API');
+        } else {
+            // Fallback: Custom share links
+            const shareText = encodeURIComponent(`Check out my profile on SkillExa: ${publicProfileData.bio || 'An awesome user profile!'}`);
+            const shareUrl = encodeURIComponent(shareableUrl);
+
+            const linkedinUrl = `https://www.linkedin.com/sharing/share-offsite/?url=${shareUrl}`;
+            const instagramUrl = `https://www.instagram.com/?url=${shareUrl}`; // Note: Instagram sharing is limited
+
+            const shareWindow = window.open('', '_blank', 'width=600,height=400');
+            shareWindow.document.write(`
+                <html>
+                <head><title>Share Your SkillExa Profile</title></head>
+                <body>
+                    <h2>Share Your Profile</h2>
+                    <p><a href="${linkedinUrl}" target="_blank">Share on LinkedIn</a></p>
+                    <p><a href="${instagramUrl}" target="_blank">Share on Instagram</a></p>
+                    <p>Or copy this link: <input type="text" value="${shareableUrl}" readonly> <button onclick="navigator.clipboard.writeText('${shareableUrl}')">Copy</button></p>
+                </body>
+                </html>
+            `);
+            console.log('Fallback share options displayed');
+        }
+    } catch (error) {
+        console.error('Error sharing profile:', error);
+        alert('An error occurred while preparing your profile for sharing.');
+    }
+}
+
+// Ensure this event listener is added if not already present in your HTML
+document.getElementById('profile-picture-upload')?.addEventListener('change', previewImage);

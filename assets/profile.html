@@ -411,6 +411,46 @@
         .badge-item:hover::before {
             opacity: 1;
         }
+        /* Share Profile Button */
+.share-profile-button {
+    display: block;
+    margin: 20px auto;
+    padding: 12px 20px;
+    background-color: #1e90ff; /* Blue color for distinction */
+    color: #ffffff;
+    border: 2px dashed #555;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-weight: bold;
+    position: relative;
+    overflow: hidden;
+    max-width: 200px;
+}
+
+.share-profile-button:hover {
+    background-color: #1c86ee;
+    transform: translateY(-2px);
+    box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.5);
+}
+
+.share-profile-button::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    transition: width 0.4s ease, height 0.4s ease;
+}
+
+.share-profile-button:hover::after {
+    width: 200%;
+    height: 200%;
+}
     </style>
 </head>
 <body>
@@ -431,7 +471,8 @@
 
     <!-- Edit Profile Button -->
     <button class="toggle-edit-button" onclick="toggleEditProfile()">Edit Profile</button>
-
+<!-- Add this after the Edit Profile button -->
+<button class="share-profile-button" onclick="shareProfile()">Share Profile</button>
     <!-- Edit Profile Form -->
     <div class="profile-edit-form" id="edit-profile-form">
         <h2>Edit Profile</h2>

@@ -10,4 +10,6 @@ router.get('/me', authMiddleware.protect, profileController.getProfile);
 // Route to update the user's profile with profile picture upload
 router.put('/update', authMiddleware.protect, profilePictureUpload.single('profilePicture'), handleMulterErrors, profileController.updateProfile);
 
+// In your router file
+router.get('/:userId', profileController.getPublicProfile); // Public profile route, no auth required
 module.exports = router;
