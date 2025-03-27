@@ -50,6 +50,23 @@
             margin: 5px 0;
             color: #b0b0b0;
         }
+        .completed-projects {
+            margin: 20px;
+            padding: 20px;
+            background-color: #3c3c3c;
+            border-radius: 12px;
+            border: 2px dashed #555;
+        }
+        .completed-projects h2 {
+            color: #e8b923;
+            margin-top: 0;
+        }
+        .completed-project {
+            margin: 10px 0;
+            padding: 10px;
+            background-color: #4a4a4a;
+            border-radius: 8px;
+        }
         .error-message {
             color: #ff5555;
             text-align: center;
@@ -70,6 +87,10 @@
             <p><strong><i class="fas fa-star"></i> Points:</strong> <span id="profile-points">0</span></p>
             <p><strong><i class="fas fa-medal"></i> Badges:</strong> <span id="profile-badges-count">0</span></p>
         </div>
+    </div>
+    <div class="completed-projects">
+        <h2>Completed Projects</h2>
+        <div id="completed-projects-list"></div>
     </div>
     <div id="error-message" class="error-message"></div>
 
@@ -104,7 +125,20 @@
                 document.getElementById('profile-badges-count').textContent = data.badges ? data.badges.length : 0;
                 document.getElementById('profile-image').src = data.profilePicture || '/assets/default-profile.png';
 
-                // Update Open Graph meta tags dynamically (optional)
+                // Render completed projects
+                const completedProjectsList = document.getElementById('completed-projects-list');
+                if (data.completedProjects && data.completedProjects.length > 0) {
+                    completedProjectsList.innerHTML = data.completedProjects.map(project => `
+                        <div class="completed-project">
+                            <p><strong>${project.projectName || 'Untitled Project'}</strong></p>
+                            <p>Completed on: ${project.submissionDate ? new Date(project.submissionDate).toLocaleDateString() : 'Unknown Date'}</p>
+                        </div>
+                    `).join('');
+                } else {
+                    completedProjectsList.innerHTML = '<p>No completed projects available.</p>';
+                }
+
+                // Update Open Graph meta tags dynamically
                 document.querySelector('meta[property="og:title"]').setAttribute('content', `${data.name || 'Anonymous'}'s Profile on SkillExa`);
                 document.querySelector('meta[property="og:description"]').setAttribute('content', data.bio || 'Check out this awesome profile on SkillExa!');
                 document.querySelector('meta[property="og:image"]').setAttribute('content', data.profilePicture || 'https://skillexa.in/assets/default-profile.png');
@@ -113,6 +147,7 @@
                 console.error('Error loading public profile:', error);
                 document.getElementById('profile-name').textContent = 'Profile Not Found';
                 errorMessage.textContent = 'Unable to load profile. Please try again later.';
+                document.getElementById('completed-projects-list').innerHTML = '<p>Unable to load projects.</p>';
             }
         });
     </script>
