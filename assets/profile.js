@@ -41,7 +41,7 @@ async function loadProfileData(token) {
             if (profileImageElement) {
                 const profilePictureUrl = data.profilePicture 
                     ? `https://skillexa.in${data.profilePicture}?t=${Date.now()}` 
-                    : '/assets/default-profile.png';
+                    : 'https://skillexa.in/assets/default-profile.png';
                 console.log('Profile picture URL set:', profilePictureUrl);
                 profileImageElement.src = profilePictureUrl;
             }
@@ -248,7 +248,6 @@ async function shareProfile() {
     }
 
     try {
-        // Fetch the user's profile to get the ID
         const profileResponse = await fetch('https://skillexa.in/api/profile/me', {
             method: 'GET',
             headers: {
@@ -262,9 +261,12 @@ async function shareProfile() {
         }
 
         const profileData = await profileResponse.json();
-        const userId = profileData._id; // Ensure _id is returned by /api/profile/me
+        const userId = profileData._id; // Now _id should be present
+        if (!userId) {
+            console.error('User ID not found in profile data');
+            throw new Error('User ID missing from profile data');
+        }
 
-        // Fetch the public profile data
         const publicProfileResponse = await fetch(`https://skillexa.in/api/profile/${userId}`, {
             method: 'GET'
         });
@@ -275,9 +277,8 @@ async function shareProfile() {
         }
 
         const publicProfileData = await publicProfileResponse.json();
-        const shareableUrl = publicProfileData.shareableUrl || `https://skillexa.in/profile/${userId}`; // Fallback if shareableUrl isn't returned
+        const shareableUrl = publicProfileData.shareableUrl || `https://skillexa.in/profile/${userId}`;
 
-        // Use Web Share API if available
         if (navigator.share) {
             await navigator.share({
                 title: `${publicProfileData.name || 'My'}'s Profile on SkillExa`,
@@ -286,12 +287,11 @@ async function shareProfile() {
             });
             console.log('Profile shared via Web Share API');
         } else {
-            // Fallback: Custom share links
             const shareText = encodeURIComponent(`Check out my profile on SkillExa: ${publicProfileData.bio || 'An awesome user profile!'}`);
             const shareUrl = encodeURIComponent(shareableUrl);
 
             const linkedinUrl = `https://www.linkedin.com/sharing/share-offsite/?url=${shareUrl}`;
-            const instagramUrl = `https://www.instagram.com/?url=${shareUrl}`; // Note: Instagram sharing is limited
+            const instagramUrl = `https://www.instagram.com/?url=${shareUrl}`;
 
             const shareWindow = window.open('', '_blank', 'width=600,height=400');
             shareWindow.document.write(`
@@ -313,5 +313,4 @@ async function shareProfile() {
     }
 }
 
-// Ensure this event listener is added if not already present in your HTML
 document.getElementById('profile-picture-upload')?.addEventListener('change', previewImage);
