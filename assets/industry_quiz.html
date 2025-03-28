@@ -4,67 +4,238 @@
   <title>Industry Quizzes</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
   <style>
+    :root {
+      --primary-color: #ffc107;
+      --primary-dark: #d9a413;
+      --bg-dark: #2b2b2b;
+      --bg-darker: #1f1f1f;
+      --bg-light: #3c3c3c;
+      --text-light: #f0f0f0;
+      --text-muted: #b0b0b0;
+      --border-radius: 12px;
+      --transition: all 0.3s ease;
+    }
+    
     body {
-      font-family: 'Arial', sans-serif;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       margin: 0;
-      padding: 20px;
-      background: linear-gradient(135deg, #2b2b2b 0%, #3c3c3c 100%);
-      color: #d3d3d3;
+      padding: 0;
+      background: var(--bg-darker);
+      color: var(--text-light);
       min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      line-height: 1.6;
     }
+    
     .quiz-container {
-      background-color: #3c3c3c;
-      padding: 20px;
-      border-radius: 12px;
-      border: 2px dashed #555;
-      box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.5);
-      margin: 20px;
+      background-color: var(--bg-light);
+      padding: 2rem;
+      border-radius: var(--border-radius);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+      width: 90%;
+      max-width: 700px;
+      margin: 2rem auto;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      transition: var(--transition);
     }
+    
+    .quiz-container:hover {
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
+      transform: translateY(-2px);
+    }
+    
     h1 {
-      color: #e8b923;
+      color: var(--primary-color);
       text-align: center;
-      padding-bottom: 10px;
+      padding-bottom: 1rem;
       position: relative;
+      margin-bottom: 1.5rem;
+      font-size: 2rem;
+      font-weight: 600;
     }
+    
     h1::after {
       content: '';
       position: absolute;
       bottom: 0;
       left: 50%;
       transform: translateX(-50%);
-      width: 60px;
-      height: 3px;
-      background: #e8b923;
+      width: 80px;
+      height: 4px;
+      background: var(--primary-color);
+      border-radius: 2px;
     }
+    
     #industry-select {
       width: 100%;
-      padding: 12px;
-      margin-bottom: 20px;
-      background-color: #4a4a4a;
-      border: 2px dashed #555;
-      border-radius: 8px;
-      color: #d3d3d3;
+      padding: 0.8rem 1rem;
+      margin-bottom: 1.5rem;
+      background-color: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: var(--border-radius);
+      color: var(--text-light);
+      font-size: 1rem;
+      transition: var(--transition);
+      appearance: none;
+      background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23ffc107'%3e%3cpath d='M7 10l5 5 5-5z'/%3e%3c/svg%3e");
+      background-repeat: no-repeat;
+      background-position: right 1rem center;
+      background-size: 1.5rem;
     }
-    #quiz-slider {
-      text-align: center;
+    
+    #industry-select:focus {
+      outline: none;
+      border-color: var(--primary-color);
+      box-shadow: 0 0 0 2px rgba(255, 193, 7, 0.2);
     }
-    button {
-      padding: 12px 20px;
-      background-color: #e8b923;
-      color: #2b2b2b;
-      border: 2px dashed #555;
-      border-radius: 8px;
+    
+    #question-container {
+      margin: 1.5rem 0;
+      padding: 1rem;
+      background: rgba(0, 0, 0, 0.2);
+      border-radius: var(--border-radius);
+    }
+    
+    #question-container p {
+      font-size: 1.2rem;
+      margin-bottom: 1.5rem;
+      font-weight: 500;
+    }
+    
+    #question-container input[type="radio"] {
+      appearance: none;
+      -webkit-appearance: none;
+      width: 1.2rem;
+      height: 1.2rem;
+      border: 2px solid var(--text-muted);
+      border-radius: 50%;
+      margin-right: 0.8rem;
+      position: relative;
+      top: 0.2rem;
+      transition: var(--transition);
       cursor: pointer;
-      margin: 5px;
     }
+    
+    #question-container input[type="radio"]:checked {
+      border-color: var(--primary-color);
+      background-color: var(--primary-color);
+    }
+    
+    #question-container input[type="radio"]:checked::after {
+      content: '';
+      position: absolute;
+      width: 0.6rem;
+      height: 0.6rem;
+      background: var(--bg-light);
+      border-radius: 50%;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+    
+    #question-container label {
+      display: block;
+      margin-bottom: 1rem;
+      padding: 0.5rem;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+    
+    #question-container label:hover {
+      background: rgba(255, 255, 255, 0.05);
+    }
+    
+    .button-group {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 1.5rem;
+    }
+    
+    button {
+      padding: 0.8rem 1.8rem;
+      background-color: var(--primary-color);
+      color: var(--bg-darker);
+      border: none;
+      border-radius: var(--border-radius);
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 1rem;
+      transition: var(--transition);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
     button:hover {
-      background-color: #d9a413;
+      background-color: var(--primary-dark);
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
     }
+    
+    button:active {
+      transform: translateY(0);
+    }
+    
+    button:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      transform: none !important;
+    }
+    
+    #submit-btn {
+      background-color: #4CAF50;
+      color: white;
+    }
+    
+    #submit-btn:hover {
+      background-color: #3e8e41;
+    }
+    
     #result {
-      margin-top: 20px;
-      color: #e8b923;
+      margin-top: 2rem;
+      padding: 1rem;
+      border-radius: var(--border-radius);
+      background: rgba(255, 193, 7, 0.1);
+      color: var(--primary-color);
+      font-size: 1.1rem;
+      text-align: center;
+      border-left: 4px solid var(--primary-color);
     }
-  </style>
+    
+    .badge {
+      display: inline-block;
+      background: var(--primary-color);
+      color: var(--bg-darker);
+      padding: 0.3rem 0.6rem;
+      border-radius: 1rem;
+      font-size: 0.8rem;
+      font-weight: bold;
+      margin: 0.2rem;
+    }
+    
+    @media (max-width: 768px) {
+      .quiz-container {
+        width: 95%;
+        padding: 1.5rem;
+      }
+      
+      h1 {
+        font-size: 1.5rem;
+      }
+      
+      .button-group {
+        flex-direction: column;
+      }
+      
+      button {
+        width: 100%;
+        margin-bottom: 0.5rem;
+      }
+    }
+</style>
   <script src="/assets/industry.js" defer></script>
 </head>
 <body>
