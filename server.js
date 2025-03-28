@@ -25,6 +25,7 @@ const mbtiRoutes = require('./routes/MBTIRoutes');
 const matchRoutes = require('./routes/matchRoutes');
 const badgeRoutes = require('./routes/badgeRoutes');
 const personalityRoutes = require('./routes/personalityRoutes');
+const industryRoutes = require('./routes/industryRoutes');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -34,7 +35,7 @@ const corsOptions = {
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'],
     credentials: true,
-    maxAge: 86400 // 24 hours
+    maxAge: 86400
 };
 app.use(cors(corsOptions));
 app.use(bodyParser.json());
@@ -58,7 +59,7 @@ app.use('/assets', express.static(path.join(__dirname, 'assets')));
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 // MongoDB Connection with Debugging
-console.log('MONGO_URI loaded:', process.env.MONGO_URI); // Verify URI
+console.log('MONGO_URI loaded:', process.env.MONGO_URI);
 if (!process.env.MONGO_URI) {
     console.error('MONGO_URI is not defined in .env file');
     process.exit(1);
@@ -103,16 +104,17 @@ app.use('/api/matches', matchRoutes);
 app.use('/api/badges', badgeRoutes);
 app.use('/api/mbti', mbtiRoutes);
 app.use('/api/personality', personalityRoutes);
+app.use('/api/quizzes', industryRoutes);
 
 // Static page routes
-const pages = ['/', '/homepage', '/register', '/login', '/settings', '/notification', '/personality', '/result'];
+const pages = ['/', '/homepage', '/register', '/login', '/settings', '/notification', '/personality', '/result', '/industry_quiz'];
 pages.forEach((route) => {
     app.get(route, (req, res) => {
         res.sendFile(path.join(__dirname, `assets${route === '/' ? '/register' : route}.html`));
     });
 });
 
-// Public profile route (must come before /profile to take precedence)
+// Public profile route
 app.get('/profile/:userId', (req, res) => {
     res.sendFile(path.join(__dirname, 'assets/public-profile.html'));
 });

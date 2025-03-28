@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Industry Quizzes</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      margin: 0;
+      padding: 20px;
+      background: linear-gradient(135deg, #2b2b2b 0%, #3c3c3c 100%);
+      color: #d3d3d3;
+      min-height: 100vh;
+    }
+    .quiz-container {
+      background-color: #3c3c3c;
+      padding: 20px;
+      border-radius: 12px;
+      border: 2px dashed #555;
+      box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.5);
+      margin: 20px;
+    }
+    h1 {
+      color: #e8b923;
+      text-align: center;
+      padding-bottom: 10px;
+      position: relative;
+    }
+    h1::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 60px;
+      height: 3px;
+      background: #e8b923;
+    }
+    #industry-select {
+      width: 100%;
+      padding: 12px;
+      margin-bottom: 20px;
+      background-color: #4a4a4a;
+      border: 2px dashed #555;
+      border-radius: 8px;
+      color: #d3d3d3;
+    }
+    #quiz-slider {
+      text-align: center;
+    }
+    button {
+      padding: 12px 20px;
+      background-color: #e8b923;
+      color: #2b2b2b;
+      border: 2px dashed #555;
+      border-radius: 8px;
+      cursor: pointer;
+      margin: 5px;
+    }
+    button:hover {
+      background-color: #d9a413;
+    }
+    #result {
+      margin-top: 20px;
+      color: #e8b923;
+    }
+  </style>
+  <script src="/assets/industry.js" defer></script>
+</head>
+<body>
+  <div class="quiz-container">
+    <h1>Daily Industry Quizzes</h1>
+    <select id="industry-select">
+      <option value="edtech">EdTech</option>
+      <option value="finance">Finance</option>
+      <option value="it">IT</option>
+      <option value="ecommerce">E-commerce</option>
+      <option value="marketing">Marketing</option>
+    </select>
+    <div id="quiz-slider">
+      <div id="question-container"></div>
+      <button onclick="nextQuestion()">Next</button>
+      <button onclick="submitQuiz()">Submit</button>
+    </div>
+    <div id="result"></div>
+  </div>
+</body>
+</html>

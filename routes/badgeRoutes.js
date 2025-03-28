@@ -5,8 +5,18 @@ const User = require('../models/user');
 const Badge = require('../models/badge');
 const { protect } = require('../middleware/authMiddleware');
 
-// Route to unlock badges (supports userId in body)
-router.post('/unlock', protect, unlockBadge);
+// Route to unlock badges
+router.post('/unlock', protect, async (req, res) => {
+    const { userId } = req.body; // Expect userId in body instead of params
+    if (!userId) {
+        return res.status(400).json({ error: 'userId is required' });
+    }
+    const result = await unlockBadge(userId);
+    if (result.error) {
+        return res.status(500).json(result);
+    }
+    res.status(200).json(result);
+});
 
 // Route to get all badges
 router.get('/', async (req, res) => {
