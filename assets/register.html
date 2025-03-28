@@ -255,6 +255,20 @@
     from { opacity: 0; transform: translateY(-10px); }
     to { opacity: 1; transform: translateY(0); }
 }
+/* Add this to your existing styles */
+.fa-eye, .fa-eye-slash {
+    color: #d3d3d3;
+    transition: all 0.3s ease;
+}
+
+.fa-eye:hover, .fa-eye-slash:hover {
+    color: #e8b923;
+}
+
+/* Adjust the input padding to prevent text overlap */
+input[type="password"], input[type="text"] {
+    padding-right: 35px !important;
+}
     </style>
 </head>
 <body>
@@ -271,11 +285,21 @@
             <label for="phone">Phone Number:</label>
             <input type="tel" id="phone" required>
 
-            <label for="password">Password:</label>
-            <input type="password" id="password" required>
+            <!-- Update the password fields section in register.html -->
+<label for="password">Password:</label>
+<div style="position: relative;">
+    <input type="password" id="password" required>
+    <i class="fas fa-eye" id="togglePassword" 
+       style="position: absolute; right: 10px; top: 35px; cursor: pointer;"></i>
+</div>
 
-            <label for="confirmPassword">Confirm Password:</label>
-            <input type="password" id="confirmPassword" required>
+<label for="confirmPassword">Confirm Password:</label>
+<div style="position: relative;">
+    <input type="password" id="confirmPassword" required>
+    <i class="fas fa-eye" id="toggleConfirmPassword" 
+       style="position: absolute; right: 10px; top: 35px; cursor: pointer;"></i>
+</div>
+            
 
             <!-- Skills Section -->
             <label for="skills">Skills:</label>

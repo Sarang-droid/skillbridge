@@ -17,6 +17,30 @@ function toggleList(listId) {
     }
 }
 
+// Password visibility toggle functionality
+document.getElementById('togglePassword').addEventListener('click', function() {
+    togglePasswordVisibility('password', 'togglePassword');
+});
+
+document.getElementById('toggleConfirmPassword').addEventListener('click', function() {
+    togglePasswordVisibility('confirmPassword', 'toggleConfirmPassword');
+});
+
+function togglePasswordVisibility(fieldId, iconId) {
+    const passwordField = document.getElementById(fieldId);
+    const icon = document.getElementById(iconId);
+    
+    if (passwordField.type === 'password') {
+        passwordField.type = 'text';
+        icon.classList.remove('fa-eye');
+        icon.classList.add('fa-eye-slash');
+    } else {
+        passwordField.type = 'password';
+        icon.classList.remove('fa-eye-slash');
+        icon.classList.add('fa-eye');
+    }
+}
+
 // Get references to the checkboxes and selected items containers
 const skillsCheckboxes = document.querySelectorAll('#skillsList input[type="checkbox"]');
 const interestsCheckboxes = document.querySelectorAll('#interestsList input[type="checkbox"]');
