@@ -1,102 +1,49 @@
-[
-    {
-        "projectId": {"$oid": "67d97111f2f48b5e156cd41e"},
-        "userId": {"$oid": "placeholder_user_id"},
-        "question": "In task T1, which specific Python libraries did you install to set up the environment for the vulnerability scanner, and why are they necessary for network scanning?",
-        "answer": "",
-        "isAdminQuestion": false,
-        "answeredBy": null,
-        "createdAt": {"$date": "2025-03-18T00:00:00Z"},
-        "answeredAt": null
+const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
+
+// Define the Task sub-schema
+const TaskSchema = new Schema({
+    taskId: { type: String, required: true },
+    taskName: { type: String, required: true },
+    completed: { type: Boolean, default: false }
+});
+
+// Define the Resource sub-schema
+const ResourceSchema = new Schema({
+    name: { type: String, required: true },
+    url: { type: String, required: true },
+    description: { type: String }
+});
+
+// Define the main Project schema
+const ProjectSchema = new Schema({
+    companyId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Company', // Reference to the Company model
+        required: true
     },
-    {
-        "projectId": {"$oid": "67d97111f2f48b5e156cd41e"},
-        "userId": {"$oid": "placeholder_user_id"},
-        "question": "For task T2, explain how your ping script identifies active devices on the local network. Did you use the `subprocess` module or a library like `ping3`?",
-        "answer": "",
-        "isAdminQuestion": false,
-        "answeredBy": null,
-        "createdAt": {"$date": "2025-03-18T00:00:00Z"},
-        "answeredAt": null
-    },
-    {
-        "projectId": {"$oid": "67d97111f2f48b5e156cd41e"},
-        "userId": {"$oid": "placeholder_user_id"},
-        "question": "In task T3, how did you implement the port scanning functionality? Provide a code snippet showing your approach to socket connections.",
-        "answer": "",
-        "isAdminQuestion": false,
-        "answeredBy": null,
-        "createdAt": {"$date": "2025-03-18T00:00:00Z"},
-        "answeredAt": null
-    },
-    {
-        "projectId": {"$oid": "67d97111f2f48b5e156cd41e"},
-        "userId": {"$oid": "placeholder_user_id"},
-        "question": "For task T4, why are ports 80 and 443 significant in the context of network security, and how did your script check their status?",
-        "answer": "",
-        "isAdminQuestion": false,
-        "answeredBy": null,
-        "createdAt": {"$date": "2025-03-18T00:00:00Z"},
-        "answeredAt": null
-    },
-    {
-        "projectId": {"$oid": "67d97111f2f48b5e156cd41e"},
-        "userId": {"$oid": "placeholder_user_id"},
-        "question": "Describe how you formatted the text output for task T5. Did you include timestamps or color-coding to enhance readability?",
-        "answer": "",
-        "isAdminQuestion": false,
-        "answeredBy": null,
-        "createdAt": {"$date": "2025-03-18T00:00:00Z"},
-        "answeredAt": null
-    },
-    {
-        "projectId": {"$oid": "67d97111f2f48b5e156cd41e"},
-        "userId": {"$oid": "placeholder_user_id"},
-        "question": "What challenges did you encounter while testing the tool on a local network (task T6), and how did you resolve them?",
-        "answer": "",
-        "isAdminQuestion": false,
-        "answeredBy": null,
-        "createdAt": {"$date": "2025-03-18T00:00:00Z"},
-        "answeredAt": null
-    },
-    {
-        "projectId": {"$oid": "67d97111f2f48b5e156cd41e"},
-        "userId": {"$oid": "placeholder_user_id"},
-        "question": "Explain the difference between a vulnerability scanner and a port scanner. How does your prototype align with these concepts?",
-        "answer": "",
-        "isAdminQuestion": false,
-        "answeredBy": null,
-        "createdAt": {"$date": "2025-03-18T00:00:00Z"},
-        "answeredAt": null
-    },
-    {
-        "projectId": {"$oid": "67d97111f2f48b5e156cd41e"},
-        "userId": {"$oid": "placeholder_user_id"},
-        "question": "Given the project’s focus on cybersecurity, how would you extend your tool to detect a specific vulnerability, such as an outdated HTTP server version?",
-        "answer": "",
-        "isAdminQuestion": false,
-        "answeredBy": null,
-        "createdAt": {"$date": "2025-03-18T00:00:00Z"},
-        "answeredAt": null
-    },
-    {
-        "projectId": {"$oid": "67d97111f2f48b5e156cd41e"},
-        "userId": {"$oid": "placeholder_user_id"},
-        "question": "In Python, how would you handle exceptions in your scanner to prevent it from crashing if a network connection fails? Provide an example.",
-        "answer": "",
-        "isAdminQuestion": false,
-        "answeredBy": null,
-        "createdAt": {"$date": "2025-03-18T00:00:00Z"},
-        "answeredAt": null
-    },
-    {
-        "projectId": {"$oid": "67d97111f2f48b5e156cd41e"},
-        "userId": {"$oid": "placeholder_user_id"},
-        "question": "Considering the preferred skill 'Network Security,' what is the role of a firewall in relation to your vulnerability scanner’s functionality?",
-        "answer": "",
-        "isAdminQuestion": false,
-        "answeredBy": null,
-        "createdAt": {"$date": "2025-03-18T00:00:00Z"},
-        "answeredAt": null
+    companyType: { type: String, required: true },
+    projectId: { type: String, required: true }, // Custom project ID like "IT102-PROT"
+    title: { type: String, required: true },
+    description: { type: String },
+    industry: { type: String, required: true },
+    projectType: { type: String, required: true },
+    preferredSkills: [{ type: String }],
+    minExperienceRequired: { type: Number, required: true },
+    tasks: [TaskSchema],
+    submissionDeadline: { type: Date, required: true },
+    difficulty: { type: Number, required: true },
+    resources: [ResourceSchema],
+    status: { type: String, default: 'active' },
+    applicants: { type: Number, default: 0 },
+    completedBy: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User', // Reference to the User model (optional, as it's not in the sample data yet)
+        default: null
     }
-]
+}, {
+    timestamps: true // Adds createdAt and updatedAt fields automatically
+});
+
+// Export the Project model
+module.exports = mongoose.model('Project', ProjectSchema);
