@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pilot Program - SkillBridge</title>
+    <title>Pilot Program - Skillexa</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         body {
@@ -37,7 +37,7 @@
         }
         h2 {
             color: #e8b923;
-            margin-top: 0; /* Adjusted for accordion */
+            margin-top: 0;
             margin-bottom: 10px;
             transition: color 0.3s ease;
         }
@@ -56,14 +56,19 @@
             color: #b0b0b0;
             line-height: 1.5;
             margin: 0;
-            max-height: 0; /* Start collapsed */
-            opacity: 0; /* Start hidden */
+            max-height: 0;
+            opacity: 0;
             overflow: hidden;
-            transition: max-height 0.3s ease, opacity 0.3s ease; /* Smooth transition */
+            transition: max-height 0.3s ease, opacity 0.3s ease;
         }
         .intro p {
-            max-height: none; /* Intro stays visible */
+            max-height: none;
             opacity: 1;
+        }
+        .intro ul {
+            color: #b0b0b0;
+            line-height: 1.6;
+            padding-left: 20px;
         }
         .join-button {
             display: block;
@@ -90,39 +95,85 @@
             color: #b0b0b0;
             padding: 15px;
         }
+        .industry-section {
+            position: relative;
+            transition: background-color 0.3s ease;
+        }
+        .industry-section:hover {
+            background-color: #454545;
+        }
+        .industry-section h2::before {
+            font-family: "Font Awesome 5 Free";
+            font-weight: 900;
+            margin-right: 10px;
+        }
+        .industry-section:nth-child(2) h2::before { content: "\f19d"; } /* EdTech */
+        .industry-section:nth-child(3) h2::before { content: "\f1c9"; } /* IT */
+        .industry-section:nth-child(4) h2::before { content: "\f07a"; } /* E-commerce */
+        .industry-section:nth-child(5) h2::before { content: "\f0a1"; } /* Marketing */
+        .industry-section:nth-child(6) h2::before { content: "\f53a"; } /* Finance */
     </style>
 </head>
 <body>
     <h1>Pilot Program</h1>
     <div class="intro">
-        <p>Join our SkillBridge Pilot Program to connect with talent through real-world projects tailored to your industry. For a minimal cost, get actionable insights and top performers in just 2 weeks!</p>
+        <p><strong>Discover Talent, Solve Problems, Save Costs.</strong> Join the Skillexa Pilot Program to tap into a pool of skilled students solving real-world challenges tailored to your industry. For just ₹10,000 per project, get high-quality deliverables, performance insights, and a shortlist of top talent—all in 2 weeks!</p>
+        <ul>
+            <li><i class="fas fa-check-circle" style="color: #e8b923;"></i> Access pre-vetted talent at a fraction of hiring costs.</li>
+            <li><i class="fas fa-check-circle" style="color: #e8b923;"></i> Test real-world skills with no long-term commitment.</li>
+            <li><i class="fas fa-check-circle" style="color: #e8b923;"></i> Receive actionable project outputs in just 14 days.</li>
+        </ul>
     </div>
 
     <div class="industry-section">
         <h2>EdTech</h2>
-        <p><strong>Sample Project:</strong> "Gamified Quiz App Prototype" - Design a 5-minute quiz to engage learners.</p>
+        <p><strong>Sample Project:</strong> "Gamified Quiz App Prototype"</p>
+        <p><strong>Objective:</strong> Design a 5-minute interactive quiz to boost learner engagement.</p>
+        <p><strong>Deliverables:</strong> Wireframe, basic HTML/CSS prototype, user flow diagram.</p>
+        <p><strong>Skills Assessed:</strong> UI/UX design, front-end development, creativity.</p>
     </div>
     <div class="industry-section">
         <h2>IT</h2>
-        <p><strong>Sample Project:</strong> "API Integration Script" - A script connecting two mock services.</p>
+        <p><strong>Sample Project:</strong> "API Integration Script"</p>
+        <p><strong>Objective:</strong> Create a script connecting two mock services.</p>
+        <p><strong>Deliverables:</strong> Python/Node.js script, documentation.</p>
+        <p><strong>Skills Assessed:</strong> Back-end development, API knowledge.</p>
     </div>
     <div class="industry-section">
         <h2>E-commerce</h2>
-        <p><strong>Sample Project:</strong> "Abandoned Cart Email Sequence" - 3 emails to recover lost sales.</p>
+        <p><strong>Sample Project:</strong> "Abandoned Cart Email Sequence"</p>
+        <p><strong>Objective:</strong> Design 3 emails to recover lost sales.</p>
+        <p><strong>Deliverables:</strong> Email copy, design mockup.</p>
+        <p><strong>Skills Assessed:</strong> Copywriting, marketing strategy.</p>
     </div>
     <div class="industry-section">
         <h2>Marketing</h2>
-        <p><strong>Sample Project:</strong> "Influencer Campaign Brief" - A plan targeting a niche audience.</p>
+        <p><strong>Sample Project:</strong> "Influencer Campaign Brief"</p>
+        <p><strong>Objective:</strong> Plan a campaign targeting a niche audience.</p>
+        <p><strong>Deliverables:</strong> Campaign brief, budget estimate.</p>
+        <p><strong>Skills Assessed:</strong> Market research, campaign planning.</p>
     </div>
     <div class="industry-section">
         <h2>Finance</h2>
-        <p><strong>Sample Project:</strong> "Loan Eligibility Calculator" - A tool for users to check eligibility.</p>
+        <p><strong>Sample Project:</strong> "Loan Eligibility Calculator"</p>
+        <p><strong>Objective:</strong> Build a tool for users to check eligibility.</p>
+        <p><strong>Deliverables:</strong> Excel tool or web app prototype.</p>
+        <p><strong>Skills Assessed:</strong> Financial modeling, coding.</p>
+    </div>
+
+    <div style="text-align: center; margin: 20px 0;">
+        <p style="color: #e8b923; font-size: 1.2rem;">Ready to find your next hire or solve a business challenge?</p>
+        <p style="color: #b0b0b0;">Join our pilot and see results in just 2 weeks.</p>
     </div>
 
     <a href="/join-pilot" class="join-button">Join Pilot Program</a>
 
+    <div style="text-align: center; margin: 30px 0;">
+        <p style="color: #b0b0b0;">“We found top talent for our startup in just 2 weeks!” - Coming soon from pilot participants.</p>
+    </div>
+
     <footer>
-        <p>© 2025 SkillBridge. All rights reserved.</p>
+        <p>© 2025 Skillexa. All rights reserved.</p>
     </footer>
 
     <script src="/assets/pilot.js"></script>
