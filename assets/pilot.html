@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pilot Program - SkillBridge</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            background: linear-gradient(135deg, #2b2b2b 0%, #3c3c3c 100%);
+            color: #d3d3d3;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        h1 {
+            text-align: center;
+            color: #e8b923;
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            position: relative;
+        }
+        h1::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 3px;
+            background: #e8b923;
+            border-radius: 2px;
+        }
+        h2 {
+            color: #e8b923;
+            margin-top: 0; /* Adjusted for accordion */
+            margin-bottom: 10px;
+            transition: color 0.3s ease;
+        }
+        h2:hover {
+            color: #d9a413;
+        }
+        .intro, .industry-section {
+            background-color: #3c3c3c;
+            padding: 20px;
+            border-radius: 12px;
+            border: 2px dashed #555;
+            margin-bottom: 25px;
+            box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.5), -5px -5px 15px rgba(255, 255, 255, 0.1);
+        }
+        .intro p, .industry-section p {
+            color: #b0b0b0;
+            line-height: 1.5;
+            margin: 0;
+            max-height: 0; /* Start collapsed */
+            opacity: 0; /* Start hidden */
+            overflow: hidden;
+            transition: max-height 0.3s ease, opacity 0.3s ease; /* Smooth transition */
+        }
+        .intro p {
+            max-height: none; /* Intro stays visible */
+            opacity: 1;
+        }
+        .join-button {
+            display: block;
+            width: 200px;
+            margin: 20px auto;
+            padding: 12px 20px;
+            background-color: #e8b923;
+            color: #2b2b2b;
+            border: 2px dashed #555;
+            border-radius: 8px;
+            text-align: center;
+            text-decoration: none;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+        .join-button:hover {
+            background-color: #d9a413;
+            transform: translateY(-2px);
+            box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.5);
+        }
+        footer {
+            margin-top: auto;
+            text-align: center;
+            color: #b0b0b0;
+            padding: 15px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Pilot Program</h1>
+    <div class="intro">
+        <p>Join our SkillBridge Pilot Program to connect with talent through real-world projects tailored to your industry. For a minimal cost, get actionable insights and top performers in just 2 weeks!</p>
+    </div>
+
+    <div class="industry-section">
+        <h2>EdTech</h2>
+        <p><strong>Sample Project:</strong> "Gamified Quiz App Prototype" - Design a 5-minute quiz to engage learners.</p>
+    </div>
+    <div class="industry-section">
+        <h2>IT</h2>
+        <p><strong>Sample Project:</strong> "API Integration Script" - A script connecting two mock services.</p>
+    </div>
+    <div class="industry-section">
+        <h2>E-commerce</h2>
+        <p><strong>Sample Project:</strong> "Abandoned Cart Email Sequence" - 3 emails to recover lost sales.</p>
+    </div>
+    <div class="industry-section">
+        <h2>Marketing</h2>
+        <p><strong>Sample Project:</strong> "Influencer Campaign Brief" - A plan targeting a niche audience.</p>
+    </div>
+    <div class="industry-section">
+        <h2>Finance</h2>
+        <p><strong>Sample Project:</strong> "Loan Eligibility Calculator" - A tool for users to check eligibility.</p>
+    </div>
+
+    <a href="/join-pilot" class="join-button">Join Pilot Program</a>
+
+    <footer>
+        <p>© 2025 SkillBridge. All rights reserved.</p>
+    </footer>
+
+    <script src="/assets/pilot.js"></script>
+</body>
+</html>

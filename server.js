@@ -23,9 +23,10 @@ const projectRoutes = require('./routes/projectRoutes');
 const evaluationRoutes = require('./routes/evaluationRoutes');
 const mbtiRoutes = require('./routes/MBTIRoutes');
 const matchRoutes = require('./routes/matchRoutes');
-const badgeRoutes = require('./routes/badgeRoutes');
-const personalityRoutes = require('./routes/personalityRoutes');
-const industryRoutes = require('./routes/industryRoutes');
+const badgeRoutes = require('./routes/badgeRoutes'); // Assuming this exists
+const personalityRoutes = require('./routes/personalityRoutes'); // Assuming this exists
+const industryRoutes = require('./routes/industryRoutes'); // Assuming this exists
+const pilotRoutes = require('./routes/pilotRoutes'); // New
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -58,13 +59,7 @@ app.use((req, res, next) => {
 app.use('/assets', express.static(path.join(__dirname, 'assets')));
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
-// MongoDB Connection with Debugging
-console.log('MONGO_URI loaded:', process.env.MONGO_URI);
-if (!process.env.MONGO_URI) {
-    console.error('MONGO_URI is not defined in .env file');
-    process.exit(1);
-}
-
+// MongoDB Connection
 mongoose.connect(process.env.MONGO_URI, {
     serverSelectionTimeoutMS: 10000,
     socketTimeoutMS: 45000,
@@ -74,15 +69,7 @@ mongoose.connect(process.env.MONGO_URI, {
     connectTimeoutMS: 10000,
     heartbeatFrequencyMS: 10000
 })
-.then(() => {
-    console.log('Connected to MongoDB:', mongoose.connection.name);
-    mongoose.connection.on('error', err => {
-        console.error('MongoDB connection error:', err);
-    });
-    mongoose.connection.on('disconnected', () => {
-        console.log('MongoDB disconnected. Attempting to reconnect...');
-    });
-})
+.then(() => console.log('Connected to MongoDB:', mongoose.connection.name))
 .catch((error) => {
     console.error('MongoDB connection error:', error);
     process.exit(1);
@@ -105,25 +92,23 @@ app.use('/api/badges', badgeRoutes);
 app.use('/api/mbti', mbtiRoutes);
 app.use('/api/personality', personalityRoutes);
 app.use('/api/quizzes', industryRoutes);
+app.use('/api/pilot', pilotRoutes); // New
 
 // Static page routes
-const pages = ['/', '/homepage', '/register', '/login', '/settings', '/notification', '/personality', '/result', '/industry_quiz'];
+const pages = ['/', '/homepage', '/register', '/login', '/settings', '/notification', '/personality', '/result', '/industry_quiz', '/pilot', '/join-pilot']; // Added /pilot and /join-pilot
 pages.forEach((route) => {
     app.get(route, (req, res) => {
         res.sendFile(path.join(__dirname, `assets${route === '/' ? '/register' : route}.html`));
     });
 });
 
-// Public profile route
+// Other routes
 app.get('/profile/:userId', (req, res) => {
     res.sendFile(path.join(__dirname, 'assets/public-profile.html'));
 });
-
-// Authenticated user profile route
 app.get('/profile', (req, res) => {
     res.sendFile(path.join(__dirname, 'assets/profile.html'));
 });
-
 app.get('/workspace', (req, res) => {
     res.sendFile(path.join(__dirname, 'assets/workspace.html'));
 });
