@@ -1,6 +1,8 @@
 const mongoose = require('mongoose');
 const Quiz = require('../models/quiz');
-require('dotenv').config();
+require('dotenv').config({ path: '../.env' }); // Load .env from parent directory
+
+console.log('MONGO_URI:', process.env.MONGO_URI); // Debug the URI
 
 async function seedEcommerceQuizzes() {
     try {
@@ -18,23 +20,23 @@ async function seedEcommerceQuizzes() {
         await Quiz.insertMany([
             {
                 industry: 'ecommerce',
-                question: 'What is a common payment gateway?',
-                options: ['Excel', 'PayPal', 'WordPress', 'Google Drive'],
+                question: 'What is the primary purpose of a shopping cart abandonment email?',
+                options: ['To upsell new products', 'To remind customers to complete their purchase', 'To announce a sale', 'To collect customer feedback'],
                 correctAnswer: 1,
                 date: today
             },
             {
                 industry: 'ecommerce',
-                question: 'What does SKU stand for?',
-                options: ['Stock Keeping Unit', 'Sales Key Utility', 'Store Knowledge Update', 'Standard Kit Usage'],
+                question: 'Which metric measures the percentage of visitors who leave a site after viewing only one page?',
+                options: ['Conversion Rate', 'Bounce Rate', 'Click-Through Rate', 'Average Order Value'],
+                correctAnswer: 1,
+                date: today
+            },
+            {
+                industry: 'ecommerce',
+                question: 'What does B2C stand for in the context of E-commerce?',
+                options: ['Business to Consumer', 'Business to Commerce', 'Buyer to Customer', 'Brand to Channel'],
                 correctAnswer: 0,
-                date: today
-            },
-            {
-                industry: 'ecommerce',
-                question: 'What is dropshipping?',
-                options: ['Shipping by drone', 'Selling without holding inventory', 'Fast delivery service', 'Bulk shipping'],
-                correctAnswer: 1,
                 date: today
             }
         ]);
