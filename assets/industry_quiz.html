@@ -3,6 +3,7 @@
 <head>
   <title>Industry Quizzes</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <style>
     :root {
       --primary-color: #ffc107;
@@ -14,10 +15,16 @@
       --text-muted: #b0b0b0;
       --border-radius: 12px;
       --transition: all 0.3s ease;
+      --success-color: #4CAF50;
+      --it-color: #4285F4;
+      --finance-color: #34A853;
+      --edtech-color: #EA4335;
+      --marketing-color: #FBBC05;
+      --ecommerce-color: #673AB7;
     }
     
     body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      font-family: 'Poppins', sans-serif;
       margin: 0;
       padding: 0;
       background: var(--bg-darker);
@@ -35,7 +42,7 @@
       border-radius: var(--border-radius);
       box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
       width: 90%;
-      max-width: 700px;
+      max-width: 800px;
       margin: 2rem auto;
       border: 1px solid rgba(255, 255, 255, 0.1);
       transition: var(--transition);
@@ -68,34 +75,58 @@
       border-radius: 2px;
     }
     
-    #industry-select {
-      width: 100%;
-      padding: 0.8rem 1rem;
-      margin-bottom: 1.5rem;
-      background-color: rgba(255, 255, 255, 0.1);
-      border: 1px solid rgba(255, 255, 255, 0.2);
-      border-radius: var(--border-radius);
-      color: var(--text-light);
-      font-size: 1rem;
-      transition: var(--transition);
-      appearance: none;
-      background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23ffc107'%3e%3cpath d='M7 10l5 5 5-5z'/%3e%3c/svg%3e");
-      background-repeat: no-repeat;
-      background-position: right 1rem center;
-      background-size: 1.5rem;
+    .category-buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      justify-content: center;
+      margin-bottom: 2rem;
     }
     
-    #industry-select:focus {
-      outline: none;
-      border-color: var(--primary-color);
-      box-shadow: 0 0 0 2px rgba(255, 193, 7, 0.2);
+    .category-btn {
+      padding: 0.8rem 1.5rem;
+      border: none;
+      border-radius: 50px;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 0.9rem;
+      transition: var(--transition);
+      display: flex;
+      align-items: center;
+      color: white;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     }
+    
+    .category-btn i {
+      margin-right: 8px;
+      font-size: 1.1rem;
+    }
+    
+    .category-btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+    }
+    
+    .category-btn.active {
+      transform: translateY(-3px);
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3), 0 0 0 3px rgba(255, 255, 255, 0.2);
+    }
+    
+    #it-btn { background-color: var(--it-color); }
+    #finance-btn { background-color: var(--finance-color); }
+    #edtech-btn { background-color: var(--edtech-color); }
+    #marketing-btn { background-color: var(--marketing-color); color: #333; }
+    #ecommerce-btn { background-color: var(--ecommerce-color); }
     
     #question-container {
       margin: 1.5rem 0;
-      padding: 1rem;
+      padding: 1.5rem;
       background: rgba(0, 0, 0, 0.2);
       border-radius: var(--border-radius);
+      min-height: 200px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
     }
     
     #question-container p {
@@ -138,14 +169,16 @@
     #question-container label {
       display: block;
       margin-bottom: 1rem;
-      padding: 0.5rem;
+      padding: 0.8rem;
       border-radius: 6px;
       cursor: pointer;
       transition: var(--transition);
+      background: rgba(255, 255, 255, 0.05);
     }
     
     #question-container label:hover {
-      background: rgba(255, 255, 255, 0.05);
+      background: rgba(255, 255, 255, 0.1);
+      transform: translateX(5px);
     }
     
     .button-group {
@@ -186,7 +219,7 @@
     }
     
     #submit-btn {
-      background-color: #4CAF50;
+      background-color: var(--success-color);
       color: white;
     }
     
@@ -196,24 +229,121 @@
     
     #result {
       margin-top: 2rem;
-      padding: 1rem;
+      padding: 1.5rem;
       border-radius: var(--border-radius);
-      background: rgba(255, 193, 7, 0.1);
-      color: var(--primary-color);
-      font-size: 1.1rem;
       text-align: center;
-      border-left: 4px solid var(--primary-color);
+      font-size: 1.1rem;
+      display: none;
+      animation: fadeIn 0.5s ease-out;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    .result-success {
+      background: rgba(76, 175, 80, 0.15);
+      border-left: 4px solid var(--success-color);
+    }
+    
+    .result-title {
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+      color: var(--success-color);
+    }
+    
+    .result-points {
+      font-size: 2rem;
+      font-weight: 700;
+      margin: 1rem 0;
+      color: var(--primary-color);
+      animation: pulse 1.5s infinite;
+    }
+    
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+      100% { transform: scale(1); }
+    }
+    
+    .result-message {
+      margin-bottom: 1rem;
+    }
+    
+    .badges-container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 10px;
+      margin-top: 1rem;
     }
     
     .badge {
-      display: inline-block;
+      display: inline-flex;
+      align-items: center;
       background: var(--primary-color);
       color: var(--bg-darker);
-      padding: 0.3rem 0.6rem;
-      border-radius: 1rem;
-      font-size: 0.8rem;
+      padding: 0.5rem 1rem;
+      border-radius: 50px;
+      font-size: 0.9rem;
       font-weight: bold;
-      margin: 0.2rem;
+      transition: var(--transition);
+      box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+    }
+    
+    .badge i {
+      margin-right: 5px;
+    }
+    
+    .badge:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+    }
+    
+    .confetti {
+      position: absolute;
+      width: 10px;
+      height: 10px;
+      background-color: var(--primary-color);
+      opacity: 0;
+      animation: confetti-fall 3s ease-in-out forwards;
+    }
+    
+    @keyframes confetti-fall {
+      0% {
+        transform: translateY(-100px) rotate(0deg);
+        opacity: 1;
+      }
+      100% {
+        transform: translateY(500px) rotate(360deg);
+        opacity: 0;
+      }
+    }
+    
+    .progress-container {
+      width: 100%;
+      background-color: rgba(255, 255, 255, 0.1);
+      border-radius: 10px;
+      margin: 1rem 0;
+      overflow: hidden;
+    }
+    
+    .progress-bar {
+      height: 10px;
+      background-color: var(--primary-color);
+      border-radius: 10px;
+      transition: width 0.5s ease;
+    }
+    
+    .question-counter {
+      text-align: right;
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      margin-bottom: 0.5rem;
     }
     
     @media (max-width: 768px) {
@@ -226,6 +356,16 @@
         font-size: 1.5rem;
       }
       
+      .category-buttons {
+        flex-direction: column;
+        align-items: center;
+      }
+      
+      .category-btn {
+        width: 100%;
+        justify-content: center;
+      }
+      
       .button-group {
         flex-direction: column;
       }
@@ -235,24 +375,45 @@
         margin-bottom: 0.5rem;
       }
     }
-</style>
-  <script src="/assets/industry.js" defer></script>
+  </style>
 </head>
 <body>
   <div class="quiz-container">
     <h1>Daily Industry Quizzes</h1>
-    <select id="industry-select">
-      <option value="edtech">EdTech</option>
-      <option value="finance">Finance</option>
-      <option value="it">IT</option>
-      <option value="ecommerce">E-commerce</option>
-      <option value="marketing">Marketing</option>
-    </select>
-    <div id="quiz-slider">
-      <div id="question-container"></div>
-      <button id="next-btn">Next</button>
-      <button id="submit-btn">Submit</button>
+    
+    <div class="category-buttons">
+      <button id="edtech-btn" class="category-btn active" data-industry="edtech">
+        <i class="fas fa-laptop-code"></i> EdTech
+      </button>
+      <button id="finance-btn" class="category-btn" data-industry="finance">
+        <i class="fas fa-chart-line"></i> Finance
+      </button>
+      <button id="it-btn" class="category-btn" data-industry="it">
+        <i class="fas fa-server"></i> IT
+      </button>
+      <button id="ecommerce-btn" class="category-btn" data-industry="ecommerce">
+        <i class="fas fa-shopping-cart"></i> E-commerce
+      </button>
+      <button id="marketing-btn" class="category-btn" data-industry="marketing">
+        <i class="fas fa-bullhorn"></i> Marketing
+      </button>
     </div>
+    
+    <div class="question-counter" id="question-counter"></div>
+    <div class="progress-container">
+      <div class="progress-bar" id="progress-bar"></div>
+    </div>
+    
+    <div id="quiz-slider">
+      <div id="question-container">
+        <p>Select an industry category to start the quiz!</p>
+      </div>
+      <div class="button-group">
+        <button id="next-btn" disabled>Next <i class="fas fa-arrow-right"></i></button>
+        <button id="submit-btn" disabled>Submit <i class="fas fa-paper-plane"></i></button>
+      </div>
+    </div>
+    
     <div id="result"></div>
   </div>
 </body>
