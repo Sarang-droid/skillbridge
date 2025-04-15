@@ -1,6 +1,7 @@
 const User = require('../models/user');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const { createNotification } = require('./notificationController');
 
 // User Registration
 exports.registerUser  = async (req, res) => {
@@ -50,6 +51,20 @@ exports.registerUser  = async (req, res) => {
         // Generate JWT token upon successful registration
         const token = jwt.sign({ id: newUser._id }, process.env.JWT_SECRET, { expiresIn: '24h' }); // Increase to 24 hours
         console.log('Token generated with expiration:', new Date(Date.now() + 3600000));
+
+        // Send welcome notification
+        try {
+            await createNotification(
+                null, // userId is null for global notification
+                'Welcome to Skillexa! 🎉', 
+                `Welcome ${name} to Skillexa - your gateway to professional growth! We're excited to have you join our community. Explore our features, take assessments, and start your journey towards skill excellence. If you need any help, our support team is here for you!`,
+                true // set as global notification
+            );
+            console.log('Welcome notification created for new user');
+        } catch (notificationError) {
+            console.error('Error creating welcome notification:', notificationError);
+            // Don't return error here, as registration was successful
+        }
 
         res.status(201).json({
             message: 'User  registered successfully',
