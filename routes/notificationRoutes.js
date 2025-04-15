@@ -7,6 +7,7 @@ const {
 } = require('../controllers/notificationController');
 const { protect } = require('../middleware/authMiddleware'); // Auth middleware
 const { isAdmin } = require('../middleware/authMiddleware'); // Add an admin middleware
+const Notification = require('../models/notification');
 
 // Route to get all notifications for the logged-in user
 router.get('/', protect, getNotifications);
@@ -32,6 +33,21 @@ router.post('/notify-global', protect, isAdmin, async (req, res) => {
     } catch (error) {
         console.error('Error creating global notification:', error);
         res.status(500).json({ error: 'Failed to create global notification.' });
+    }
+});
+
+// Add this new route
+router.post('/mark-read', protect, async (req, res) => {
+    const { notificationIds } = req.body;
+    try {
+        await Notification.updateMany(
+            { _id: { $in: notificationIds } },
+            { $set: { isRead: true } }
+        );
+        res.status(200).json({ message: 'Notifications marked as read' });
+    } catch (error) {
+        console.error('Error marking notifications as read:', error);
+        res.status(500).json({ error: 'Failed to mark notifications as read' });
     }
 });
 

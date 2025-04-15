@@ -33,6 +33,7 @@ exports.createNotification = async (userId, title, message, global = false) => {
             title,
             message,
             date: new Date(),
+            isRead: false
         });
         await notification.save();
     } catch (error) {
@@ -58,5 +59,20 @@ exports.notifyAllUsersGlobally = async (title, message) => {
         await exports.createNotification(null, title, message, true);
     } catch (error) {
         console.error('Error creating global notification:', error);
+    }
+};
+
+// Add a function to mark notifications as read
+exports.markAsRead = async (req, res) => {
+    try {
+        const { notificationIds } = req.body;
+        await Notification.updateMany(
+            { _id: { $in: notificationIds } },
+            { $set: { isRead: true } }
+        );
+        res.status(200).json({ message: 'Notifications marked as read' });
+    } catch (error) {
+        console.error('Error marking notifications as read:', error);
+        res.status(500).json({ error: 'Server error while marking notifications as read' });
     }
 };

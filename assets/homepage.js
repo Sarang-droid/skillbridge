@@ -19,6 +19,9 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     fetchCompanyCards(); // Fetch companies when the page loads
+    checkNotifications();
+    // Check for new notifications every minute
+    setInterval(checkNotifications, 60000);
 });
 
 // Debounce function to limit API calls
@@ -241,5 +244,55 @@ async function fetchCompanyCards() {
     } catch (error) {
         console.error("Error fetching companies:", error);
         container.innerHTML = '<div class="error">Failed to load companies. Please try again later.</div>';
+    }
+}
+
+async function checkNotifications() {
+    const token = localStorage.getItem('accessToken');
+    if (!token) {
+        console.error('No token found');
+        return;
+    }
+
+    try {
+        const response = await fetch('/api/notification', {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json',
+            }
+        });
+
+        if (!response.ok) {
+            if (response.status === 401) {
+                // Token expired, try to refresh it
+                const newToken = await refreshToken();
+                if (newToken) {
+                    return checkNotifications();
+                }
+                return;
+            }
+            throw new Error('Failed to fetch notifications');
+        }
+
+        const data = await response.json();
+        updateNotificationBadge(data.notifications);
+    } catch (error) {
+        console.error('Error checking notifications:', error);
+    }
+}
+
+function updateNotificationBadge(notifications) {
+    const badge = document.getElementById('notificationBadge');
+    if (!badge) return;
+
+    // Count unread notifications
+    const unreadCount = notifications ? notifications.length : 0;
+
+    if (unreadCount > 0) {
+        badge.style.display = 'block';
+        badge.textContent = unreadCount > 99 ? '99+' : unreadCount;
+    } else {
+        badge.style.display = 'none';
     }
 }
