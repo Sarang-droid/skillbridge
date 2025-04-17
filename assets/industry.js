@@ -30,15 +30,21 @@ categoryButtons.forEach(btn => {
 
 async function loadQuestions() {
   const token = localStorage.getItem("accessToken");
+  console.log("Loading questions for industry:", currentIndustry);
+  console.log("Access token:", token ? "Present" : "Missing");
+  
   if (!token) {
     window.location.href = "/login";
     return;
   }
   
   try {
+    console.log("Fetching questions from API...");
     const response = await fetch(`/api/quizzes/${currentIndustry}`, {
       headers: { "Authorization": `Bearer ${token}` }
     });
+    
+    console.log("API Response status:", response.status);
     
     if (response.status === 401) {
       await refreshTokenAndRetry(loadQuestions);
@@ -46,6 +52,8 @@ async function loadQuestions() {
     }
     
     questions = await response.json();
+    console.log("Questions loaded:", questions);
+    
     if (questions.length > 0) {
       displayQuestion();
       updateProgress();
