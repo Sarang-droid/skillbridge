@@ -52,18 +52,20 @@ exports.registerUser  = async (req, res) => {
         const token = jwt.sign({ id: newUser._id }, process.env.JWT_SECRET, { expiresIn: '24h' }); // Increase to 24 hours
         console.log('Token generated with expiration:', new Date(Date.now() + 3600000));
 
-        // Send welcome notification
+        // Send welcome notification (modified to be user-specific)
         try {
             await createNotification(
-                null, // userId is null for global notification
-                'Welcome to Skillexa! 🎉', 
-                `Welcome ${name} to Skillexa - your gateway to professional growth! We're excited to have you join our community. Explore our features, take assessments, and start your journey towards skill excellence. If you need any help, our support team is here for you!`,
-                true // set as global notification
+                newUser._id, // Use the new user's ID
+                'Welcome to Skillexa! 🎉',
+                `Welcome ${name} to Skillexa - Your Personalized Path to Growth!
+We're thrilled to have you on board. Get started by taking your Personality Test to unlock tailored career insights and build your Professional Profile that showcases your strengths and aspirations.
+Discover skills aligned with your unique potential and explore curated learning paths designed just for you.
+Need help? Our support team is just a message away. Let’s grow together!`,
+                false // Set to false for user-specific notification
             );
-            console.log('Welcome notification created for new user');
+            console.log('Welcome notification created for user:', newUser._id);
         } catch (notificationError) {
             console.error('Error creating welcome notification:', notificationError);
-            // Don't return error here, as registration was successful
         }
 
         res.status(201).json({
