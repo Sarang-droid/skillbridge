@@ -21,26 +21,121 @@ async function seedEdTechQuizzes() {
         await Quiz.insertMany([
             {
                 industry: 'edtech',
-                question: 'What does LMS stand for in education technology?',
-                options: ['Learning Management System', 'Lesson Mapping Software', 'Learning Module System', 'Lecture Management Service'],
-                correctAnswer: 0,
-                date: today
+                question: 'What is the primary benefit of using Learning Management Systems (LMS) like Moodle or Canvas in EdTech?',
+                options: [
+                    'Posting on social media',
+                    'Streaming live videos',
+                    'Managing, delivering, and tracking learning content efficiently',
+                    'Blocking distractions on student devices'
+                ],
+                correctAnswer: 2,
+                date: 'Fri May 02 2025'
             },
             {
                 industry: 'edtech',
-                question: 'Which tool is commonly used for virtual classrooms?',
-                options: ['Photoshop', 'Zoom', 'Excel', 'AutoCAD'],
+                question: 'What does SCORM stand for in digital learning standards?',
+                options: [
+                    'Standardized Curriculum for Online Resource Management',
+                    'Sharable Content Object Reference Model',
+                    'Simple Content Organization & Retrieval Mechanism',
+                    'Structured Course Outline Reporting Method'
+                ],
                 correctAnswer: 1,
-                date: today
+                date: 'Fri May 02 2025'
             },
             {
                 industry: 'edtech',
-                question: 'What is the primary goal of adaptive learning?',
-                options: ['Standardized testing', 'Personalized education', 'Group projects', 'Teacher training'],
+                question: 'Which of the following best defines adaptive learning in EdTech?',
+                options: [
+                    'A fixed module system for learning',
+                    'Real-time social learning',
+                    'Learning that adjusts content based on learner performance and behavior',
+                    'One-on-one manual tutoring'
+                ],
+                correctAnswer: 2,
+                date: 'Fri May 02 2025'
+            },
+            {
+                industry: 'edtech',
+                question: 'Which algorithm is commonly used to personalize content in EdTech platforms?',
+                options: [
+                    'PageRank',
+                    'Apriori Algorithm',
+                    'Collaborative Filtering',
+                    'Kruskal’s Algorithm'
+                ],
+                correctAnswer: 2,
+                date: 'Fri May 02 2025'
+            },
+            {
+                industry: 'edtech',
+                question: 'What is a key challenge of gamification in EdTech systems?',
+                options: [
+                    'Lack of internet speed',
+                    'Over-reliance on rote memorization',
+                    'Balancing engagement with meaningful learning outcomes',
+                    'Installing software updates'
+                ],
+                correctAnswer: 2,
+                date: 'Fri May 02 2025'
+            },
+            {
+                industry: 'edtech',
+                question: 'Which metric best tracks the effectiveness of an EdTech course?',
+                options: [
+                    'Number of downloads',
+                    'Student completion and assessment performance',
+                    'Course length',
+                    'Login frequency'
+                ],
                 correctAnswer: 1,
-                date: today
+                date: 'Fri May 02 2025'
+            },
+            {
+                industry: 'edtech',
+                question: 'What is microlearning in the context of EdTech?',
+                options: [
+                    'Learning using microscopic images',
+                    'Short, focused learning units or activities',
+                    'Learning through virtual labs',
+                    'Group-based collaborative learning'
+                ],
+                correctAnswer: 1,
+                date: 'Fri May 02 2025'
+            },
+            {
+                industry: 'edtech',
+                question: 'Which programming language is most commonly used in building interactive EdTech tools?',
+                options: ['Ruby', 'Python', 'C++', 'Assembly'],
+                correctAnswer: 1,
+                date: 'Fri May 02 2025'
+            },
+            {
+                industry: 'edtech',
+                question: 'What does xAPI (Experience API) enable in EdTech?',
+                options: [
+                    'Creating animated videos',
+                    'Tracking learning experiences across platforms and contexts',
+                    'Blocking unproductive sites',
+                    'Video compression'
+                ],
+                correctAnswer: 1,
+                date: 'Fri May 02 2025'
+            },
+            {
+                industry: 'edtech',
+                question: 'What is the main drawback of a purely MOOC-based education system?',
+                options: [
+                    'Cost of content creation',
+                    'Limited scalability',
+                    'Low student retention and course completion rates',
+                    'Too much instructor involvement'
+                ],
+                correctAnswer: 2,
+                date: 'Fri May 02 2025'
             }
         ]);
+        
 
         console.log('EdTech quiz questions seeded successfully for', today);
     } catch (error) {
