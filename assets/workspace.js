@@ -471,6 +471,56 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     }
 
+    // Finalize and Submit Project logic
+    const finalSubmitButton = document.getElementById('final-submit-button');
+    const forceSubmitCheckbox = document.getElementById('force-submit-checkbox');
+    const submitWarning = document.getElementById('submit-warning');
+
+    finalSubmitButton?.addEventListener('click', async () => {
+        submitWarning.style.display = 'none';
+        submitWarning.textContent = '';
+        // Validate GitHub link and Q&A
+        const [githubSubmitted, hasUnanswered] = await Promise.all([
+            checkGithubLinkSubmitted(projectId),
+            checkUnansweredQuestions(projectId)
+        ]);
+        let warningMsg = '';
+        if (!githubSubmitted) warningMsg += 'You must submit your GitHub repository link. ';
+        if (hasUnanswered) warningMsg += 'You must answer all the Q&A questions.';
+
+        if ((warningMsg && !forceSubmitCheckbox.checked)) {
+            submitWarning.textContent = warningMsg;
+            submitWarning.style.display = 'block';
+            return;
+        }
+        if (warningMsg && forceSubmitCheckbox.checked) {
+            submitWarning.textContent = 'Warning: ' + warningMsg + ' You are submitting anyway.';
+            submitWarning.style.display = 'block';
+        }
+        // Proceed with submission
+        try {
+            const response = await fetch(`/api/workspace/project/${projectId}/submit`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
+                },
+                body: JSON.stringify({ forceSubmit: forceSubmitCheckbox.checked })
+            });
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(errorData.message || 'Project submission failed');
+            }
+            const data = await response.json();
+            alert('Project submitted successfully! Awaiting evaluation.');
+            // Optionally redirect or update UI
+        } catch (error) {
+            console.error('Error submitting project:', error);
+            submitWarning.textContent = error.message || 'An error occurred. Please try again.';
+            submitWarning.style.display = 'block';
+        }
+    });
+
     // Add styles for Q&A section
     const style = document.createElement('style');
     style.textContent = `
