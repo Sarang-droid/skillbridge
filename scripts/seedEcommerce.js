@@ -1,11 +1,14 @@
+console.log('Script started');
+
 const mongoose = require('mongoose');
 const Quiz = require('../models/quiz');
-require('dotenv').config({ path: '../.env' }); // Load .env from parent directory
+require('dotenv').config({ path: '../.env' });
 
-console.log('MONGO_URI:', process.env.MONGO_URI); // Debug the URI
+console.log('MONGO_URI:', process.env.MONGO_URI);
 
 async function seedEcommerceQuizzes() {
     try {
+        console.log('Connecting to MongoDB...');
         await mongoose.connect(process.env.MONGO_URI, {
             useNewUrlParser: true,
             useUnifiedTopology: true
@@ -13,7 +16,9 @@ async function seedEcommerceQuizzes() {
         console.log('Connected to MongoDB:', mongoose.connection.name);
 
         const today = new Date().toDateString();
+        console.log('Today:', today);
 
+        console.log('Clearing existing E-commerce quizzes...');
         await Quiz.deleteMany({ industry: 'ecommerce', date: today });
         console.log('Cleared existing E-commerce quizzes for today');
 
@@ -135,6 +140,7 @@ async function seedEcommerceQuizzes() {
     } catch (error) {
         console.error('Error seeding E-commerce quizzes:', error);
     } finally {
+        console.log('Closing MongoDB connection...');
         await mongoose.connection.close();
         console.log('MongoDB connection closed');
     }
