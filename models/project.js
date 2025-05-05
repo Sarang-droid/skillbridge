@@ -19,11 +19,11 @@ const ResourceSchema = new Schema({
 const ProjectSchema = new Schema({
     companyId: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Company', // Reference to the Company model
+        ref: 'Company',
         required: true
     },
     companyType: { type: String, required: true },
-    projectId: { type: String, required: true }, // Custom project ID like "IT102-PROT"
+    projectId: { type: String, required: true },
     title: { type: String, required: true },
     description: { type: String },
     industry: { type: String, required: true },
@@ -36,15 +36,14 @@ const ProjectSchema = new Schema({
     resources: [ResourceSchema],
     status: { type: String, default: 'active' },
     applicants: { type: Number, default: 0 },
-    completedBy: {
+    completedBy: [{
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'User', // Reference to the User model (optional, as it's not in the sample data yet)
-        default: null
-    }
+        ref: 'User',
+        default: []
+    }],
 }, {
-    timestamps: true // Adds createdAt and updatedAt fields automatically
+    timestamps: true
 });
-
 
 // Export the Project model
 module.exports = mongoose.model('Project', ProjectSchema);

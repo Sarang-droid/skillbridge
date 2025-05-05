@@ -254,37 +254,66 @@ document.addEventListener("DOMContentLoaded", function () {
             return true; // Default to true (unanswered) if check fails
         }
     }
+function renderProjectData(project) {
+    document.getElementById('project-title').innerText = `Project: ${project.title}`;
+    document.getElementById('project-description').innerText = project.description || 'No description provided.';
+    document.getElementById('project-status').innerText = `Status: ${project.status}`;
 
-    function renderProjectData(project) {
-        document.getElementById('project-title').innerText = `Project: ${project.title}`;
-        document.getElementById('project-description').innerText = project.description || 'No description provided.';
-        document.getElementById('project-status').innerText = `Status: ${project.status}`;
+    taskList.innerHTML = '';
+    if (project.tasks?.length) {
+        project.tasks.forEach(task => {
+            const taskItem = document.createElement('div');
+            taskItem.className = 'task';
+            taskItem.dataset.taskId = task.taskId; // Use taskId instead of _id
 
-        taskList.innerHTML = '';
-        if (project.tasks?.length) {
-            project.tasks.forEach(task => {
-                const taskItem = document.createElement('div');
-                taskItem.className = 'task';
-                taskItem.dataset.taskId = task._id; // Use the MongoDB _id for the task
+            const checkbox = document.createElement('input');
+            checkbox.type = 'checkbox';
+            checkbox.checked = task.completed;
+            checkbox.id = `task-${task.taskId}`;
+            checkbox.className = 'task-checkbox';
 
-                const checkbox = document.createElement('input');
-                checkbox.type = 'checkbox';
-                checkbox.checked = task.completed;
-                checkbox.id = `task-${task._id}`;
-                checkbox.className = 'task-checkbox';
+            const label = document.createElement('label');
+            label.htmlFor = `task-${task.taskId}`;
+            label.textContent = task.taskName;
 
-                const label = document.createElement('label');
-                label.htmlFor = `task-${task._id}`;
-                label.textContent = task.taskName;
-
-                taskItem.appendChild(checkbox);
-                taskItem.appendChild(label);
-                taskList.appendChild(taskItem);
-            });
-        } else {
-            taskList.innerHTML = '<p>No tasks found.</p>';
-        }
+            taskItem.appendChild(checkbox);
+            taskItem.appendChild(label);
+            taskList.appendChild(taskItem);
+        });
+    } else {
+        taskList.innerHTML = '<p>No tasks found.</p>';
     }
+}
+function renderProjectData(project) {
+    document.getElementById('project-title').innerText = `Project: ${project.title}`;
+    document.getElementById('project-description').innerText = project.description || 'No description provided.';
+    document.getElementById('project-status').innerText = `Status: ${project.status}`;
+
+    taskList.innerHTML = '';
+    if (project.tasks?.length) {
+        project.tasks.forEach(task => {
+            const taskItem = document.createElement('div');
+            taskItem.className = 'task';
+            taskItem.dataset.taskId = task.taskId; // Use taskId instead of _id
+
+            const checkbox = document.createElement('input');
+            checkbox.type = 'checkbox';
+            checkbox.checked = task.completed;
+            checkbox.id = `task-${task.taskId}`;
+            checkbox.className = 'task-checkbox';
+
+            const label = document.createElement('label');
+            label.htmlFor = `task-${task.taskId}`;
+            label.textContent = task.taskName;
+
+            taskItem.appendChild(checkbox);
+            taskItem.appendChild(label);
+            taskList.appendChild(taskItem);
+        });
+    } else {
+        taskList.innerHTML = '<p>No tasks found.</p>';
+    }
+}
 
     function startCountdown(deadline) {
         const countdown = setInterval(() => {

@@ -142,38 +142,53 @@ const submitProject = async (req, res) => {
     const projectId = req.params.projectId;
     const { forceSubmit } = req.body;
 
-    console.log('Submitting project:', projectId, 'Force submit:', forceSubmit);
+    console.log('Submitting project:', projectId, 'Force submit:', forceSubmit, 'User:', req.user);
 
     try {
+        // Validate projectId
+        if (!mongoose.Types.ObjectId.isValid(projectId)) {
+            console.log('Invalid project ID:', projectId);
+            return res.status(400).json({ message: 'Invalid project ID' });
+        }
+
+        // Fetch project
         const project = await Project.findById(projectId);
         if (!project) {
-            console.log('Project not found');
+            console.log('Project not found:', projectId);
             return res.status(404).json({ message: 'Project not found' });
         }
 
         // Check if project is already submitted
         if (project.status === 'submitted' && !forceSubmit) {
-            console.log('Project already submitted');
+            console.log('Project already submitted:', projectId);
             return res.status(400).json({ message: 'Project already submitted' });
         }
 
         // Update project status
         project.status = 'submitted';
-        
-        // Ensure completedBy is an array before using includes/push
-        if (!Array.isArray(project.completedBy)) {
+
+        // Add user to completedBy if not already present
+        if (!project.completedBy) {
             project.completedBy = [];
         }
-        if (Array.isArray(project.completedBy) && !project.completedBy.includes(req.user._id)) {
+        if (!project.completedBy.includes(req.user._id)) {
             project.completedBy.push(req.user._id);
+            console.log('Added user to completedBy:', req.user._id);
         }
-        
+
+        // Save project
         await project.save();
+        console.log('Project saved:', project);
 
         // Update user's completed projects
         const user = await User.findById(req.user._id);
+        if (!user) {
+            console.log('User not found:', req.user._id);
+            return res.status(404).json({ message: 'User not found' });
+        }
+
         const projectExists = user.completedProjects.some(p => p.projectId && p.projectId.equals(projectId));
-        
+
         if (!projectExists) {
             user.completedProjects.push({
                 projectId: project._id,
@@ -186,14 +201,13 @@ const submitProject = async (req, res) => {
             console.log('User updated with completed project:', user);
         }
 
-        console.log('Project submitted successfully');
+        console.log('Project submitted successfully:', projectId);
         res.status(200).json({ message: 'Project submitted successfully' });
     } catch (error) {
-        console.error('Error submitting project:', error.message || error);
+        console.error('Error submitting project:', error.stack);
         res.status(500).json({ message: 'Internal server error', error: error.message });
     }
 };
-
 // Fetch project resources
 const getProjectResources = async (req, res) => {
     console.log('Fetching resources for Project ID:', req.params.projectId);

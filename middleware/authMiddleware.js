@@ -2,7 +2,7 @@ const jwt = require('jsonwebtoken');
 const User = require('../models/user');
 
 const protect = async (req, res, next) => {
-    console.log('Protect middleware triggered:', req.headers); // Log headers for debugging
+    console.log('Protect middleware triggered:', req.headers);
 
     // Skip authentication for static assets and specific paths
     if (req.path.startsWith('/assets') || req.path === '/company.js') {
@@ -12,7 +12,7 @@ const protect = async (req, res, next) => {
 
     try {
         const token = req.headers.authorization?.split(' ')[1];
-        console.log('Token:', token); // Log the token for debugging
+        console.log('Token:', token);
 
         if (!token) {
             console.error('No token provided in request');
@@ -36,7 +36,7 @@ const protect = async (req, res, next) => {
             });
         }
 
-        // Populate req.user with all necessary fields
+        // Populate req.user
         req.user = {
             _id: user._id,
             name: user.name,
@@ -50,7 +50,7 @@ const protect = async (req, res, next) => {
         console.error('Error stack:', error.stack);
 
         if (error.name === 'TokenExpiredError') {
-            console.warn('Token has expired for user:', req.user ? req.user.email : 'Unknown user');
+            console.warn('Token has expired');
             return res.status(401).json({
                 message: 'Token has expired. Please refresh your token or log in again.',
                 code: 'TOKEN_EXPIRED'
@@ -64,7 +64,11 @@ const protect = async (req, res, next) => {
         }
 
         console.error('Unexpected error during token verification:', error);
-        return next(); // Allow the request to proceed for debugging
+        return res.status(500).json({
+            message: 'Internal server error during authentication',
+            code: 'AUTH_ERROR',
+            error: error.message
+        });
     }
 };
 
@@ -80,6 +84,6 @@ const isAdmin = (req, res, next) => {
     next();
 };
 
-console.log('Auth middleware loaded'); // Log to confirm middleware is loaded
+console.log('Auth middleware loaded');
 
 module.exports = { protect, isAdmin };
