@@ -160,7 +160,10 @@ const submitProject = async (req, res) => {
         // Update project status
         project.status = 'submitted';
         
-        // Add user to completedBy array if not already present
+        // Ensure completedBy is an array before using includes/push
+        if (!Array.isArray(project.completedBy)) {
+            project.completedBy = [];
+        }
         if (!project.completedBy.includes(req.user._id)) {
             project.completedBy.push(req.user._id);
         }
