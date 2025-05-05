@@ -164,7 +164,7 @@ const submitProject = async (req, res) => {
         if (!Array.isArray(project.completedBy)) {
             project.completedBy = [];
         }
-        if (!project.completedBy.includes(req.user._id)) {
+        if (Array.isArray(project.completedBy) && !project.completedBy.includes(req.user._id)) {
             project.completedBy.push(req.user._id);
         }
         
