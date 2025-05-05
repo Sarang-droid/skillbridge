@@ -1,6 +1,7 @@
 const Project = require('../models/project');
 const User = require('../models/user');
 const Upload = require('../models/upload');
+const mongoose = require('mongoose');
 
 console.log('Workspace controller loaded');
 
