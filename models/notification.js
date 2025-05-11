@@ -21,6 +21,15 @@ const notificationSchema = new Schema({
         type: String,
         required: true,
     },
+    attachments: [{
+        fileName: String,
+        fileUrl: String,
+        fileType: String
+    }],
+    links: [{
+        title: String,
+        url: String
+    }],
     date: {
         type: Date,
         default: Date.now,

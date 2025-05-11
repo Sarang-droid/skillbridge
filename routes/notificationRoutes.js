@@ -4,6 +4,8 @@ const {
     getNotifications,
     notifyAllUsersIndividually,
     notifyAllUsersGlobally,
+    sendPDFToAllUsers,
+    sendLinksToAllUsers,
 } = require('../controllers/notificationController');
 const { protect } = require('../middleware/authMiddleware'); // Auth middleware
 const { isAdmin } = require('../middleware/authMiddleware'); // Add an admin middleware
@@ -36,7 +38,31 @@ router.post('/notify-global', protect, isAdmin, async (req, res) => {
     }
 });
 
-// Add this new route
+// Route to send PDF to all users (admin-only)
+router.post('/send-pdf', protect, isAdmin, async (req, res) => {
+    const { title, message, pdfUrl, fileName } = req.body;
+    try {
+        const notification = await sendPDFToAllUsers(title, message, pdfUrl, fileName);
+        res.status(200).json({ message: 'PDF notification sent to all users', notification });
+    } catch (error) {
+        console.error('Error sending PDF to users:', error);
+        res.status(500).json({ error: 'Failed to send PDF notification' });
+    }
+});
+
+// Route to send links to all users (admin-only)
+router.post('/send-links', protect, isAdmin, async (req, res) => {
+    const { title, message, links } = req.body;
+    try {
+        const notification = await sendLinksToAllUsers(title, message, links);
+        res.status(200).json({ message: 'Links notification sent to all users', notification });
+    } catch (error) {
+        console.error('Error sending links to users:', error);
+        res.status(500).json({ error: 'Failed to send links notification' });
+    }
+});
+
+// Route to mark notifications as read
 router.post('/mark-read', protect, async (req, res) => {
     const { notificationIds } = req.body;
     try {

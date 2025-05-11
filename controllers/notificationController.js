@@ -25,40 +25,74 @@ exports.getNotifications = async (req, res) => {
 };
 
 // Create a new notification (user-specific or global)
-exports.createNotification = async (userId, title, message, global = false) => {
+exports.createNotification = async (userId, title, message, attachments = [], links = [], global = false) => {
     try {
         const notification = new Notification({
             userId: global ? undefined : userId, // `userId` is only set if not global
             global,
             title,
             message,
+            attachments,
+            links,
             date: new Date(),
             isRead: false
         });
         await notification.save();
+        return notification;
     } catch (error) {
         console.error('Error creating notification:', error);
+        throw error;
     }
 };
 
 // Notify all users by creating individual notifications
-exports.notifyAllUsersIndividually = async (title, message) => {
+exports.notifyAllUsersIndividually = async (title, message, attachments = [], links = []) => {
     try {
         const users = await User.find({});
+        const notifications = [];
         for (const user of users) {
-            await exports.createNotification(user._id, title, message);
+            const notification = await exports.createNotification(user._id, title, message, attachments, links);
+            notifications.push(notification);
         }
+        return notifications;
     } catch (error) {
         console.error('Error notifying all users individually:', error);
     }
 };
 
 // Notify all users using a global notification
-exports.notifyAllUsersGlobally = async (title, message) => {
+exports.notifyAllUsersGlobally = async (title, message, attachments = [], links = []) => {
     try {
-        await exports.createNotification(null, title, message, true);
+        const notification = await exports.createNotification(null, title, message, attachments, links, true);
+        return notification;
     } catch (error) {
-        console.error('Error creating global notification:', error);
+        console.error('Error sending global notification:', error);
+        throw error;
+    }
+};
+
+// Send PDF or links to all users
+exports.sendPDFToAllUsers = async (title, message, pdfUrl, fileName) => {
+    try {
+        const attachment = {
+            fileName,
+            fileUrl: pdfUrl,
+            fileType: 'application/pdf'
+        };
+        return await exports.notifyAllUsersGlobally(title, message, [attachment], []);
+    } catch (error) {
+        console.error('Error sending PDF to all users:', error);
+        throw error;
+    }
+};
+
+// Send links to all users
+exports.sendLinksToAllUsers = async (title, message, links) => {
+    try {
+        return await exports.notifyAllUsersGlobally(title, message, [], links);
+    } catch (error) {
+        console.error('Error sending links to all users:', error);
+        throw error;
     }
 };
 
