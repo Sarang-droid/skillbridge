@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const Quiz = require('../models/quiz');
-require('dotenv').config();
+require('dotenv').config({ path: '../.env' });
 
 async function seedITQuizzes() {
     try {
@@ -21,7 +21,7 @@ async function seedITQuizzes() {
                 question: 'Which software development methodology emphasizes short development cycles and frequent releases?',
                 options: ['Waterfall', 'Agile', 'V-Model', 'RAD'],
                 correctAnswer: 1,
-                date: 'Fri May 02 2025'
+                date: 'Mon May 12 2025'
             },
             {
                 industry: 'IT',
@@ -33,14 +33,14 @@ async function seedITQuizzes() {
                     'Scan code for bugs'
                 ],
                 correctAnswer: 2,
-                date: 'Fri May 02 2025'
+                date: 'Mon May 12 2025'
             },
             {
                 industry: 'IT',
                 question: 'Which of the following is NOT a NoSQL database?',
                 options: ['MongoDB', 'Cassandra', 'Redis', 'MySQL'],
                 correctAnswer: 3,
-                date: 'Fri May 02 2025'
+                date: 'Mon May 12 2025'
             },
             {
                 industry: 'IT',
@@ -52,14 +52,14 @@ async function seedITQuizzes() {
                     'Containerized Interface / Code Debugging'
                 ],
                 correctAnswer: 1,
-                date: 'Fri May 02 2025'
+                date: ' Mon May 12 2025'
             },
             {
                 industry: 'IT',
                 question: 'Which algorithm is commonly used for route optimization in logistics IT systems?',
                 options: ['Dijkstra’s Algorithm', 'A* Algorithm', 'DFS', 'Apriori'],
                 correctAnswer: 0,
-                date: 'Fri May 02 2025'
+                date: 'Mon May 12 2025'
             },
             {
                 industry: 'IT',
@@ -71,14 +71,14 @@ async function seedITQuizzes() {
                     'Creating user manuals for cloud systems'
                 ],
                 correctAnswer: 2,
-                date: 'Fri May 02 2025'
+                date: 'Mon May 12 2025'
             },
             {
                 industry: 'IT',
                 question: 'Which of the following is a container orchestration tool?',
                 options: ['Docker', 'Jenkins', 'Kubernetes', 'Git'],
                 correctAnswer: 2,
-                date: 'Fri May 02 2025'
+                date: 'Mon May 12 2025'
             },
             {
                 industry: 'IT',
@@ -90,7 +90,7 @@ async function seedITQuizzes() {
                     'To route emails to spam folders'
                 ],
                 correctAnswer: 1,
-                date: 'Fri May 02 2025'
+                date: 'Mon May 12 2025'
             },
             {
                 industry: 'IT',
@@ -102,7 +102,7 @@ async function seedITQuizzes() {
                     'Encrypting REST endpoints'
                 ],
                 correctAnswer: 2,
-                date: 'Fri May 02 2025'
+                date: 'Mon May 12 2025'
             },
             {
                 industry: 'IT',
@@ -114,7 +114,7 @@ async function seedITQuizzes() {
                     'Declarative and Functional Programming'
                 ],
                 correctAnswer: 3,
-                date: 'Fri May 02 2025'
+                date: 'Mon May 12 2025'
             }
         ]);
         

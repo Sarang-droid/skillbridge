@@ -28,7 +28,7 @@ async function seedEcommerceQuizzes() {
                 question: 'Which algorithm is most commonly used in recommendation systems for E-commerce platforms like Amazon?',
                 options: ['K-Means Clustering', 'Collaborative Filtering', 'Naive Bayes', 'Linear Regression'],
                 correctAnswer: 1,
-                date: 'Fri May 02 2025'
+                date: 'Mon May 12 2025'
             },
             {
                 industry: 'ecommerce',
@@ -40,7 +40,7 @@ async function seedEcommerceQuizzes() {
                     'The total ad spend on acquiring a customer'
                 ],
                 correctAnswer: 1,
-                date: 'Fri May 02 2025'
+                date: 'Mon May 12 2025'
             },
             {
                 industry: 'ecommerce',
@@ -52,7 +52,7 @@ async function seedEcommerceQuizzes() {
                     'Retailing only through physical stores'
                 ],
                 correctAnswer: 1,
-                date: 'Fri May 02 2025'
+                date: 'Mon May 12 2025'
             },
             {
                 industry: 'ecommerce',
@@ -64,7 +64,7 @@ async function seedEcommerceQuizzes() {
                     'Using drones to deliver products'
                 ],
                 correctAnswer: 2,
-                date: 'Fri May 02 2025'
+                date: 'Mon May 12 2025'
             },
             {
                 industry: 'ecommerce',
@@ -76,7 +76,7 @@ async function seedEcommerceQuizzes() {
                     'By displaying fake discounts'
                 ],
                 correctAnswer: 2,
-                date: 'Fri May 02 2025'
+                date: 'Mon May 12 2025'
             },
             {
                 industry: 'ecommerce',
@@ -88,14 +88,14 @@ async function seedEcommerceQuizzes() {
                     'It replaces traditional market research'
                 ],
                 correctAnswer: 2,
-                date: 'Fri May 02 2025'
+                date: 'Mon May 12 2025'
             },
             {
                 industry: 'ecommerce',
                 question: 'Which of the following payment systems is most secure for online E-commerce transactions?',
                 options: ['Cash on Delivery', 'Magnetic Stripe Cards', 'Two-Factor Authentication with Tokenization', 'Bank Cheque'],
                 correctAnswer: 2,
-                date: 'Fri May 02 2025'
+                date: 'Mon May 12 2025'
             },
             {
                 industry: 'ecommerce',
@@ -107,7 +107,7 @@ async function seedEcommerceQuizzes() {
                     'A strategy for upselling premium products'
                 ],
                 correctAnswer: 1,
-                date: 'Fri May 02 2025'
+                date: 'Mon May 12 2025'
             },
             {
                 industry: 'ecommerce',
@@ -119,7 +119,7 @@ async function seedEcommerceQuizzes() {
                     'A database-free online store model'
                 ],
                 correctAnswer: 1,
-                date: 'Fri May 02 2025'
+                date: 'Mon May 12 2025'
             },
             {
                 industry: 'ecommerce',
@@ -131,7 +131,7 @@ async function seedEcommerceQuizzes() {
                     'Encrypting URLs for security'
                 ],
                 correctAnswer: 1,
-                date: 'Fri May 02 2025'
+                date: 'Mon May 12 2025'
             }
         ]);
         

@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const Quiz = require('../models/quiz');
-require('dotenv').config();
+require('dotenv').config({ path: '../.env' });
 
 async function seedFinanceQuizzes() {
     try {
@@ -26,14 +26,14 @@ async function seedFinanceQuizzes() {
                     'Knowledge of Yearly Capital'
                 ],
                 correctAnswer: 1,
-                date: 'Fri May 02 2025'
+                date: 'Mon May 12 2025'
             },
             {
                 industry: 'Finanace',
                 question: 'Which technology is most commonly used for ensuring secure, transparent, and tamper-proof financial transactions?',
                 options: ['Cloud Computing', 'Blockchain', 'AI/ML', 'Big Data'],
                 correctAnswer: 1,
-                date: 'Fri May 02 2025'
+                date: 'Mon May 12 2025'
             },
             {
                 industry: 'Finance',
@@ -45,14 +45,14 @@ async function seedFinanceQuizzes() {
                     'Auditing banking transactions manually'
                 ],
                 correctAnswer: 1,
-                date: 'Fri May 02 2025'
+                date: 'Mon May 12 2025'
             },
             {
                 industry: 'Finance',
                 question: 'Which regulation in Europe governs data protection and impacts FinTech firms significantly?',
                 options: ['MiFID II', 'SEPA', 'GDPR', 'PSD2'],
                 correctAnswer: 2,
-                date: 'Fri May 02 2025'
+                date: 'Mon May 12 2025'
             },
             {
                 industry: 'Finance',
@@ -64,21 +64,21 @@ async function seedFinanceQuizzes() {
                     'Handling offline ATM transactions'
                 ],
                 correctAnswer: 1,
-                date: 'Fri May 02 2025'
+                date: 'Mon May 12 2025'
             },
             {
                 industry: 'Finance',
                 question: 'Which FinTech model facilitates peer-to-peer (P2P) lending without involving traditional banks?',
                 options: ['Robo-Advisory', 'NeoBanking', 'Crowdfunding Platforms', 'P2P Lending Platforms'],
                 correctAnswer: 3,
-                date: 'Fri May 02 2025'
+                date: 'Mon May 12 2025'
             },
             {
                 industry: 'Finance',
                 question: 'Which of the following is a key risk in algorithmic trading systems?',
                 options: ['Manual error', 'Lack of market data', 'Latency and flash crashes', 'Excessive compliance'],
                 correctAnswer: 2,
-                date: 'Fri May 02 2025'
+                date: 'Mon May 12 2025'
             },
             {
                 industry: 'Finance',
@@ -90,21 +90,21 @@ async function seedFinanceQuizzes() {
                     'Assigning unique codes to banking employees'
                 ],
                 correctAnswer: 1,
-                date: 'Fri May 02 2025'
+                date: 'Mon May 12 2025'
             },
             {
                 industry: 'Finance',
                 question: 'Which cryptocurrency introduced the concept of smart contracts?',
                 options: ['Bitcoin', 'Litecoin', 'Ripple', 'Ethereum'],
                 correctAnswer: 3,
-                date: 'Fri May 02 2025'
+                date: 'Mon May 12 2025'
             },
             {
                 industry: 'Finance',
                 question: 'Which metric best represents a FinTech app’s user monetization efficiency?',
                 options: ['Monthly Active Users', 'Churn Rate', 'Average Revenue Per User (ARPU)', 'Retention Rate'],
                 correctAnswer: 2,
-                date: 'Fri May 02 2025'
+                date: 'Mon May 12 2025'
             }
         ]);
         

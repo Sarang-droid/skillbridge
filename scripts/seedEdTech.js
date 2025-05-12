@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const Quiz = require('../models/quiz');
-require('dotenv').config();
+require('dotenv').config({ path: '../.env' });
 
 async function seedEdTechQuizzes() {
     try {
@@ -29,7 +29,7 @@ async function seedEdTechQuizzes() {
                     'Blocking distractions on student devices'
                 ],
                 correctAnswer: 2,
-                date: 'Fri May 02 2025'
+                date: 'Mon May 12 2025'
             },
             {
                 industry: 'edtech',
@@ -41,7 +41,7 @@ async function seedEdTechQuizzes() {
                     'Structured Course Outline Reporting Method'
                 ],
                 correctAnswer: 1,
-                date: 'Fri May 02 2025'
+                date: 'Mon May 12 2025'
             },
             {
                 industry: 'edtech',
@@ -53,7 +53,7 @@ async function seedEdTechQuizzes() {
                     'One-on-one manual tutoring'
                 ],
                 correctAnswer: 2,
-                date: 'Fri May 02 2025'
+                date: 'Mon May 12 2025'
             },
             {
                 industry: 'edtech',
@@ -65,7 +65,7 @@ async function seedEdTechQuizzes() {
                     'Kruskal’s Algorithm'
                 ],
                 correctAnswer: 2,
-                date: 'Fri May 02 2025'
+                date: 'Mon May 12 2025'
             },
             {
                 industry: 'edtech',
@@ -77,7 +77,7 @@ async function seedEdTechQuizzes() {
                     'Installing software updates'
                 ],
                 correctAnswer: 2,
-                date: 'Fri May 02 2025'
+                date: 'Mon May 12 2025'
             },
             {
                 industry: 'edtech',
@@ -89,7 +89,7 @@ async function seedEdTechQuizzes() {
                     'Login frequency'
                 ],
                 correctAnswer: 1,
-                date: 'Fri May 02 2025'
+                date: 'Mon May 12 2025'
             },
             {
                 industry: 'edtech',
@@ -101,14 +101,14 @@ async function seedEdTechQuizzes() {
                     'Group-based collaborative learning'
                 ],
                 correctAnswer: 1,
-                date: 'Fri May 02 2025'
+                date: 'Mon May 12 2025'
             },
             {
                 industry: 'edtech',
                 question: 'Which programming language is most commonly used in building interactive EdTech tools?',
                 options: ['Ruby', 'Python', 'C++', 'Assembly'],
                 correctAnswer: 1,
-                date: 'Fri May 02 2025'
+                date: 'Mon May 12 2025'
             },
             {
                 industry: 'edtech',
@@ -120,7 +120,7 @@ async function seedEdTechQuizzes() {
                     'Video compression'
                 ],
                 correctAnswer: 1,
-                date: 'Fri May 02 2025'
+                date: 'Mon May 12 2025'
             },
             {
                 industry: 'edtech',
@@ -132,7 +132,7 @@ async function seedEdTechQuizzes() {
                     'Too much instructor involvement'
                 ],
                 correctAnswer: 2,
-                date: 'Fri May 02 2025'
+                date: 'Mon May 12 2025'
             }
         ]);
         

@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const Quiz = require('../models/quiz');
-require('dotenv').config();
+require('dotenv').config({ path: '../.env' });
 
 async function seedMarketingQuizzes() {
     try {
@@ -26,7 +26,7 @@ async function seedMarketingQuizzes() {
                     'To automate PPC bidding'
                 ],
                 correctAnswer: 1,
-                date: 'Fri May 02 2025'
+                date: 'Mon May 12 2025'
             },
             {
                 industry: 'marketing',
@@ -38,14 +38,14 @@ async function seedMarketingQuizzes() {
                     'Conversion Attribution Calculator'
                 ],
                 correctAnswer: 0,
-                date: 'Fri May 02 2025'
+                date: 'Mon May 12 2025'
             },
             {
                 industry: 'marketing',
                 question: 'Which metric directly indicates the percentage of users who completed a desired action?',
                 options: ['Impression Share', 'Click-Through Rate', 'Engagement Rate', 'Conversion Rate'],
                 correctAnswer: 3,
-                date: 'Fri May 02 2025'
+                date: 'Mon May 12 2025'
             },
             {
                 industry: 'marketing',
@@ -57,21 +57,21 @@ async function seedMarketingQuizzes() {
                     'Sponsored social media posts'
                 ],
                 correctAnswer: 2,
-                date: 'Fri May 02 2025'
+                date: 'Mon May 12 2025'
             },
             {
                 industry: 'marketing',
                 question: 'Which digital marketing model focuses on earning links and shares without paying for exposure?',
                 options: ['Owned Media', 'Earned Media', 'Paid Media', 'Shared Media'],
                 correctAnswer: 1,
-                date: 'Fri May 02 2025'
+                date: 'Mon May 12 2025'
             },
             {
                 industry: 'marketing',
                 question: 'Which term describes tailoring content or offers based on user behavior or data?',
                 options: ['Segmentation', 'Personalization', 'Branding', 'Retargeting'],
                 correctAnswer: 1,
-                date: 'Fri May 02 2025'
+                date: 'Mon May 12 2025'
             },
             {
                 industry: 'marketing',
@@ -83,14 +83,14 @@ async function seedMarketingQuizzes() {
                     'There is no difference'
                 ],
                 correctAnswer: 2,
-                date: 'Fri May 02 2025'
+                date: 'Mon May 12 2025'
             },
             {
                 industry: 'marketing',
                 question: 'Which analytics model gives 100% credit to the last interaction before a conversion?',
                 options: ['First-Touch Attribution', 'Time Decay Model', 'Last-Touch Attribution', 'Linear Attribution'],
                 correctAnswer: 2,
-                date: 'Fri May 02 2025'
+                date: 'Mon May 12 2025'
             },
             {
                 industry: 'marketing',
@@ -102,7 +102,7 @@ async function seedMarketingQuizzes() {
                     'Anonymous users on a website'
                 ],
                 correctAnswer: 2,
-                date: 'Fri May 02 2025'
+                date: 'Mon May 12 2025'
             },
             {
                 industry: 'marketing',
@@ -114,7 +114,7 @@ async function seedMarketingQuizzes() {
                     'Creates social media posts'
                 ],
                 correctAnswer: 1,
-                date: 'Fri May 02 2025'
+                date: 'Mon May 12 2025'
             }
         ]);
         
