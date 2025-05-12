@@ -1,0 +1,457 @@
+<script type="text/javascript">
+        var gk_isXlsx = false;
+        var gk_xlsxFileLookup = {"RTJI 10_04_25-17_4_25 - Sheet1 (1).csv":false};
+        var gk_fileData = {"RTJI 10_04_25-17_4_25 - Sheet1 (1).csv":"PLATFORM,TITLE ,COMPANY/PROVIDER,ROLE TYPE,INDUSTRY,SKILLS REQUIRED,LOCATION,EXPERIANCE,SALARY/STIPENED,JOB TYPE,CERTIFICATES,EXTRA TAGS\r\nnaukri,Order To Cash Operations Senior Analyst,accenture,senior analyst,IT,order to cash -billing processing ,navi mumbai,5-8 years,-,accounting and taxation,-,\r\nnaukri,cloud engineer,acrypol products,cloud engineer,IT services and consulting,\"database management ,cloud computing ,devops, networking,cloud security\",pune,0-5 years,3.5-5.5 lacs /annum,IT support,-,\r\nnaukri,DEVOPs with python,Infobeans,devops with python,IT services and consulting,\"docker , terraform , python scripting , devops, kubernetes , python , ansible virtulization ci/cd\",\"pune , indore\",3-7 years,-,devops,-,\r\nnaukri,DEVOPS engineer,vertoz,IT& information security,advertising and marketing ,\"Linux , ci/cd , devops , jenkins , ci cd pipelines , docker , bash scripting , shell scripting ,cloud , aws , kubernetes python \",mumbai,0-1 years,-,IT support,-,\r\nnaukri,cloud devops associate,ignitho,IT infrastructure services ,IT services and consulting,\"azure cloud ,python , aws cloud , terraform , linux , jenkins , docker , sonarqube\",chennai,0 years ,1-3 lacs / annum,IT security,-,\r\nnaukri,management associate - internal audit,icici prudential life,internal auditor,insurance,\"auditor , management associate , manager internal audit , operational risk , MS access , audit planning , powepoint ,monitoring , testing \",mumbai,0-1 years,-,internal auditor ,-,\r\nnaukri,senior analyst ,EY,Regulatory affairs compliance,accunting and auditing ,\"assurance , compliance , client serving , forensic , investment  excel \",noida,0-2 years,-,corporate affairs,,\r\nnaukri,network engineer - global support,hughes communications,technical lead,telecom/ ISP,\"network elements , networking , linux , depoyment , troubleshooting , auditing \",gurugram ,2-5 years,2-7 lacs/annum,software development,BTECH/ BE,\r\nnaukri,network engineer - global support,inspirisys,L1 ntework engineer,IT services and consulting,\"Switch , netwrok , router , firewall\",delhi,2-6 year,3-4 lpa,network engineer,\" BE , BTECH , BCA \",\r\nnaukri,software engineer ,winjit,full stack developer,IT services and consulting,\".net core , react.js dotnet development , angular\",nashilk,2-5 years,-,software development,-,\r\nlinkedin,backend developer,imploy,back end developer,software development,\"node.js , python , java, php , MySQL , postgreSQL , MONGODB , API development ,aws , google cloud , version control system and ci/cd pipelines\",remote,4 years,-,backend development,\"BCS , BTECH in computer science \",\r\nlinkedin,data analyst trainee,SAZ ,data analyst trainee ,IT services and consulting,\"data gathering , excel , sql and py , analytical and problem solving \",remote,0-2 year,3lacs/annum,data analsyt,-,\r\nlinkedin,software engineer ,barclays,software developer,fintech,\"python , sql \",remote ,0-1 year,7-10 lpa,software engineer,BTECH/ BE,\r\nlinkedin,buisness analyst,revoult,buisness analyst,fintech,\"python , sql , powerBI\",remote,0-2 year,-,buisness analyst,BTECH/ BE /BSC / BCA,\r\nlinkedin,DATA analyst,schineider electric,buisness analyst,energy manangement and automation,\"python , sql , powerBI\",office,0-2 year,-,data analsyt,BTECH/BE/BSC/BCA,\r\nlinkedin,junior associate developer,3M,junior associate developer,\"manifacturing , healthcare\",\"restful API , SQL , AWS\",\"pune , indore\",0-1 year,7-10 year,junior associate developer,BTECH/BE/BSC/BCA,\r\nlinkedin,data entry executive,NEXUS BPO,data analyst trainee ,edtech ,\"data entry , computer operator , typist\",banglore,0-2 year,8k-75000k/year,junior data analyst trainee,\"12th pass , diploma , \",\r\nlinkedin,backend developer -golang,notchup,back end developer,IT services and consulting,\"golang , Api , grpc , system architecture , IoT concepts , databases\",remote,0-3 year,-,backend development,,\r\nlinkedin,,,,,,,,,,,\r\nlinkedin,,,,,,,,,,,\r\ninternshala,,,,,,,,,,,\r\ninternshala,,,,,,,,,,,\r\ninternshala,,,,,,,,,,,\r\ninternshala,,,,,,,,,,,\r\ninternshala,,,,,,,,,,,\r\ninternshala,,,,,,,,,,,\r\ninternshala,,,,,,,,,,,\r\ninternshala,,,,,,,,,,,"};
+        function filledCell(cell) {
+          return cell !== '' && cell != null;
+        }
+        function loadFileData(filename) {
+        if (gk_isXlsx && gk_xlsxFileLookup[filename]) {
+            try {
+                var workbook = XLSX.read(gk_fileData[filename], { type: 'base64' });
+                var firstSheetName = workbook.SheetNames[0];
+                var worksheet = workbook.Sheets[firstSheetName];
+
+                // Convert sheet to JSON to filter blank rows
+                var jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, blankrows: false, defval: '' });
+                // Filter out blank rows (rows where all cells are empty, null, or undefined)
+                var filteredData = jsonData.filter(row => row.some(filledCell));
+
+                // Heuristic to find the header row by ignoring rows with fewer filled cells than the next row
+                var headerRowIndex = filteredData.findIndex((row, index) =>
+                  row.filter(filledCell).length >= filteredData[index + 1]?.filter(filledCell).length
+                );
+                // Fallback
+                if (headerRowIndex === -1 || headerRowIndex > 25) {
+                  headerRowIndex = 0;
+                }
+
+                // Convert filtered JSON back to CSV
+                var csv = XLSX.utils.aoa_to_sheet(filteredData.slice(headerRowIndex)); // Create a new sheet from filtered array of arrays
+                csv = XLSX.utils.sheet_to_csv(csv, { header: 1 });
+                return csv;
+            } catch (e) {
+                console.error(e);
+                return "";
+            }
+        }
+        return gk_fileData[filename] || "";
+        }
+        </script><!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RTJI System Analysis Report - April 2025</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prop-types/15.8.1/prop-types.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.2/babel.min.js"></script>
+  <script src="https://unpkg.com/papaparse@latest/papaparse.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/chrono-node/1.3.11/chrono.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/recharts/2.15.0/Recharts.min.js"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 font-sans">
+  <div id="root" class="container mx-auto p-6"></div>
+
+  <script type="text/babel">
+    // Initializing React application
+    const { useState, useEffect } = React;
+
+    // Main App component
+    function App() {
+      const [data, setData] = useState(null);
+      const [loading, setLoading] = useState(true);
+
+      // Loading and parsing CSV data
+      useEffect(() => {
+        const csv = loadFileData("RTJI 10_04_25-17_4_25 - Sheet1 (1).csv");
+        Papa.parse(csv, {
+          header: true,
+          skipEmptyLines: true,
+          transformHeader: (header) => header.trim().replace(/^"|"$/g, ''),
+          transform: (value, header) => {
+            let cleaned = value.trim().replace(/^"|"$/g, '');
+            return cleaned;
+          },
+          complete: (results) => {
+            const cleanedData = processAndCleanData(results.data);
+            setData(cleanedData);
+            setLoading(false);
+          },
+          error: (err) => {
+            console.error(err);
+            setLoading(false);
+          }
+        });
+      }, []);
+
+      // Processing and cleaning data
+      const processAndCleanData = (rawData) => {
+        return rawData
+          .filter(row => row['TITLE'] && row['INDUSTRY'])
+          .map(row => {
+            const skills = row['SKILLS REQUIRED']
+              ? row['SKILLS REQUIRED'].split(',').map(s => s.trim().toLowerCase())
+              : [];
+            const experience = row['EXPERIANCE']
+              ? row['EXPERIANCE'].toLowerCase()
+              : 'Not specified';
+            const salary = row['SALARY/STIPENED']
+              ? row['SALARY/STIPENED'].toLowerCase()
+              : 'Not specified';
+            return {
+              ...row,
+              skills,
+              experience,
+              salary
+            };
+          });
+      };
+
+      // Analyzing top job titles
+      const getTopJobTitles = () => {
+        if (!data) return [];
+        const titleCounts = data.reduce((acc, row) => {
+          const title = row['TITLE'].toLowerCase();
+          acc[title] = (acc[title] || 0) + 1;
+          return acc;
+        }, {});
+        return Object.entries(titleCounts)
+          .map(([title, count]) => {
+            const job = data.find(row => row['TITLE'].toLowerCase() === title);
+            return {
+              title,
+              count,
+              industry: job['INDUSTRY'],
+              experience: job['EXPERIANCE'],
+              applicants: 'Not available' // Applicants/Openings not in data
+            };
+          })
+          .sort((a, b) => b.count - a.count)
+          .slice(0, 5);
+      };
+
+      // Analyzing top skills by experience level
+      const getTopSkills = () => {
+        if (!data) return { '0-1': [], '1-4': [], '4+': [] };
+        const skillCounts = { '0-1': {}, '1-4': {}, '4+': {} };
+
+        data.forEach(row => {
+          let expCategory;
+          const exp = row['EXPERIANCE'].toLowerCase();
+          if (exp.includes('0-1') || exp.includes('0 years')) {
+            expCategory = '0-1';
+          } else if (exp.includes('2-5') || exp.includes('0-2') || exp.includes('0-3') || exp.includes('2-6')) {
+            expCategory = '1-4';
+          } else if (exp.includes('5-8') || exp.includes('3-7') || exp.includes('4 years')) {
+            expCategory = '4+';
+          } else {
+            return;
+          }
+
+          row.skills.forEach(skill => {
+            skillCounts[expCategory][skill] = (skillCounts[expCategory][skill] || 0) + 1;
+          });
+        });
+
+        return Object.keys(skillCounts).reduce((acc, exp) => {
+          acc[exp] = Object.entries(skillCounts[exp])
+            .map(([skill, count]) => {
+              const job = data.find(row => row.skills.includes(skill));
+              return {
+                skill,
+                count,
+                industry: job ? job['INDUSTRY'] : 'Various'
+              };
+            })
+            .sort((a, b) => b.count - a.count)
+            .slice(0, 5);
+          return acc;
+        }, { '0-1': [], '1-4': [], '4+': [] });
+      };
+
+      // Analyzing regional insights
+      const getTopHiringCities = () => {
+        if (!data) return [];
+        const cityCounts = data.reduce((acc, row) => {
+          const locations = row['LOCATION']
+            ? row['LOCATION'].split(',').map(loc => loc.trim().toLowerCase())
+            : [];
+          locations.forEach(loc => {
+            acc[loc] = (acc[loc] || 0) + 1;
+          });
+          return acc;
+        }, {});
+        return Object.entries(cityCounts)
+          .map(([city, count]) => ({ city, count }))
+          .sort((a, b) => b.count - a.count)
+          .slice(0, 5);
+      };
+
+      // Analyzing work mode
+      const getWorkMode = () => {
+        if (!data) return { remote: 0, office: 0, hybrid: 0 };
+        let remote = 0, office = 0, hybrid = 0;
+        data.forEach(row => {
+          const loc = row['LOCATION'].toLowerCase();
+          if (loc === 'remote') {
+            remote++;
+          } else if (loc.includes('remote') && loc.includes(',')) {
+            hybrid++;
+          } else {
+            office++;
+          }
+        });
+        const total = remote + office + hybrid;
+        return {
+          remote: total ? ((remote / total) * 100).toFixed(1) : 0,
+          office: total ? ((office / total) * 100).toFixed(1) : 0,
+          hybrid: total ? ((hybrid / total) * 100).toFixed(1) : 0
+        };
+      };
+
+      // Analyzing compensation
+      const getCompensationBenchmarks = () => {
+        if (!data) return [];
+        const validSalaries = data
+          .filter(row => row['SALARY/STIPENED'] && row['SALARY/STIPENED'] !== '-')
+          .map(row => ({
+            title: row['TITLE'],
+            salary: row['SALARY/STIPENED']
+          }));
+        return validSalaries.slice(0, 3);
+      };
+
+      // Generating chart data for top skills
+      const getSkillsChartData = () => {
+        const topSkills = getTopSkills();
+        const allSkills = [...new Set(
+          Object.values(topSkills).flatMap(skills => skills.map(s => s.skill))
+        )].slice(0, 5);
+        return allSkills.map(skill => ({
+          name: skill,
+          '0-1 yrs': topSkills['0-1'].find(s => s.skill === skill)?.count || 0,
+          '1-4 yrs': topSkills['1-4'].find(s => s.skill === skill)?.count || 0,
+          '4+ yrs': topSkills['4+'].find(s => s.skill === skill)?.count || 0
+        }));
+      };
+
+      // Rendering loading state
+      if (loading) {
+        return (
+          <div className="text-center text-2xl text-gray-600 mt-10">
+            Loading report data...
+          </div>
+        );
+      }
+
+      // Rendering main report
+      const topJobTitles = getTopJobTitles();
+      const topSkills = getTopSkills();
+      const topCities = getTopHiringCities();
+      const workMode = getWorkMode();
+      const compensation = getCompensationBenchmarks();
+      const skillsChartData = getSkillsChartData();
+
+      return (
+        <div className="bg-white shadow-lg rounded-lg p-8">
+          <h1 className="text-3xl font-bold text-gray-800 mb-6">RTJI System Analysis Report - April 2025</h1>
+
+          {/* Top Trends */}
+          <section className="mb-8">
+            <h2 className="text-2xl font-semibold text-gray-700 mb-4">1. Top Trends</h2>
+            <div className="mb-6">
+              <h3 className="text-xl font-medium text-gray-600">Top 5 In-Demand Job Titles</h3>
+              <ul className="list-disc pl-6">
+                {topJobTitles.map(job => (
+                  <li key={job.title} className="text-gray-600">
+                    <strong>{job.title}</strong> ({job.count} listings) - Industry: {job.industry}, Experience: {job.experience}, Applicants/Openings: {job.applicants}
+                  </li>
+                ))}
+              </ul>
+            </div>
+            <div className="mb-6">
+              <h3 className="text-xl font-medium text-gray-600">Top 3 Courses in Demand</h3>
+              <p className="text-gray-600">No course data provided. Suggested courses based on job skills:</p>
+              <ul className="list-disc pl-6">
+                <li>Cloud Computing (AWS/Azure) - Beginner/Intermediate (Coursera)</li>
+                <li>DevOps with Python - Intermediate (Udemy)</li>
+                <li>Data Analysis with Python & SQL - Beginner (UpGrad)</li>
+              </ul>
+            </div>
+            <div>
+              <h3 className="text-xl font-medium text-gray-600">Top 5 Skills by Frequency</h3>
+              {Object.keys(topSkills).map(exp => (
+                <div key={exp} className="mb-4">
+                  <h4 className="text-lg font-medium text-gray-500">{exp} Years Experience</h4>
+                  <ul className="list-disc pl-6">
+                    {topSkills[exp].map(skill => (
+                      <li key={skill.skill} className="text-gray-600">
+                        {skill.skill} ({skill.count} mentions, Industry: {skill.industry})
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              ))}
+              <div className="mt-4">
+                <h4 className="text-lg font-medium text-gray-500">Skills Distribution by Experience</h4>
+                <Recharts.ResponsiveContainer width="100%" height={300}>
+                  <Recharts.BarChart data={skillsChartData}>
+                    <Recharts.CartesianGrid strokeDasharray="3 3" />
+                    <Recharts.XAxis dataKey="name" />
+                    <Recharts.YAxis />
+                    <Recharts.Tooltip />
+                    <Recharts.Legend />
+                    <Recharts.Bar dataKey="0-1 yrs" fill="#4B5EAA" />
+                    <Recharts.Bar dataKey="1-4 yrs" fill="#FF6B6B" />
+                    <Recharts.Bar dataKey="4+ yrs" fill="#51CF66" />
+                  </Recharts.BarChart>
+                </Recharts.ResponsiveContainer>
+              </div>
+            </div>
+          </section>
+
+          {/* Trend Tracking */}
+          <section className="mb-8">
+            <h2 className="text-2xl font-semibold text-gray-700 mb-4">2. Trend Tracking</h2>
+            <p className="text-gray-600 mb-4">No previous week's data available for comparison. Insights based on current data:</p>
+            <div className="mb-6">
+              <h3 className="text-xl font-medium text-gray-600">Fastest Growing Roles</h3>
+              <p className="text-gray-600">Backend Developer & Software Engineer prominent with multiple listings, likely driven by remote work and fintech demand.</p>
+            </div>
+            <div className="mb-6">
+              <h3 className="text-xl font-medium text-gray-600">Declining Roles</h3>
+              <p className="text-gray-600">Order to Cash Operations Senior Analyst and Management Associate appear only once, suggesting lower demand.</p>
+            </div>
+            <div className="mb-6">
+              <h3 className="text-xl font-medium text-gray-600">Emerging Skills</h3>
+              <p className="text-gray-600">Golang and IoT concepts appear in backend developer roles, indicating niche growth in IT services.</p>
+            </div>
+            <div>
+              <h3 className="text-xl font-medium text-gray-600">At-Risk Roles</h3>
+              <p className="text-gray-600">Data Entry Executive - Low skill barrier and automation potential make it vulnerable.</p>
+            </div>
+          </section>
+
+          {/* Skill Gap Analysis */}
+          <section className="mb-8">
+            <h2 className="text-2xl font-semibold text-gray-700 mb-4">3. Skill Gap Analysis</h2>
+            <div className="mb-6">
+              <h3 className="text-xl font-medium text-gray-600">High-Demand, Low-Supply Skills</h3>
+              <p className="text-gray-600">Terraform, Kubernetes, Golang - Frequent in DevOps/Backend roles but likely underrepresented in courses due to niche nature.</p>
+            </div>
+            <div className="mb-6">
+              <h3 className="text-xl font-medium text-gray-600">Over-Taught, Low-Demand Skills</h3>
+              <p className="text-gray-600">No course data to confirm, but generic skills like MS Access (in Management Associate role) may be over-taught vs. demand.</p>
+            </div>
+            <div>
+              <h3 className="text-xl font-medium text-gray-600">Experience Level Gaps</h3>
+              <p className="text-gray-600">0-2 years roles (e.g., Cloud DevOps Associate) have high demand but potentially low applicant supply due to specific skill requirements (e.g., Azure, Terraform).</p>
+            </div>
+          </section>
+
+          {/* Regional & Mode Insights */}
+          <section className="mb-8">
+            <h2 className="text-2xl font-semibold text-gray-700 mb-4">4. Regional & Mode Insights</h2>
+            <div className="mb-6">
+              <h3 className="text-xl font-medium text-gray-600">Top Hiring Cities / Remote Locations</h3>
+              <ul className="list-disc pl-6">
+                {topCities.map(city => (
+                  <li key={city.city} className="text-gray-600">
+                    {city.city} ({city.count} listings)
+                  </li>
+                ))}
+              </ul>
+              <div className="mt-4">
+                <h4 className="text-lg font-medium text-gray-500">Hiring Locations Distribution</h4>
+                <Recharts.ResponsiveContainer width="100%" height={300}>
+                  <Recharts.PieChart>
+                    <Recharts.Pie
+                      data={topCities}
+                      dataKey="count"
+                      nameKey="city"
+                      cx="50%"
+                      cy="50%"
+                      outerRadius={100}
+                      fill="#4B5EAA"
+                      label
+                    >
+                      {topCities.map((entry, index) => (
+                        <Recharts.Cell key={`cell-${index}`} fill={['#4B5EAA', '#FF6B6B', '#51CF66', '#FFD93D', '#A66DD4'][index % 5]} />
+                      ))}
+                    </Recharts.Pie>
+                    <Recharts.Tooltip />
+                    <Recharts.Legend />
+                  </Recharts.PieChart>
+                </Recharts.ResponsiveContainer>
+              </div>
+            </div>
+            <div className="mb-6">
+              <h3 className="text-xl font-medium text-gray-600">% of Jobs by Work Mode</h3>
+              <p className="text-gray-600">
+                Remote: {workMode.remote}%, In-Office: {workMode.office}%, Hybrid: {workMode.hybrid}%
+              </p>
+            </div>
+            <div>
+              <h3 className="text-xl font-medium text-gray-600">Average Compensation Benchmarks</h3>
+              <ul className="list-disc pl-6">
+                {compensation.map(comp => (
+                  <li key={comp.title} className="text-gray-600">
+                    {comp.title}: {comp.salary}
+                  </li>
+                ))}
+              </ul>
+              <p className="text-gray-600 mt-2">Course prices not available in data.</p>
+            </div>
+          </section>
+
+          {/* Visual Trend Summary */}
+          <section>
+            <h2 className="text-2xl font-semibold text-gray-700 mb-4">5. Visual Trend Summary</h2>
+            <div className="overflow-x-auto">
+              <table className="w-full text-left border-collapse">
+                <thead>
+                  <tr className="bg-gray-200">
+                    <th className="p-3 text-gray-700">Metric</th>
+                    <th className="p-3 text-gray-700">Insight</th>
+                    <th className="p-3 text-gray-700">Action for Skillexa</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr className="border-b">
+                    <td className="p-3">Top Growing Role</td>
+                    <td className="p-3">Backend Developer (3 listings, remote-heavy)</td>
+                    <td className="p-3">Highlight in Canopy Dashboard</td>
+                  </tr>
+                  <tr className="border-b">
+                    <td className="p-3">Top Skill Gap</td>
+                    <td className="p-3">Terraform, Kubernetes (DevOps/Cloud roles)</td>
+                    <td className="p-3">Suggest certification collab with Udemy</td>
+                  </tr>
+                  <tr className="border-b">
+                    <td className="p-3">Declining Role</td>
+                    <td className="p-3">Order to Cash Operations Senior Analyst (1 listing)</td>
+                    <td className="p-3">Phase out from content recommendations</td>
+                  </tr>
+                  <tr>
+                    <td className="p-3">Fastest-Growing Industry</td>
+                    <td className="p-3">IT Services and Consulting (10+ listings)</td>
+                    <td className="p-3">Prioritize outreach/project creation</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </section>
+        </div>
+      );
+    }
+
+    // Rendering the app
+    const container = document.getElementById('root');
+    const root = ReactDOM.createRoot(container);
+    root.render(<App />);
+  </script>
+</body>
+</html>

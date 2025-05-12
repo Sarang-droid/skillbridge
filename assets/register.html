@@ -8,9 +8,9 @@
     <style>
         /* General Styles */
         body {
-            background: linear-gradient(135deg, #2b2b2b 0%, #3c3c3c 100%);
-            color: #d3d3d3;
-            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #1a1a1a 0%, #2c2c2c 100%);
+            color: #e0e0e0;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
             margin: 0;
             padding: 20px;
             min-height: 100vh;
@@ -20,49 +20,52 @@
         }
 
         .container {
-            max-width: 400px;
+            max-width: 440px;
             width: 100%;
             margin: auto;
-            padding: 20px;
-            background-color: #3c3c3c;
-            border-radius: 12px;
-            border: 2px dashed #555;
-            box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.5),
-                       -5px -5px 15px rgba(255, 255, 255, 0.1);
-            animation: fadeIn 0.8s ease-out;
+            padding: 32px;
+            background: #262626;
+            border-radius: 16px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+            border: 1px solid #333;
+            animation: slideUp 0.6s ease-out;
         }
 
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         h2 {
             text-align: center;
-            color: #e8b923;
-            font-size: 2rem;
-            margin-bottom: 20px;
-            position: relative;
-            padding-bottom: 10px;
+            color: #f4c542;
+            font-size: 2.25rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+            letter-spacing: -0.02em;
         }
 
-        h2::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 60px;
-            height: 3px;
-            background: #e8b923;
-            border-radius: 2px;
+        .tagline {
+            text-align: center;
+            color: #b3b3b3;
+            font-size: 1.1rem;
+            font-style: italic;
+            margin-bottom: 24px;
+            opacity: 0;
+            animation: fadeInTagline 0.8s ease-out 0.2s forwards;
+        }
+
+        @keyframes fadeInTagline {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         label {
             display: block;
-            margin-bottom: 5px;
-            color: #d3d3d3;
-            font-weight: bold;
+            margin-bottom: 8px;
+            color: #e0e0e0;
+            font-size: 0.95rem;
+            font-weight: 500;
         }
 
         input[type="text"],
@@ -72,14 +75,14 @@
         input[type="number"],
         select {
             width: 100%;
-            padding: 12px;
-            margin-bottom: 15px;
-            border: 2px dashed #555;
+            padding: 12px 16px;
+            margin-bottom: 16px;
+            border: 1px solid #444;
             border-radius: 8px;
-            background-color: #4a4a4a;
-            color: #d3d3d3;
+            background: #333;
+            color: #e0e0e0;
             font-size: 1rem;
-            transition: all 0.3s ease;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
             box-sizing: border-box;
         }
 
@@ -90,143 +93,167 @@
         input[type="number"]:focus,
         select:focus {
             outline: none;
-            border-color: #e8b923;
-            box-shadow: 0 0 5px rgba(232, 185, 35, 0.5);
+            border-color: #f4c542;
+            box-shadow: 0 0 0 3px rgba(244, 197, 66, 0.2);
+        }
+
+        /* Password Toggle Icon */
+        .password-wrapper {
+            position: relative;
+        }
+
+        .password-wrapper .fas {
+            position: absolute;
+            right: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #b3b3b3;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+
+        .password-wrapper .fas:hover {
+            color: #f4c542;
+        }
+
+        input[type="password"] {
+            padding-right: 48px;
         }
 
         button {
             width: 100%;
-            padding: 12px;
-            background-color: #e8b923;
-            color: #2b2b2b;
-            border: 2px dashed #555;
+            padding: 14px;
+            background: #f4c542;
+            color: #1a1a1a;
+            border: none;
             border-radius: 8px;
             cursor: pointer;
-            font-weight: bold;
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
-            margin-bottom: 10px;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
         }
 
         button:hover {
-            background-color: #d9a413;
+            background: #e0b33a;
             transform: translateY(-2px);
-            box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.5);
-        }
-
-        button::after {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 0;
-            height: 0;
-            background: rgba(255, 255, 255, 0.2);
-            border-radius: 50%;
-            transform: translate(-50%, -50%);
-            transition: width 0.4s ease, height 0.4s ease;
-        }
-
-        button:hover::after {
-            width: 200%;
-            height: 200%;
+            box-shadow: 0 4px 12px rgba(244, 197, 66, 0.3);
         }
 
         .login-button {
-            background-color: #e8b923;
+            background: transparent;
+            border: 1px solid #f4c542;
+            color: #f4c542;
+            margin-top: 16px;
         }
 
         .login-button:hover {
-            background-color: #d9a413;
+            background: #f4c542;
+            color: #1a1a1a;
         }
 
         .error {
-            color: #d32f2f;
+            color: #ef5350;
             text-align: center;
-            margin: 10px 0;
-            font-weight: bold;
+            margin: 12px 0;
+            font-size: 0.95rem;
+            font-weight: 500;
         }
 
         /* Collapsible List Styles */
         .collapsible-list {
-            border: 2px dashed #555;
+            border: 1px solid #444;
             border-radius: 8px;
-            margin-bottom: 15px;
-            background-color: #4a4a4a;
+            margin-bottom: 16px;
+            background: #333;
         }
 
         .list-header {
-            padding: 12px;
+            padding: 12px 16px;
             cursor: pointer;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            background-color: #3c3c3c;
-            border-radius: 8px 8px 0 0;
-            color: #d3d3d3;
-            transition: all 0.3s ease;
+            background: #3a3a3a;
+            border-radius: 8px;
+            color: #e0e0e0;
+            font-weight: 500;
+            transition: background-color 0.3s ease;
         }
 
         .list-header:hover {
-            background-color: #505050;
-            transform: translateY(-2px);
+            background: #444;
         }
 
         .list-header .arrow {
             font-size: 12px;
-            transition: transform 0.3s;
+            transition: transform 0.3s ease;
         }
 
         .list-content {
-            padding: 10px;
+            padding: 12px 16px;
             display: none;
-            color: #b0b0b0;
+            background: #333;
+            border-radius: 0 0 8px 8px;
         }
 
         .list-content div {
-            margin-bottom: 5px;
+            margin-bottom: 8px;
             display: flex;
             align-items: center;
         }
 
         .list-content input[type="checkbox"] {
-            margin-right: 10px;
+            margin-right: 12px;
+            accent-color: #f4c542;
+        }
+
+        .list-content label {
+            font-size: 0.95rem;
+            color: #b3b3b3;
         }
 
         /* Selected Items */
         .selected-items {
-            margin-top: 10px;
-            padding: 10px;
-            background-color: #4a4a4a;
+            margin-top: 8px;
+            padding: 12px;
+            background: #333;
             border-radius: 8px;
-            border: 2px dashed #555;
+            border: 1px solid #444;
+            min-height: 24px;
         }
 
         .selected-items span {
-            display: inline-block;
-            margin: 5px;
-            padding: 5px 10px;
-            background-color: #e8b923;
-            border-radius: 8px;
-            color: #2b2b2b;
-            font-weight: bold;
+            display: inline-flex;
+            align-items: center;
+            margin: 4px;
+            padding: 6px 12px;
+            background: #f4c542;
+            border-radius: 6px;
+            color: #1a1a1a;
+            font-size: 0.9rem;
+            font-weight: 500;
         }
 
         .selected-items span.plus-sign {
-            color: #e8b923;
-            font-weight: bold;
-            background-color: transparent;
-            margin-left: 5px;
+            color: #f4c542;
+            background: transparent;
+            font-weight: 700;
+            padding: 0;
+            margin-left: 8px;
         }
 
+        /* Responsive Design */
         @media (max-width: 480px) {
             .container {
-                padding: 15px;
+                padding: 24px;
             }
 
             h2 {
-                font-size: 1.5rem;
+                font-size: 1.75rem;
+            }
+
+            .tagline {
+                font-size: 1rem;
             }
 
             input[type="text"],
@@ -236,39 +263,10 @@
             input[type="number"],
             select,
             button {
-                padding: 10px;
-                font-size: 0.9rem;
+                padding: 10px 14px;
+                font-size: 0.95rem;
             }
         }
-        .tagline {
-    text-align: center;
-    color: #e8b923; /* Matches the heading color */
-    font-size: 1.2rem; /* Slightly smaller than the heading */
-    font-style: italic; /* Adds a touch of elegance */
-    margin-top: -15px; /* Pulls it closer to the heading */
-    margin-bottom: 25px; /* Adds space before the form */
-    opacity: 0; /* For fade-in effect */
-    animation: fadeInTagline 1s ease-out forwards; /* Animation */
-}
-
-@keyframes fadeInTagline {
-    from { opacity: 0; transform: translateY(-10px); }
-    to { opacity: 1; transform: translateY(0); }
-}
-/* Add this to your existing styles */
-.fa-eye, .fa-eye-slash {
-    color: #d3d3d3;
-    transition: all 0.3s ease;
-}
-
-.fa-eye:hover, .fa-eye-slash:hover {
-    color: #e8b923;
-}
-
-/* Adjust the input padding to prevent text overlap */
-input[type="password"], input[type="text"] {
-    padding-right: 35px !important;
-}
     </style>
 </head>
 <body>
@@ -285,21 +283,17 @@ input[type="password"], input[type="text"] {
             <label for="phone">Phone Number:</label>
             <input type="tel" id="phone" required>
 
-            <!-- Update the password fields section in register.html -->
-<label for="password">Password:</label>
-<div style="position: relative;">
-    <input type="password" id="password" required>
-    <i class="fas fa-eye" id="togglePassword" 
-       style="position: absolute; right: 10px; top: 35px; cursor: pointer;"></i>
-</div>
+            <label for="password">Password:</label>
+            <div class="password-wrapper">
+                <input type="password" id="password" required>
+                <i class="fas fa-eye" id="togglePassword"></i>
+            </div>
 
-<label for="confirmPassword">Confirm Password:</label>
-<div style="position: relative;">
-    <input type="password" id="confirmPassword" required>
-    <i class="fas fa-eye" id="toggleConfirmPassword" 
-       style="position: absolute; right: 10px; top: 35px; cursor: pointer;"></i>
-</div>
-            
+            <label for="confirmPassword">Confirm Password:</label>
+            <div class="password-wrapper">
+                <input type="password" id="confirmPassword" required>
+                <i class="fas fa-eye" id="toggleConfirmPassword"></i>
+            </div>
 
             <!-- Skills Section -->
             <label for="skills">Skills:</label>
@@ -309,7 +303,6 @@ input[type="password"], input[type="text"] {
                     <span class="arrow">▼</span>
                 </div>
                 <div id="skillsList" class="list-content">
-                    <!-- Existing Skills -->
                     <div>
                         <input type="checkbox" id="skillPython" value="Python">
                         <label for="skillPython">Python</label>
@@ -334,7 +327,6 @@ input[type="password"], input[type="text"] {
                         <input type="checkbox" id="skillNode" value="Node.js">
                         <label for="skillNode">Node.js</label>
                     </div>
-                    <!-- Healthcare -->
                     <div>
                         <input type="checkbox" id="skillMedicalCoding" value="Medical Coding">
                         <label for="skillMedicalCoding">Medical Coding</label>
@@ -343,7 +335,6 @@ input[type="password"], input[type="text"] {
                         <input type="checkbox" id="skillEHR" value="EHR Management">
                         <label for="skillEHR">EHR Management</label>
                     </div>
-                    <!-- Finance -->
                     <div>
                         <input type="checkbox" id="skillFinancialModeling" value="Financial Modeling">
                         <label for="skillFinancialModeling">Financial Modeling</label>
@@ -352,7 +343,6 @@ input[type="password"], input[type="text"] {
                         <input type="checkbox" id="skillBlockchain" value="Blockchain Technology">
                         <label for="skillBlockchain">Blockchain Technology</label>
                     </div>
-                    <!-- Education -->
                     <div>
                         <input type="checkbox" id="skillLMS" value="Learning Management Systems">
                         <label for="skillLMS">Learning Management Systems</label>
@@ -361,7 +351,6 @@ input[type="password"], input[type="text"] {
                         <input type="checkbox" id="skillInstructionalDesign" value="Instructional Design">
                         <label for="skillInstructionalDesign">Instructional Design</label>
                     </div>
-                    <!-- IT Services -->
                     <div>
                         <input type="checkbox" id="skillCloud" value="Cloud Computing">
                         <label for="skillCloud">Cloud Computing</label>
@@ -370,7 +359,6 @@ input[type="password"], input[type="text"] {
                         <input type="checkbox" id="skillCybersecurity" value="Cybersecurity">
                         <label for="skillCybersecurity">Cybersecurity</label>
                     </div>
-                    <!-- Fintech -->
                     <div>
                         <input type="checkbox" id="skillPaymentGateway" value="Payment Gateway Integration">
                         <label for="skillPaymentGateway">Payment Gateway Integration</label>
@@ -380,6 +368,7 @@ input[type="password"], input[type="text"] {
                         <label for="skillSmartContracts">Smart Contract Development</label>
                     </div>
                 </div>
+            </div>
             <div id="selectedSkills" class="selected-items"></div>
 
             <!-- Interests Section -->
@@ -390,7 +379,6 @@ input[type="password"], input[type="text"] {
                     <span class="arrow">▼</span>
                 </div>
                 <div id="interestsList" class="list-content">
-                    <!-- Existing Interests -->
                     <div>
                         <input type="checkbox" id="interestTech" value="Technology">
                         <label for="interestTech">Technology</label>
@@ -411,7 +399,6 @@ input[type="password"], input[type="text"] {
                         <input type="checkbox" id="interestCloud" value="Cloud Computing">
                         <label for="interestCloud">Cloud Computing</label>
                     </div>
-                    <!-- Healthcare -->
                     <div>
                         <input type="checkbox" id="interestPrecisionMedicine" value="Precision Medicine">
                         <label for="interestPrecisionMedicine">Precision Medicine</label>
@@ -420,7 +407,6 @@ input[type="password"], input[type="text"] {
                         <input type="checkbox" id="interestHealthInformatics" value="Health Informatics">
                         <label for="interestHealthInformatics">Health Informatics</label>
                     </div>
-                    <!-- Finance -->
                     <div>
                         <input type="checkbox" id="interestQuantFinance" value="Quantitative Finance">
                         <label for="interestQuantFinance">Quantitative Finance</label>
@@ -429,7 +415,6 @@ input[type="password"], input[type="text"] {
                         <input type="checkbox" id="interestAlgoTrading" value="Algorithmic Trading">
                         <label for="interestAlgoTrading">Algorithmic Trading</label>
                     </div>
-                    <!-- Education -->
                     <div>
                         <input type="checkbox" id="interestEdTech" value="EdTech Innovation">
                         <label for="interestEdTech">EdTech Innovation</label>
@@ -438,7 +423,6 @@ input[type="password"], input[type="text"] {
                         <input type="checkbox" id="interestSTEM" value="STEM Education">
                         <label for="interestSTEM">STEM Education</label>
                     </div>
-                    <!-- IT Services -->
                     <div>
                         <input type="checkbox" id="interestIoT" value="Internet of Things">
                         <label for="interestIoT">Internet of Things</label>
@@ -447,7 +431,6 @@ input[type="password"], input[type="text"] {
                         <input type="checkbox" id="interestBigData" value="Big Data">
                         <label for="interestBigData">Big Data</label>
                     </div>
-                    <!-- Fintech -->
                     <div>
                         <input type="checkbox" id="interestDeFi" value="Decentralized Finance">
                         <label for="interestDeFi">Decentralized Finance</label>
@@ -457,6 +440,7 @@ input[type="password"], input[type="text"] {
                         <label for="interestDigitalBanking">Digital Banking</label>
                     </div>
                 </div>
+            </div>
             <div id="selectedInterests" class="selected-items"></div>
 
             <label for="degree">Degree:</label>
