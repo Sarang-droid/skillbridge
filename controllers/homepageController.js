@@ -30,16 +30,19 @@ exports.getCompanies = async (req, res) => {
 exports.getProjects = async (req, res) => {
     const companyId = req.query.companyId;
 
+    console.log("Received companyId:", companyId);
+
     if (!companyId) {
         return res.status(400).json({ error: "Company ID is required." });
     }
 
     try {
-        const projects = await Project.find({ companyId }).populate('companyId', 'name');
+        const projects = await Project.find({ companyId: companyId }).populate('companyId', 'name');
+        console.log("Found projects:", projects);
         res.status(200).json(projects);
     } catch (error) {
         console.error("Error fetching projects:", error);
-        res.status(500).json({ error: 'Internal server error' });
+        res.status(500).json({ error: 'Internal server error', details: error.message });
     }
 };
 
