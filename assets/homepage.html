@@ -325,6 +325,13 @@
                 padding: 10px;
             }
 
+        .company-card button {
+            padding: 10px 20px;
+            font-size: 1rem;
+            min-height: 44px;
+            min-width: 120px;
+        }
+
             header, footer {
                 padding: 10px;
                 margin-bottom: 15px;
@@ -397,6 +404,14 @@
         }
 
         @media (max-width: 480px) {
+            .company-card button {
+                padding: 8px 16px;
+                font-size: 0.9rem;
+                min-height: 44px;
+                min-width: 100px;
+            }
+
+        
             h1 {
                 font-size: 1.5rem;
             }
@@ -432,6 +447,33 @@
                 font-size: 0.8rem;
             }
         }
+        .company-card button {
+    position: relative;
+    z-index: 10;
+    pointer-events: auto;
+}
+
+.company-card::before {
+    pointer-events: none;
+}
+
+@media (max-width: 768px) {
+    .company-card button {
+        padding: 10px 20px;
+        font-size: 1rem;
+        min-height: 44px;
+        min-width: 120px;
+    }
+}
+
+@media (max-width: 480px) {
+    .company-card button {
+        padding: 8px 16px;
+        font-size: 0.9rem;
+        min-height: 44px;
+        min-width: 100px;
+    }
+}
     </style>
 </head>
 <body>
