@@ -206,7 +206,10 @@ function renderCompanyCards(companies) {
 
         const button = document.createElement('button');
         button.textContent = 'View Projects';
-        button.addEventListener('click', () => viewCompanyProjects(company._id));
+        button.addEventListener('click', () => {
+            console.log('View Projects button clicked for company ID:', company._id);
+            viewCompanyProjects(company._id);
+        });
 
         card.appendChild(title);
         card.appendChild(description);
@@ -217,52 +220,18 @@ function renderCompanyCards(companies) {
     });
 }
 
-// Fetch and display projects for a company
-async function viewCompanyProjects(companyId) {
+// Redirect to company projects page
+function viewCompanyProjects(companyId) {
     if (!companyId) {
         console.error("Invalid company ID");
         displayError("Invalid company ID");
         return;
     }
-    console.log(`Fetching projects for company ID: ${companyId}`);
-
-    const projectsContainer = document.getElementById('projectsContainer');
-    projectsContainer.innerHTML = '<div class="loading">Loading projects...</div>';
-
-    try {
-        // Log the full fetch URL for debugging
-        const fetchUrl = `/api/homepage/projects?companyId=${encodeURIComponent(companyId)}`;
-        console.log(`Fetching URL: ${fetchUrl}`);
-
-        const response = await fetch(fetchUrl);
-        
-        // Log response details
-        console.log('Response status:', response.status);
-        console.log('Response headers:', Object.fromEntries(response.headers.entries()));
-
-        if (!response.ok) {
-            // Try to get error details from response
-            const errorText = await response.text();
-            console.error(`HTTP error! Status: ${response.status}, Details: ${errorText}`);
-            throw new Error(`HTTP error! Status: ${response.status}, Details: ${errorText}`);
-        }
-
-        const projects = await response.json();
-        console.log("Fetched projects:", projects);
-
-        if (!projects || projects.length === 0) {
-            projectsContainer.innerHTML = '<div class="error">No projects found for this company.</div>';
-            return;
-        }
-
-        renderProjectCards(projects);
-    } catch (error) {
-        console.error("Error fetching projects:", error);
-        displayError(`Failed to load projects: ${error.message}`);
-    }
+    console.log(`Redirecting to projects for company ID: ${companyId}`);
+    window.location.href = `/company?companyId=${encodeURIComponent(companyId)}`;
 }
 
-// Render project cards
+// Render project cards (kept for potential future use)
 function renderProjectCards(projects) {
     const container = document.getElementById('projectsContainer');
 
