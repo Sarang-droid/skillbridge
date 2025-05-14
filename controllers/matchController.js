@@ -14,7 +14,7 @@ const calculateCosineSimilarity = (userSkills, projectSkills) => {
     const userMagnitude = Math.sqrt(userVector.reduce((sum, val) => sum + val * val, 0));
     const projectMagnitude = Math.sqrt(projectVector.reduce((sum, val) => sum + val * val, 0));
 
-    if (userMagnitude === 0 || projectMagnitude === 0) return 0; // Avoid division by zero
+    if (userMagnitude === 0 || projectMagnitude === 0) return 0;
     return dotProduct / (userMagnitude * projectMagnitude);
 };
 
@@ -23,20 +23,20 @@ const calculateJaccardIndex = (userSkills, projectSkills) => {
     const intersection = userSkills.filter(skill => projectSkills.includes(skill)).length;
     const union = [...new Set([...userSkills, ...projectSkills])].length;
 
-    if (union === 0) return 0; // Avoid division by zero
+    if (union === 0) return 0;
     return intersection / union;
 };
 
 // Helper function to calculate MBTI Compatibility
 const calculateMBTICompatibility = (userMBTI, project) => {
     if (project.compatibleMBTITypes && project.compatibleMBTITypes.includes(userMBTI)) {
-        return 1; // Full score if compatible
+        return 1;
     }
-    return 0; // No score if not compatible
+    return 0;
 };
 
 // Function to calculate the match score
-const calculateScore = (user, project, userMBTI) => {
+const calculateScore = (user, project, userMBTI, normalizedScores = {}) => {
     if (!user || !project) {
         console.log('Debug: User or project is undefined');
         return 0;
@@ -46,19 +46,15 @@ const calculateScore = (user, project, userMBTI) => {
     const requiredSkills = Array.isArray(project.requiredSkills) ? project.requiredSkills : [];
     const preferredSkills = Array.isArray(project.preferredSkills) ? project.preferredSkills : [];
 
-    // Calculate Cosine Similarity for required and preferred skills
+    // Calculate Cosine Similarity and Jaccard Index
     const cosineRequired = calculateCosineSimilarity(userSkills, requiredSkills);
     const cosinePreferred = calculateCosineSimilarity(userSkills, preferredSkills);
-
-    // Calculate Jaccard Index for required and preferred skills
     const jaccardRequired = calculateJaccardIndex(userSkills, requiredSkills);
     const jaccardPreferred = calculateJaccardIndex(userSkills, preferredSkills);
 
-    // Define weights for Cosine Similarity and Jaccard Index
-    const cosineWeight = 0.6; // Weight for Cosine Similarity
-    const jaccardWeight = 0.4; // Weight for Jaccard Index
+    const cosineWeight = 0.6;
+    const jaccardWeight = 0.4;
 
-    // Combine Cosine Similarity and Jaccard Index for required and preferred skills
     const combinedRequiredScore = (cosineWeight * cosineRequired) + (jaccardWeight * jaccardRequired);
     const combinedPreferredScore = (cosineWeight * cosinePreferred) + (jaccardWeight * jaccardPreferred);
 
@@ -70,24 +66,53 @@ const calculateScore = (user, project, userMBTI) => {
     const avgDifficulty = completedProjects.length > 0
         ? completedProjects.reduce((sum, proj) => sum + (proj.difficulty || 0), 0) / completedProjects.length
         : 5;
-
-    // Difficulty Score (Gaussian Function)
     const difficultyScore = Math.exp(-Math.pow(avgDifficulty - (project.difficulty || 5), 2) / 10);
 
-    // Engagement Score (Normalized)
+    // Engagement Score
     const engagementScore = (user.engagementScore || 0) / 100;
 
     // MBTI Compatibility Score
     const mbtiCompatibilityScore = calculateMBTICompatibility(userMBTI, project);
 
-    // Define Weights for Final Score Calculation
+    // Personality Preference Score (based on normalizedScores)
+    let personalityScore = 0;
+    if (normalizedScores) {
+        if (normalizedScores.mind > 50 && project.description?.toLowerCase().includes('independent')) {
+            personalityScore += 0.5;
+        }
+        if (normalizedScores.energy > 50 && project.description?.toLowerCase().includes('innovative')) {
+            personalityScore += 0.5;
+        }
+        if (normalizedScores.nature > 50 && project.description?.toLowerCase().includes('team')) {
+            personalityScore += 0.5;
+        }
+        if (normalizedScores.tactics > 50 && project.description?.toLowerCase().includes('flexible')) {
+            personalityScore += 0.5;
+        }
+    }
+
+    // User Preferences Score
+    let preferencesScore = 0;
+    if (user.interests?.includes(project.industry)) {
+        preferencesScore += 0.5;
+    }
+    if (user.preferredProjectTypes?.includes(project.projectType)) {
+        preferencesScore += 0.5;
+    }
+    if (user.preferredIndustries?.includes(project.industry)) {
+        preferencesScore += 0.5;
+    }
+
+    // Define Weights
     const weights = {
         requiredSkills: 10,
         preferredSkills: 5,
         experience: 5,
         difficulty: 5,
         engagement: 2,
-        mbti: 3 // Weight for MBTI compatibility
+        mbti: 3,
+        personality: 3,
+        preferences: 3
     };
 
     // Calculate Total Score
@@ -96,14 +121,16 @@ const calculateScore = (user, project, userMBTI) => {
                        (experienceMatch * weights.experience) +
                        (difficultyScore * weights.difficulty) +
                        (engagementScore * weights.engagement) +
-                       (mbtiCompatibilityScore * weights.mbti);
+                       (mbtiCompatibilityScore * weights.mbti) +
+                       (personalityScore * weights.personality) +
+                       (preferencesScore * weights.preferences);
 
-    console.log('Debug: Calculated score for project:', project._id, totalScore);
+    console.log('Debug: Calculated score for project:', project._id, totalScore, { personalityScore, preferencesScore });
     return totalScore;
 };
 
-// Function to find the best matches for a user, accepting mbtiType as an optional parameter
-const findBestMatches = async (userId, mbtiType = null) => {
+// Function to find the best matches for a user
+const findBestMatches = async (userId, mbtiType = null, normalizedScores = null) => {
     try {
         console.log('Debug: Finding best matches for userId:', userId);
 
@@ -113,20 +140,21 @@ const findBestMatches = async (userId, mbtiType = null) => {
             return [];
         }
 
-        // Use provided mbtiType if available, otherwise fetch from database
         let userMBTIType = mbtiType;
         if (!userMBTIType) {
-            const userMBTI = await MBTI.findOne({ userId }).select('mbtiType');
+            const userMBTI = await MBTI.findOne({ userId }).select('mbtiType normalizedScores');
             if (!userMBTI) {
                 console.log('Debug: MBTI not found for user:', userId);
                 return [];
             }
             userMBTIType = userMBTI.mbtiType;
+            if (!normalizedScores) {
+                normalizedScores = userMBTI.normalizedScores;
+            }
         }
 
         console.log('Debug: Found user:', user._id, 'with MBTI:', userMBTIType);
 
-        // Fetch Active Projects
         const projects = await Project.find({ status: 'active' }).populate('companyId');
         console.log('Debug: Found active projects:', projects.length);
 
@@ -137,21 +165,22 @@ const findBestMatches = async (userId, mbtiType = null) => {
                     return null;
                 }
 
-                // Calculate Match Score
-                const score = calculateScore(user, project, userMBTIType);
+                const score = calculateScore(user, project, userMBTIType, normalizedScores);
                 console.log('Debug: Calculated score for project:', project._id, score);
 
                 return { projectId: project._id, companyId: project.companyId._id, score };
             })
-            .filter(match => match && match.score > 0) // Filter out null and low-score matches
-            .sort((a, b) => b.score - a.score) // Sort by score in descending order
-            .slice(0, 5); // Limit to top 5 matches
+            .filter(match => match && match.score > 0)
+            .sort((a, b) => b.score - a.score)
+            .slice(0, 10) // Take top 10 for randomization
+            .sort(() => Math.random() - 0.5) // Shuffle top 10
+            .slice(0, 5); // Select 5 randomized matches
 
         console.log('Debug: Final matches:', matches);
         return matches;
     } catch (error) {
         console.error('Error in findBestMatches:', error);
-        return []; // Return an empty array in case of an error
+        return [];
     }
 };
 
@@ -174,11 +203,9 @@ const matchCandidates = async (req, res) => {
             return res.status(500).json({ error: 'Internal server error: Invalid matches format' });
         }
 
-        // Delete old matches
         const deleteResult = await Match.deleteMany({ userId });
         console.log('Debug: Deleted old matches:', deleteResult);
 
-        // Create new match documents
         const matchDocuments = matches.map(match => ({
             userId,
             projectId: match.projectId,
