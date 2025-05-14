@@ -8,20 +8,35 @@ document.addEventListener("DOMContentLoaded", () => {
     const industryFilter = document.getElementById('industryFilter');
 
     if (searchForm && searchInput && suggestionsContainer && industryFilter && clearButton) {
-        searchInput.addEventListener('input', debounce(handleInput, 300));
+        const handleInputDebounced = debounce(handleInput, 300);
+        searchInput.addEventListener('input', handleInputDebounced);
         searchForm.addEventListener('submit', fetchCompanies);
         industryFilter.addEventListener('change', fetchCompanies);
         clearButton.addEventListener('click', clearSearch);
         searchInput.addEventListener('keydown', handleKeyDown);
         searchInput.focus();
+
+        // Cleanup event listeners on page unload
+        window.addEventListener('unload', () => {
+            searchInput.removeEventListener('input', handleInputDebounced);
+            searchForm.removeEventListener('submit', fetchCompanies);
+            industryFilter.removeEventListener('change', fetchCompanies);
+            clearButton.removeEventListener('click', clearSearch);
+            searchInput.removeEventListener('keydown', handleKeyDown);
+        });
     } else {
         console.error("Required elements not found.");
+        return;
     }
 
-    fetchCompanyCards(); // Fetch companies when the page loads
+    fetchCompanyCards();
     checkNotifications();
-    // Check for new notifications every minute
-    setInterval(checkNotifications, 60000);
+    const notificationInterval = setInterval(checkNotifications, 60000);
+
+    // Cleanup interval on page unload
+    window.addEventListener('unload', () => {
+        clearInterval(notificationInterval);
+    });
 });
 
 // Debounce function to limit API calls
@@ -56,22 +71,22 @@ async function handleInput(event) {
     }
 }
 
-// Display company suggestions
+// Display company suggestions (limit to 5 for performance)
 function displaySuggestions(companies, query) {
     const container = document.getElementById('suggestionsContainer');
     container.innerHTML = '';
 
-    if (companies.length === 0) {
+    if (!companies || companies.length === 0) {
         container.innerHTML = '<div class="suggestion-item">No companies found</div>';
         return;
     }
 
-    companies.forEach((company, index) => {
+    companies.slice(0, 5).forEach((company, index) => {
         const suggestionItem = document.createElement('div');
         suggestionItem.classList.add('suggestion-item');
-        suggestionItem.innerHTML = highlightMatch(company.name, query);
+        suggestionItem.innerHTML = highlightMatch(company.name || 'Unknown Company', query);
         suggestionItem.addEventListener('click', () => {
-            document.getElementById('searchInput').value = company.name;
+            document.getElementById('searchInput').value = company.name || '';
             clearSuggestions();
             fetchCompanies();
         });
@@ -99,12 +114,14 @@ function clearSearch() {
     document.getElementById('searchInput').value = '';
     document.getElementById('industryFilter').value = '';
     clearSuggestions();
-    fetchCompanyCards(); // Reset to initial state
+    fetchCompanyCards();
 }
 
 // Keyboard navigation for suggestions
 function handleKeyDown(event) {
     const suggestions = document.querySelectorAll('.suggestion-item');
+    if (suggestions.length === 0) return;
+
     let selected = document.querySelector('.suggestion-item.selected');
 
     if (event.key === 'ArrowDown') {
@@ -154,21 +171,19 @@ async function fetchCompanies(event) {
         apiUrl += `?${params.join('&')}`;
     }
 
-    console.log("Fetching from URL:", apiUrl); // Log the URL
+    console.log("Fetching from URL:", apiUrl);
 
     try {
         const response = await fetch(apiUrl);
-        console.log("Response Status:", response.status); // Log status
         if (!response.ok) {
             throw new Error(`HTTP error! Status: ${response.status}`);
         }
         const companies = await response.json();
-        console.log("Raw API Response:", companies); // Log raw response
-        console.log("Response Length:", companies.length); // Log length
+        console.log("Fetched companies:", companies);
         renderCompanyCards(companies);
     } catch (error) {
         console.error("Error fetching companies:", error);
-        container.innerHTML = '<div class="error">Failed to load companies. Please try again later.</div>';
+        container.innerHTML = '<div class="error">Failed to load companies. Please check your connection and try again.</div>';
     }
 }
 
@@ -189,24 +204,24 @@ function renderCompanyCards(companies) {
     }
 
     companies.forEach(company => {
+        if (!company || !company._id) return; // Skip invalid company data
+
         const card = document.createElement('div');
         card.classList.add('company-card');
 
-        // Create card content
         const title = document.createElement('h3');
-        title.textContent = company.name;
+        title.textContent = company.name || 'Unknown Company';
 
         const description = document.createElement('p');
-        description.textContent = `Description: ${company.description}`;
+        description.textContent = `Description: ${company.description || 'No description available'}`;
 
         const applicants = document.createElement('p');
-        applicants.textContent = `Total Applicants: ${company.totalApplicants}`;
+        applicants.textContent = `Total Applicants: ${company.totalApplicants || 0}`;
 
         const button = document.createElement('button');
         button.textContent = 'View Projects';
         button.addEventListener('click', () => viewCompanyProjects(company._id));
 
-        // Append elements to card
         card.appendChild(title);
         card.appendChild(description);
         card.appendChild(applicants);
@@ -218,6 +233,10 @@ function renderCompanyCards(companies) {
 
 // Redirect to view projects for a company
 function viewCompanyProjects(companyId) {
+    if (!companyId) {
+        console.error("Invalid company ID");
+        return;
+    }
     console.log(`Redirecting to projects for company ID: ${companyId}`);
     window.location.href = `/company/projects?companyId=${companyId}`;
 }
@@ -243,14 +262,14 @@ async function fetchCompanyCards() {
         renderCompanyCards(companies);
     } catch (error) {
         console.error("Error fetching companies:", error);
-        container.innerHTML = '<div class="error">Failed to load companies. Please try again later.</div>';
+        container.innerHTML = '<div class="error">Failed to load companies. Please check your connection and try again.</div>';
     }
 }
 
 async function checkNotifications() {
     const token = localStorage.getItem('accessToken');
     if (!token) {
-        console.error('No token found');
+        console.error('No access token found');
         return;
     }
 
@@ -265,14 +284,13 @@ async function checkNotifications() {
 
         if (!response.ok) {
             if (response.status === 401) {
-                // Token expired, try to refresh it
                 const newToken = await refreshToken();
                 if (newToken) {
                     return checkNotifications();
                 }
                 return;
             }
-            throw new Error('Failed to fetch notifications');
+            throw new Error(`HTTP error! Status: ${response.status}`);
         }
 
         const data = await response.json();
@@ -286,7 +304,6 @@ function updateNotificationBadge(notifications) {
     const badge = document.getElementById('notificationBadge');
     if (!badge) return;
 
-    // Count unread notifications
     const unreadCount = notifications ? notifications.length : 0;
 
     if (unreadCount > 0) {
@@ -295,4 +312,11 @@ function updateNotificationBadge(notifications) {
     } else {
         badge.style.display = 'none';
     }
+}
+
+// Placeholder for refreshToken (assumed to exist elsewhere)
+async function refreshToken() {
+    // Implementation depends on your auth system
+    console.warn('refreshToken not implemented');
+    return null;
 }

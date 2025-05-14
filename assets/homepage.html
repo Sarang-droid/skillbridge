@@ -2,35 +2,36 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Homepage</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         body {
-            background: linear-gradient(135deg, #2b2b2b 0%, #3c3c3c 100%); /* Dark gradient */
-            color: #d3d3d3; /* Light gray for text */
+            background: linear-gradient(135deg, #2b2b2b 0%, #3c3c3c 100%);
+            color: #d3d3d3;
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 20px;
             min-height: 100vh;
             display: flex;
             flex-direction: column;
+            overflow-x: hidden;
         }
 
         header, footer {
             text-align: center;
             padding: 15px;
-            background-color: #3c3c3c; /* Darker gray */
-            border: 2px dashed #555; /* Darker dashed border */
+            background-color: #3c3c3c;
+            border: 2px dashed #555;
             border-radius: 12px;
             margin-bottom: 25px;
             box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.5),
-                       -5px -5px 15px rgba(255, 255, 255, 0.1); /* Adjusted shadow */
+                       -5px -5px 15px rgba(255, 255, 255, 0.1);
         }
 
         h1 {
             text-align: center;
-            color: #e8b923; /* Pastel yellow (unchanged) */
+            color: #e8b923;
             font-size: 2.5rem;
             margin-bottom: 20px;
             position: relative;
@@ -45,33 +46,35 @@
             transform: translateX(-50%);
             width: 60px;
             height: 3px;
-            background: #e8b923; /* Pastel yellow (unchanged) */
+            background: #e8b923;
             border-radius: 2px;
         }
 
         .navbar {
             display: flex;
             justify-content: space-around;
-            background-color: #3c3c3c; /* Darker gray */
+            background-color: #3c3c3c;
             padding: 10px;
-            border: 2px dashed #555; /* Darker dashed border */
+            border: 2px dashed #555;
             border-radius: 8px;
             margin-bottom: 25px;
             box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.5);
         }
 
         .navbar a {
-            color: #d3d3d3; /* Light gray text */
+            color: #d3d3d3;
             text-decoration: none;
             padding: 10px 15px;
             transition: all 0.3s ease;
             position: relative;
             font-weight: bold;
+            touch-action: manipulation;
+            -webkit-tap-highlight-color: transparent;
         }
 
         .navbar a:hover {
-            background-color: #4a4a4a; /* Dark gray hover */
-            color: #d9a413; /* Slightly darker yellow (unchanged) */
+            background-color: #4a4a4a;
+            color: #d9a413;
             transform: translateY(-2px);
         }
 
@@ -93,25 +96,25 @@
             padding: 12px;
             width: 300px;
             max-width: 100%;
-            background-color: #4a4a4a; /* Dark gray input */
-            border: 2px dashed #555; /* Darker dashed border */
+            background-color: #4a4a4a;
+            border: 2px dashed #555;
             border-radius: 8px;
-            color: #d3d3d3; /* Light gray text */
+            color: #d3d3d3;
             font-size: 1rem;
             transition: all 0.3s ease;
         }
 
         .search-bar input:focus {
             outline: none;
-            border-color: #e8b923; /* Pastel yellow (unchanged) */
+            border-color: #e8b923;
             box-shadow: 0 0 5px rgba(232, 185, 35, 0.5);
         }
 
         #industryFilter {
             padding: 12px;
-            background-color: #e8b923; /* Pastel yellow (unchanged) */
-            color: #2b2b2b; /* Dark gray text for contrast */
-            border: 2px dashed #555; /* Darker dashed border */
+            background-color: #e8b923;
+            color: #2b2b2b;
+            border: 2px dashed #555;
             border-radius: 8px;
             cursor: pointer;
             transition: all 0.3s ease;
@@ -119,25 +122,27 @@
         }
 
         #industryFilter:hover {
-            background-color: #d9a413; /* Slightly darker yellow (unchanged) */
+            background-color: #d9a413;
             transform: translateY(-2px);
         }
 
         .search-bar button {
             padding: 12px 20px;
-            background-color: #e8b923; /* Pastel yellow (unchanged) */
-            color: #2b2b2b; /* Dark gray text for contrast */
-            border: 2px dashed #555; /* Darker dashed border */
+            background-color: #e8b923;
+            color: #2b2b2b;
+            border: 2px dashed #555;
             border-radius: 8px;
             cursor: pointer;
             transition: all 0.3s ease;
             font-weight: bold;
             position: relative;
             overflow: hidden;
+            touch-action: manipulation;
+            -webkit-tap-highlight-color: transparent;
         }
 
         .search-bar button:hover {
-            background-color: #d9a413; /* Slightly darker yellow (unchanged) */
+            background-color: #d9a413;
             transform: translateY(-2px);
             box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.5);
         }
@@ -174,12 +179,12 @@
         }
 
         .company-card, .project-card {
-            background-color: #3c3c3c; /* Darker gray */
+            background-color: #3c3c3c;
             padding: 20px;
             border-radius: 12px;
-            border: 2px dashed #555; /* Darker dashed border */
+            border: 2px dashed #555;
             box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.5),
-                       -5px -5px 15px rgba(255, 255, 255, 0.1); /* Adjusted shadow */
+                       -5px -5px 15px rgba(255, 255, 255, 0.1);
             transition: all 0.4s ease;
             position: relative;
             overflow: hidden;
@@ -189,7 +194,7 @@
             transform: translateY(-8px) scale(1.03);
             box-shadow: 8px 8px 20px rgba(0, 0, 0, 0.7),
                        -8px -8px 20px rgba(255, 255, 255, 0.2);
-            background-color: #4a4a4a; /* Dark gray hover */
+            background-color: #4a4a4a;
         }
 
         .company-card::before, .project-card::before {
@@ -210,42 +215,44 @@
 
         .company-card h3, .project-card h4 {
             margin: 0 0 12px;
-            color: #e8b923; /* Pastel yellow (unchanged) */
+            color: #e8b923;
             transition: color 0.3s ease;
         }
 
         .company-card:hover h3, .project-card:hover h4 {
-            color: #d9a413; /* Slightly darker yellow (unchanged) */
+            color: #d9a413;
         }
 
         .company-card p, .project-card p {
             margin: 8px 0;
-            color: #b0b0b0; /* Lighter gray text */
+            color: #b0b0b0;
             line-height: 1.5;
         }
 
         .company-card button, .project-card button {
             margin-top: 15px;
             padding: 10px 20px;
-            background-color: #e8b923; /* Pastel yellow (unchanged) */
-            color: #2b2b2b; /* Dark gray text for contrast */
-            border: 2px dashed #555; /* Darker dashed border */
+            background-color: #e8b923;
+            color: #2b2b2b;
+            border: 2px dashed #555;
             border-radius: 8px;
             cursor: pointer;
             transition: all 0.3s ease;
             font-weight: bold;
+            touch-action: manipulation;
+            -webkit-tap-highlight-color: transparent;
         }
 
         .company-card button:hover, .project-card button:hover {
-            background-color: #d9a413; /* Slightly darker yellow (unchanged) */
+            background-color: #d9a413;
             transform: translateY(-2px);
             box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.5);
         }
 
         #suggestionsContainer {
             position: absolute;
-            background-color: #3c3c3c; /* Darker gray */
-            border: 2px dashed #555; /* Darker dashed border */
+            background-color: #3c3c3c;
+            border: 2px dashed #555;
             border-radius: 8px;
             max-height: 200px;
             overflow-y: auto;
@@ -258,25 +265,33 @@
         .suggestion-item {
             padding: 12px;
             cursor: pointer;
-            color: #d3d3d3; /* Light gray text */
-            border-bottom: 1px dashed #555; /* Darker dashed border */
+            color: #d3d3d3;
+            border-bottom: 1px dashed #555;
             transition: all 0.3s ease;
+            touch-action: manipulation;
+            -webkit-tap-highlight-color: transparent;
         }
 
         .suggestion-item:hover {
-            background-color: #4a4a4a; /* Dark gray hover */
-            color: #d9a413; /* Slightly darker yellow (unchanged) */
+            background-color: #4a4a4a;
+            color: #d9a413;
+        }
+
+        .highlight {
+            background-color: #d9a413;
+            color: #2b2b2b;
+            padding: 0 2px;
         }
 
         .loading {
             text-align: center;
             font-size: 1.2rem;
             margin: 20px 0;
-            color: #b0b0b0; /* Lighter gray text */
+            color: #b0b0b0;
         }
 
         .error {
-            color: #d32f2f; /* Red (unchanged) */
+            color: #d32f2f;
             text-align: center;
             margin: 20px 0;
             font-weight: bold;
@@ -284,29 +299,7 @@
 
         footer {
             margin-top: auto;
-            color: #b0b0b0; /* Lighter gray text */
-        }
-
-        @media (max-width: 768px) {
-            .navbar {
-                flex-direction: column;
-                gap: 10px;
-            }
-
-            .search-bar form {
-                flex-direction: column;
-                gap: 15px;
-            }
-
-            .search-bar input, #suggestionsContainer {
-                width: 100%;
-            }
-        }
-
-        .company-card button {
-            pointer-events: auto;
-            z-index: 10;
-            position: relative;
+            color: #b0b0b0;
         }
 
         .notification-badge {
@@ -326,11 +319,124 @@
         #notificationLink {
             position: relative;
         }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+
+            header, footer {
+                padding: 10px;
+                margin-bottom: 15px;
+            }
+
+            h1 {
+                font-size: 1.8rem;
+            }
+
+            .navbar {
+                flex-direction: column;
+                gap: 8px;
+                padding: 8px;
+            }
+
+            .navbar a {
+                padding: 8px 12px;
+                font-size: 0.9rem;
+            }
+
+            .search-bar form {
+                flex-direction: column;
+                gap: 10px;
+                padding: 0 10px;
+            }
+
+            .search-bar input, #industryFilter, .search-bar button {
+                width: 100%;
+                max-width: none;
+                padding: 10px;
+                font-size: 0.9rem;
+            }
+
+            #suggestionsContainer {
+                width: 100%;
+                max-height: 150px;
+            }
+
+            #companyCardsContainer, #projectsContainer {
+                grid-template-columns: 1fr;
+                gap: 15px;
+                padding: 0 10px;
+            }
+
+            .company-card, .project-card {
+                padding: 15px;
+            }
+
+            .company-card h3, .project-card h4 {
+                font-size: 1.2rem;
+            }
+
+            .company-card p, .project-card p {
+                font-size: 0.85rem;
+            }
+
+            .company-card button, .project-card button {
+                padding: 8px 15px;
+                font-size: 0.9rem;
+            }
+
+            .company-card::before, .project-card::before {
+                display: none;
+            }
+
+            .notification-badge {
+                font-size: 10px;
+                padding: 1px 4px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 1.5rem;
+            }
+
+            .navbar a {
+                font-size: 0.85rem;
+                padding: 6px 10px;
+            }
+
+            .search-bar input, #industryFilter, .search-bar button {
+                padding: 8px;
+                font-size: 0.85rem;
+            }
+
+            .company-card, .project-card {
+                padding: 12px;
+            }
+
+            .company-card h3, .project-card h4 {
+                font-size: 1.1rem;
+            }
+
+            .company-card p, .project-card p {
+                font-size: 0.8rem;
+            }
+
+            .company-card button, .project-card button {
+                padding: 6px 12px;
+                font-size: 0.85rem;
+            }
+
+            footer {
+                font-size: 0.8rem;
+            }
+        }
     </style>
 </head>
 <body>
     <header>
-        <div class="navbar">
+        <div class="navbar" role="navigation">
             <a href="/profile" aria-label="Profile"><i class="fas fa-user"></i></a>
             <a href="/notification" aria-label="Notifications" id="notificationLink">
                 <i class="fas fa-bell"></i>
@@ -339,12 +445,11 @@
             <a href="/settings" aria-label="Settings"><i class="fas fa-cog"></i></a>
             <a href="/personality" aria-label="Personality Test">Personality Test</a>
             <a href="/industry_quiz" aria-label="Industry Quizzes"><i class="fas fa-question-circle"></i></a>
-            <!-- <a href="/pilot" aria-label="Pilot Program"><i class="fas fa-rocket"></i> Pilot Program</a> -->
         </div>
     </header>
     
     <div class="search-bar">
-        <form id="searchForm">
+        <form id="searchForm" aria-label="Search companies or projects">
             <input type="text" id="searchInput" placeholder="Search for companies or projects...">
             <select id="industryFilter">
                 <option value="">All Industries</option>
