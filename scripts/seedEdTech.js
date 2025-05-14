@@ -21,87 +21,23 @@ async function seedEdTechQuizzes() {
         await Quiz.insertMany([
             {
                 industry: 'edtech',
-                question: 'What is the primary benefit of using Learning Management Systems (LMS) like Moodle or Canvas in EdTech?',
-                options: [
-                    'Posting on social media',
-                    'Streaming live videos',
-                    'Managing, delivering, and tracking learning content efficiently',
-                    'Blocking distractions on student devices'
-                ],
+                question: 'Which machine learning architecture is best for modeling sequential learning behavior?',
+                options: ['CNN', 'SVM', 'RNN', 'Random Forest'],
                 correctAnswer: 2,
-                date: 'Mon May 12 2025'
+                date: 'Wed May 14 2025'
             },
             {
                 industry: 'edtech',
-                question: 'What does SCORM stand for in digital learning standards?',
+                question: 'What does the term "learning analytics" refer to in EdTech?',
                 options: [
-                    'Standardized Curriculum for Online Resource Management',
-                    'Sharable Content Object Reference Model',
-                    'Simple Content Organization & Retrieval Mechanism',
-                    'Structured Course Outline Reporting Method'
+                    'Creating eBooks',
+                    "Analyzing learners' data to improve outcomes", // ✅ Fixed
+                    'Managing course subscriptions',
+                    'Storing digital credentials'
                 ],
+                
                 correctAnswer: 1,
-                date: 'Mon May 12 2025'
-            },
-            {
-                industry: 'edtech',
-                question: 'Which of the following best defines adaptive learning in EdTech?',
-                options: [
-                    'A fixed module system for learning',
-                    'Real-time social learning',
-                    'Learning that adjusts content based on learner performance and behavior',
-                    'One-on-one manual tutoring'
-                ],
-                correctAnswer: 2,
-                date: 'Mon May 12 2025'
-            },
-            {
-                industry: 'edtech',
-                question: 'Which algorithm is commonly used to personalize content in EdTech platforms?',
-                options: [
-                    'PageRank',
-                    'Apriori Algorithm',
-                    'Collaborative Filtering',
-                    'Kruskal’s Algorithm'
-                ],
-                correctAnswer: 2,
-                date: 'Mon May 12 2025'
-            },
-            {
-                industry: 'edtech',
-                question: 'What is a key challenge of gamification in EdTech systems?',
-                options: [
-                    'Lack of internet speed',
-                    'Over-reliance on rote memorization',
-                    'Balancing engagement with meaningful learning outcomes',
-                    'Installing software updates'
-                ],
-                correctAnswer: 2,
-                date: 'Mon May 12 2025'
-            },
-            {
-                industry: 'edtech',
-                question: 'Which metric best tracks the effectiveness of an EdTech course?',
-                options: [
-                    'Number of downloads',
-                    'Student completion and assessment performance',
-                    'Course length',
-                    'Login frequency'
-                ],
-                correctAnswer: 1,
-                date: 'Mon May 12 2025'
-            },
-            {
-                industry: 'edtech',
-                question: 'What is microlearning in the context of EdTech?',
-                options: [
-                    'Learning using microscopic images',
-                    'Short, focused learning units or activities',
-                    'Learning through virtual labs',
-                    'Group-based collaborative learning'
-                ],
-                correctAnswer: 1,
-                date: 'Mon May 12 2025'
+                date: 'Wed May 14 2025'
             },
             {
                 industry: 'edtech',
@@ -112,31 +48,59 @@ async function seedEdTechQuizzes() {
             },
             {
                 industry: 'edtech',
-                question: 'What does xAPI (Experience API) enable in EdTech?',
-                options: [
-                    'Creating animated videos',
-                    'Tracking learning experiences across platforms and contexts',
-                    'Blocking unproductive sites',
-                    'Video compression'
-                ],
-                correctAnswer: 1,
-                date: 'Mon May 12 2025'
+                question: 'Which protocol is used in xAPI to track learning records?',
+                options: ['HTTP', 'LRS', 'RESTful APIs', 'FTP'],
+                correctAnswer: 2,
+                date: 'Wed May 14 2025'
             },
             {
                 industry: 'edtech',
-                question: 'What is the main drawback of a purely MOOC-based education system?',
+                question: 'Which approach best supports differentiated learning in digital classrooms?',
+                options: ['Fixed syllabus', 'Standardized testing', 'Adaptive learning systems', 'Long lectures'],
+                correctAnswer: 2,
+                date: 'Wed May 14 2025'
+            },
+            {
+                industry: 'edtech',
+                question: 'Which cloud service is most useful for EdTech platforms during peak exam seasons?',
+                options: ['Static hosting', 'Load balancer with autoscaling', 'Edge computing', 'IoT hubs'],
+                correctAnswer: 1,
+                date: 'Wed May 14 2025'
+            },
+            {
+                industry: 'edtech',
+                question: 'Which EdTech standard enables reuse and interoperability of content modules?',
+                options: ['JSON', 'XML', 'SCORM', 'HTML5'],
+                correctAnswer: 2,
+                date: 'Wed May 14 2025'
+            },
+            {
+                industry: 'edtech',
+                question: 'What is the role of a Learning Record Store (LRS)?',
                 options: [
-                    'Cost of content creation',
-                    'Limited scalability',
-                    'Low student retention and course completion rates',
-                    'Too much instructor involvement'
+                    'To encrypt user data',
+                    'To serve static course content',
+                    'To collect and store experiential learning data',
+                    'To schedule virtual exams'
                 ],
                 correctAnswer: 2,
-                date: 'Mon May 12 2025'
+                date: 'Wed May 14 2025'
+            },
+            {
+                industry: 'edtech',
+                question: 'What challenge does FERPA compliance address in EdTech?',
+                options: ['Engagement', 'Content distribution', 'Student data privacy', 'UI/UX design'],
+                correctAnswer: 2,
+                date: 'Wed May 14 2025'
+            },
+            {
+                industry: 'edtech',
+                question: 'Which analytical technique is most suitable for evaluating course effectiveness?',
+                options: ['Regression analysis', 'Image recognition', 'Encryption', 'Pathfinding algorithms'],
+                correctAnswer: 0,
+                date: 'Wed May 14 2025'
             }
-        ]);
-        
-
+        ])
         console.log('EdTech quiz questions seeded successfully for', today);
     } catch (error) {
         console.error('Error seeding EdTech quizzes:', error);

@@ -17,97 +17,76 @@ async function seedFinanceQuizzes() {
 
         await Quiz.insertMany([
             {
-                industry: 'Finance',
-                question: 'What does KYC stand for in financial regulation?',
-                options: [
-                    'Keep Your Cash',
-                    'Know Your Customer',
-                    'Key Yield Certificate',
-                    'Knowledge of Yearly Capital'
-                ],
-                correctAnswer: 1,
-                date: 'Mon May 12 2025'
+              industry: 'finance',
+              question: 'Which model is used to determine the theoretical value of options?',
+              options: ['CAPM', 'Black-Scholes Model', 'Monte Carlo Tree Search', 'Arbitrage Pricing Theory'],
+              correctAnswer: 1,
+              date: today
             },
             {
-                industry: 'Finanace',
-                question: 'Which technology is most commonly used for ensuring secure, transparent, and tamper-proof financial transactions?',
-                options: ['Cloud Computing', 'Blockchain', 'AI/ML', 'Big Data'],
-                correctAnswer: 1,
-                date: 'Mon May 12 2025'
+              industry: 'finance',
+              question: 'What is a key assumption of the Efficient Market Hypothesis?',
+              options: ['All investors have insider information', 'Stock prices follow trends', 'Markets instantly reflect all available information', 'Only institutions influence prices'],
+              correctAnswer: 2,
+              date: today
             },
             {
-                industry: 'Finance',
-                question: 'What is the primary function of a Robo-Advisor in FinTech?',
-                options: [
-                    'Handling customer complaints',
-                    'Automatically managing investment portfolios using algorithms',
-                    'Creating tax returns',
-                    'Auditing banking transactions manually'
-                ],
-                correctAnswer: 1,
-                date: 'Mon May 12 2025'
+              industry: 'finance',
+              question: 'What does Basel III primarily aim to improve?',
+              options: ['Cryptocurrency adoption', 'Loan issuance speed', 'Bank capital adequacy and risk management', 'Digital payment systems'],
+              correctAnswer: 2,
+              date: today
             },
             {
-                industry: 'Finance',
-                question: 'Which regulation in Europe governs data protection and impacts FinTech firms significantly?',
-                options: ['MiFID II', 'SEPA', 'GDPR', 'PSD2'],
-                correctAnswer: 2,
-                date: 'Mon May 12 2025'
+              industry: 'finance',
+              question: 'Which of the following is considered a leading indicator of economic performance?',
+              options: ['GDP', 'Unemployment rate', 'Stock market returns', 'Inflation'],
+              correctAnswer: 1,
+              date: today
             },
             {
-                industry: 'Finance',
-                question: 'What is the role of APIs in Open Banking?',
-                options: [
-                    'Encrypting databases',
-                    'Allowing third-party apps to access banking data securely with user consent',
-                    'Displaying interest rates',
-                    'Handling offline ATM transactions'
-                ],
-                correctAnswer: 1,
-                date: 'Mon May 12 2025'
+              industry: 'finance',
+              question: 'What is the Sharpe Ratio used for?',
+              options: ['Predicting inflation', 'Measuring investment return adjusted for risk', 'Calculating tax liability', 'Tracking liquidity'],
+              correctAnswer: 1,
+              date: today
             },
             {
-                industry: 'Finance',
-                question: 'Which FinTech model facilitates peer-to-peer (P2P) lending without involving traditional banks?',
-                options: ['Robo-Advisory', 'NeoBanking', 'Crowdfunding Platforms', 'P2P Lending Platforms'],
-                correctAnswer: 3,
-                date: 'Mon May 12 2025'
+              industry: 'finance',
+              question: 'Which technique is most suitable for stress testing a financial portfolio?',
+              options: ['Backtesting', 'Monte Carlo simulation', 'Time-series decomposition', 'Linear regression'],
+              correctAnswer: 1,
+              date: today
             },
             {
-                industry: 'Finance',
-                question: 'Which of the following is a key risk in algorithmic trading systems?',
-                options: ['Manual error', 'Lack of market data', 'Latency and flash crashes', 'Excessive compliance'],
-                correctAnswer: 2,
-                date: 'Mon May 12 2025'
+              industry: 'finance',
+              question: 'Which financial statement shows a company’s liquidity position?',
+              options: ['Income Statement', 'Balance Sheet', 'Statement of Retained Earnings', 'Cash Flow from Financing'],
+              correctAnswer: 1,
+              date: today
             },
             {
-                industry: 'Finance',
-                question: 'What is "tokenization" in digital payments?',
-                options: [
-                    'Breaking payments into monthly installments',
-                    'Replacing sensitive card data with a non-sensitive equivalent token',
-                    'Translating credit reports into visual graphs',
-                    'Assigning unique codes to banking employees'
-                ],
-                correctAnswer: 1,
-                date: 'Mon May 12 2025'
+              industry: 'finance',
+              question: 'In bond valuation, what does “duration” measure?',
+              options: ['Interest payment amount', 'Default probability', 'Price volatility relative to interest rates', 'Maturity date'],
+              correctAnswer: 2,
+              date: today
             },
             {
-                industry: 'Finance',
-                question: 'Which cryptocurrency introduced the concept of smart contracts?',
-                options: ['Bitcoin', 'Litecoin', 'Ripple', 'Ethereum'],
-                correctAnswer: 3,
-                date: 'Mon May 12 2025'
+              industry: 'finance',
+              question: 'What does a negative beta imply about a stock?',
+              options: ['It is highly volatile', 'It moves opposite to the market', 'It is illiquid', 'It is undervalued'],
+              correctAnswer: 1,
+              date: today
             },
             {
-                industry: 'Finance',
-                question: 'Which metric best represents a FinTech app’s user monetization efficiency?',
-                options: ['Monthly Active Users', 'Churn Rate', 'Average Revenue Per User (ARPU)', 'Retention Rate'],
-                correctAnswer: 2,
-                date: 'Mon May 12 2025'
+              industry: 'finance',
+              question: 'Which type of risk does diversification help reduce?',
+              options: ['Systematic Risk', 'Liquidity Risk', 'Unsystematic Risk', 'Credit Risk'],
+              correctAnswer: 2,
+              date: today
             }
         ]);
-        
 
         console.log('Finance quiz questions seeded successfully for', today);
     } catch (error) {

@@ -25,116 +25,75 @@ async function seedEcommerceQuizzes() {
         await Quiz.insertMany([
             {
                 industry: 'ecommerce',
-                question: 'Which algorithm is most commonly used in recommendation systems for E-commerce platforms like Amazon?',
-                options: ['K-Means Clustering', 'Collaborative Filtering', 'Naive Bayes', 'Linear Regression'],
-                correctAnswer: 1,
-                date: 'Mon May 12 2025'
+                question: 'Which metric is used to evaluate the average revenue per user session?',
+                options: ['AOV', 'CTR', 'CPC', 'LTV'],
+                correctAnswer: 0,
+                date: 'Wed May 14 2025'
             },
             {
                 industry: 'ecommerce',
-                question: 'In E-commerce analytics, what does the term "Customer Lifetime Value (CLTV)" measure?',
-                options: [
-                    'The average number of purchases per year',
-                    'The predicted net profit from the entire future relationship with a customer',
-                    'The current balance in the customer account',
-                    'The total ad spend on acquiring a customer'
-                ],
+                question: 'Which of the following best defines cart abandonment rate?',
+                options: ['Customers not finding products', 'Customers leaving before purchase after adding items to cart', 'Low app ratings', 'Negative reviews'],
                 correctAnswer: 1,
-                date: 'Mon May 12 2025'
+                date: 'Wed May 14 2025'
             },
             {
                 industry: 'ecommerce',
-                question: 'What is "omnichannel retailing" in E-commerce?',
-                options: [
-                    'Selling through one exclusive channel',
-                    'Integrating multiple sales channels to provide a seamless customer experience',
-                    'Marketing only via mobile applications',
-                    'Retailing only through physical stores'
-                ],
-                correctAnswer: 1,
-                date: 'Mon May 12 2025'
-            },
-            {
-                industry: 'ecommerce',
-                question: 'Which of the following best describes “drop shipping”?',
-                options: [
-                    'Storing goods in a centralized warehouse',
-                    'Outsourcing deliveries to third-party logistics',
-                    'Selling goods without holding inventory and shipping directly from the supplier',
-                    'Using drones to deliver products'
-                ],
+                question: 'What is dynamic pricing?',
+                options: ['Changing warehouse stock', 'Setting fixed price for every product', 'Adjusting prices based on real-time demand and competition', 'Bundling low-stock items'],
                 correctAnswer: 2,
-                date: 'Mon May 12 2025'
+                date: 'Wed May 14 2025'
             },
             {
                 industry: 'ecommerce',
-                question: 'How does Dynamic Pricing benefit an E-commerce platform?',
-                options: [
-                    'By allowing prices to remain stable over time',
-                    'By offering a fixed markup on all products',
-                    'By adjusting prices based on demand, competitor pricing, or customer data',
-                    'By displaying fake discounts'
-                ],
-                correctAnswer: 2,
-                date: 'Mon May 12 2025'
-            },
-            {
-                industry: 'ecommerce',
-                question: 'What role does A/B testing play in optimizing E-commerce websites?',
-                options: [
-                    'It compares website speed with and without ads',
-                    'It helps choose the best domain name',
-                    'It measures the impact of design or content changes on user behavior',
-                    'It replaces traditional market research'
-                ],
-                correctAnswer: 2,
-                date: 'Mon May 12 2025'
-            },
-            {
-                industry: 'ecommerce',
-                question: 'Which of the following payment systems is most secure for online E-commerce transactions?',
-                options: ['Cash on Delivery', 'Magnetic Stripe Cards', 'Two-Factor Authentication with Tokenization', 'Bank Cheque'],
-                correctAnswer: 2,
-                date: 'Mon May 12 2025'
-            },
-            {
-                industry: 'ecommerce',
-                question: 'What is a “conversion funnel” in an E-commerce context?',
-                options: [
-                    'A tool for measuring SEO performance',
-                    'A representation of the journey customers take from landing to purchase',
-                    'A method of tax calculation',
-                    'A strategy for upselling premium products'
-                ],
+                question: 'Which architecture pattern best supports scalability in large eCommerce platforms?',
+                options: ['Monolithic', 'Microservices', 'Client-Server', 'Peer-to-Peer'],
                 correctAnswer: 1,
-                date: 'Mon May 12 2025'
+                date: 'Wed May 14 2025'
             },
             {
                 industry: 'ecommerce',
-                question: 'What is “headless commerce”?',
-                options: [
-                    'An E-commerce model that uses drones',
-                    'An architecture where the front-end is decoupled from the back-end commerce functionality',
-                    'A strategy that avoids customer-facing interfaces',
-                    'A database-free online store model'
-                ],
-                correctAnswer: 1,
-                date: 'Mon May 12 2025'
+                question: 'What is the significance of Omnichannel strategy?',
+                options: ['It focuses only on mobile apps', 'It separates online and offline strategies', 'It ensures seamless experience across multiple channels', 'It promotes international shipping only'],
+                correctAnswer: 2,
+                date: 'Wed May 14 2025'
             },
             {
                 industry: 'ecommerce',
-                question: 'In terms of SEO for E-commerce, what does a canonical URL help with?',
-                options: [
-                    'Displaying product images',
-                    'Preventing duplicate content issues by specifying the preferred version of a page',
-                    'Linking to social media',
-                    'Encrypting URLs for security'
-                ],
+                question: 'What does the term "headless commerce" mean?',
+                options: ['A platform without inventory', 'Separation of front-end and back-end commerce layers', 'Ecommerce without product descriptions', 'Automation without APIs'],
                 correctAnswer: 1,
-                date: 'Mon May 12 2025'
+                date: 'Wed May 14 2025'
+            },
+            {
+                industry: 'ecommerce',
+                question: 'Which KPI directly reflects customer loyalty?',
+                options: ['Conversion rate', 'Average order value', 'Repeat purchase rate', 'Click-through rate'],
+                correctAnswer: 2,
+                date: 'Wed May 14 2025'
+            },
+            {
+                industry: 'ecommerce',
+                question: 'Which factor most affects eCommerce checkout conversion?',
+                options: ['Product reviews', 'High-quality images', 'Payment friction and shipping cost transparency', 'Blog content'],
+                correctAnswer: 2,
+                date: 'Wed May 14 2025'
+            },
+            {
+                industry: 'ecommerce',
+                question: 'Which legal framework impacts eCommerce data collection practices in Europe?',
+                options: ['HIPAA', 'GDPR', 'FERPA', 'FATCA'],
+                correctAnswer: 1,
+                date: 'Wed May 14 2025'
+            },
+            {
+                industry: 'ecommerce',
+                question: 'Which technique helps in recommending products based on user behavior?',
+                options: ['Rule-based logic', 'Content moderation', 'Collaborative filtering', 'Sorting by price'],
+                correctAnswer: 2,
+                date: 'Wed May 14 2025'
             }
         ]);
-        
 
         console.log('E-commerce quiz questions seeded successfully for', today);
     } catch (error) {

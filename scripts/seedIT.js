@@ -17,104 +17,74 @@ async function seedITQuizzes() {
 
         await Quiz.insertMany([
             {
-                industry: 'IT',
-                question: 'Which software development methodology emphasizes short development cycles and frequent releases?',
-                options: ['Waterfall', 'Agile', 'V-Model', 'RAD'],
-                correctAnswer: 1,
-                date: 'Mon May 12 2025'
+              industry: 'it',
+              question: 'Which consistency model in distributed systems provides the weakest guarantees but highest availability?',
+              options: ['Linearizability', 'Strong consistency', 'Eventual consistency', 'Sequential consistency'],
+              correctAnswer: 2,
+              date: today
             },
             {
-                industry: 'IT',
-                question: 'What is the primary function of a reverse proxy server?',
-                options: [
-                    'Encrypt internal database records',
-                    'Redirect requests from internal clients to the internet',
-                    'Distribute client requests to multiple backend servers',
-                    'Scan code for bugs'
-                ],
-                correctAnswer: 2,
-                date: 'Mon May 12 2025'
+              industry: 'it',
+              question: 'What is the primary role of a container orchestrator like Kubernetes?',
+              options: ['Virtualization', 'Logging', 'Service discovery and scaling', 'Scheduling CPU processes'],
+              correctAnswer: 2,
+              date: today
             },
             {
-                industry: 'IT',
-                question: 'Which of the following is NOT a NoSQL database?',
-                options: ['MongoDB', 'Cassandra', 'Redis', 'MySQL'],
-                correctAnswer: 3,
-                date: 'Mon May 12 2025'
+              industry: 'it',
+              question: 'Which algorithm does Git use for content hashing?',
+              options: ['SHA-256', 'MD5', 'SHA-1', 'AES'],
+              correctAnswer: 2,
+              date: today
             },
             {
-                industry: 'IT',
-                question: 'What does CI/CD stand for in software deployment?',
-                options: [
-                    'Customer Integration / Code Design',
-                    'Continuous Integration / Continuous Deployment',
-                    'Cloud Infrastructure / Code Development',
-                    'Containerized Interface / Code Debugging'
-                ],
-                correctAnswer: 1,
-                date: ' Mon May 12 2025'
+              industry: 'it',
+              question: 'Which protocol ensures secure web traffic by default?',
+              options: ['HTTP', 'SSL', 'HTTPS with TLS', 'IPSec'],
+              correctAnswer: 2,
+              date: today
             },
             {
-                industry: 'IT',
-                question: 'Which algorithm is commonly used for route optimization in logistics IT systems?',
-                options: ['Dijkstra’s Algorithm', 'A* Algorithm', 'DFS', 'Apriori'],
-                correctAnswer: 0,
-                date: 'Mon May 12 2025'
+              industry: 'it',
+              question: 'What does ACID stand for in databases?',
+              options: ['Access, Control, Integrity, Delivery', 'Atomicity, Consistency, Isolation, Durability', 'Analytics, Calculation, Indexing, Distribution', 'Automated, Cloud, Independent, Decentralized'],
+              correctAnswer: 1,
+              date: today
             },
             {
-                industry: 'IT',
-                question: 'What does “Infrastructure as Code (IaC)” enable in IT DevOps?',
-                options: [
-                    'Manual server updates',
-                    'Storing data in CSV files',
-                    'Automated provisioning and management of infrastructure using code',
-                    'Creating user manuals for cloud systems'
-                ],
-                correctAnswer: 2,
-                date: 'Mon May 12 2025'
+              industry: 'it',
+              question: 'Which sorting algorithm has the best average time complexity?',
+              options: ['Bubble Sort', 'Merge Sort', 'Selection Sort', 'Insertion Sort'],
+              correctAnswer: 1,
+              date: today
             },
             {
-                industry: 'IT',
-                question: 'Which of the following is a container orchestration tool?',
-                options: ['Docker', 'Jenkins', 'Kubernetes', 'Git'],
-                correctAnswer: 2,
-                date: 'Mon May 12 2025'
+              industry: 'it',
+              question: 'What is the function of the CAP theorem in system design?',
+              options: ['To optimize cache speed', 'To evaluate compiler efficiency', 'To explain trade-offs between consistency, availability, and partition tolerance', 'To calculate network speed'],
+              correctAnswer: 2,
+              date: today
             },
             {
-                industry: 'IT',
-                question: 'What is a key purpose of load balancing in IT infrastructure?',
-                options: [
-                    'To prevent DNS leaks',
-                    'To optimize resource utilization and prevent server overload',
-                    'To speed up CSS delivery',
-                    'To route emails to spam folders'
-                ],
-                correctAnswer: 1,
-                date: 'Mon May 12 2025'
+              industry: 'it',
+              question: 'Which network model layer is responsible for reliable transmission of data?',
+              options: ['Application', 'Transport', 'Session', 'Presentation'],
+              correctAnswer: 1,
+              date: today
             },
             {
-                industry: 'IT',
-                question: 'What is the main function of an API Gateway?',
-                options: [
-                    'Storing data on-premise',
-                    'Providing analytics dashboards',
-                    'Handling requests and directing them to appropriate microservices',
-                    'Encrypting REST endpoints'
-                ],
-                correctAnswer: 2,
-                date: 'Mon May 12 2025'
+              industry: 'it',
+              question: 'Which design pattern is used for managing database connections efficiently?',
+              options: ['Observer', 'Singleton', 'Decorator', 'Adapter'],
+              correctAnswer: 1,
+              date: today
             },
             {
-                industry: 'IT',
-                question: 'Which programming paradigm is most emphasized in functional languages like Haskell or Elixir?',
-                options: [
-                    'Object-Oriented Programming',
-                    'Imperative Programming',
-                    'Procedural Programming',
-                    'Declarative and Functional Programming'
-                ],
-                correctAnswer: 3,
-                date: 'Mon May 12 2025'
+              industry: 'it',
+              question: 'Which of the following tools is best for Infrastructure as Code (IaC)?',
+              options: ['Docker', 'Terraform', 'Nginx', 'Webpack'],
+              correctAnswer: 1,
+              date: today
             }
         ]);
         

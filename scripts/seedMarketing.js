@@ -17,107 +17,76 @@ async function seedMarketingQuizzes() {
 
         await Quiz.insertMany([
             {
-                industry: 'marketing',
-                question: 'What is the main purpose of A/B testing in digital marketing?',
-                options: [
-                    'To build customer loyalty programs',
-                    'To compare two versions of a campaign or webpage for performance',
-                    'To remove bots from email lists',
-                    'To automate PPC bidding'
-                ],
-                correctAnswer: 1,
-                date: 'Mon May 12 2025'
+              industry: 'marketing',
+              question: 'What is a key purpose of sentiment analysis in digital marketing?',
+              options: ['Design logos', 'Monitor website performance', 'Analyze consumer emotion in brand mentions', 'Calculate ROI'],
+              correctAnswer: 2,
+              date: today
             },
             {
-                industry: 'marketing',
-                question: 'What does CAC stand for in marketing analytics?',
-                options: [
-                    'Customer Acquisition Cost',
-                    'Content Analytics Console',
-                    'Channel Advertising Campaign',
-                    'Conversion Attribution Calculator'
-                ],
-                correctAnswer: 0,
-                date: 'Mon May 12 2025'
+              industry: 'marketing',
+              question: 'Which model breaks down marketing attribution across the customer journey?',
+              options: ['Funnel Model', 'STP Model', 'Multi-Touch Attribution Model', 'Flywheel Model'],
+              correctAnswer: 2,
+              date: today
             },
             {
-                industry: 'marketing',
-                question: 'Which metric directly indicates the percentage of users who completed a desired action?',
-                options: ['Impression Share', 'Click-Through Rate', 'Engagement Rate', 'Conversion Rate'],
-                correctAnswer: 3,
-                date: 'Mon May 12 2025'
+              industry: 'marketing',
+              question: 'Which metric best measures content virality?',
+              options: ['Conversion Rate', 'Impression Count', 'Share Ratio', 'Click-Through Rate'],
+              correctAnswer: 2,
+              date: today
             },
             {
-                industry: 'marketing',
-                question: 'What is programmatic advertising?',
-                options: [
-                    'Advertising that runs only on TV',
-                    'Manual bidding for keywords',
-                    'Automated buying and placement of ads using software and data algorithms',
-                    'Sponsored social media posts'
-                ],
-                correctAnswer: 2,
-                date: 'Mon May 12 2025'
+              industry: 'marketing',
+              question: 'What is "retargeting" in digital advertising?',
+              options: ['Advertising via influencers', 'Showing ads to previous site visitors', 'Running YouTube ads', 'Tracking bounce rate'],
+              correctAnswer: 1,
+              date: today
             },
             {
-                industry: 'marketing',
-                question: 'Which digital marketing model focuses on earning links and shares without paying for exposure?',
-                options: ['Owned Media', 'Earned Media', 'Paid Media', 'Shared Media'],
-                correctAnswer: 1,
-                date: 'Mon May 12 2025'
+              industry: 'marketing',
+              question: 'What does A/B testing evaluate in marketing?',
+              options: ['Server load', 'Campaign performance differences between two versions', 'SEO effectiveness', 'App response times'],
+              correctAnswer: 1,
+              date: today
             },
             {
-                industry: 'marketing',
-                question: 'Which term describes tailoring content or offers based on user behavior or data?',
-                options: ['Segmentation', 'Personalization', 'Branding', 'Retargeting'],
-                correctAnswer: 1,
-                date: 'Mon May 12 2025'
+              industry: 'marketing',
+              question: 'Which platform is best for B2B content marketing?',
+              options: ['Instagram', 'LinkedIn', 'TikTok', 'Pinterest'],
+              correctAnswer: 1,
+              date: today
             },
             {
-                industry: 'marketing',
-                question: 'What is the key difference between SEO and SEM?',
-                options: [
-                    'SEM uses organic traffic while SEO is paid',
-                    'SEO involves both paid and unpaid search',
-                    'SEO focuses on unpaid search results while SEM includes paid strategies',
-                    'There is no difference'
-                ],
-                correctAnswer: 2,
-                date: 'Mon May 12 2025'
+              industry: 'marketing',
+              question: 'What is the main function of a Customer Data Platform (CDP)?',
+              options: ['Content hosting', 'User interface design', 'Collect and unify customer data from multiple sources', 'Heatmap generation'],
+              correctAnswer: 2,
+              date: today
             },
             {
-                industry: 'marketing',
-                question: 'Which analytics model gives 100% credit to the last interaction before a conversion?',
-                options: ['First-Touch Attribution', 'Time Decay Model', 'Last-Touch Attribution', 'Linear Attribution'],
-                correctAnswer: 2,
-                date: 'Mon May 12 2025'
+              industry: 'marketing',
+              question: 'Which strategy involves creating valuable content to attract customers?',
+              options: ['Outbound Marketing', 'Cold Calling', 'Inbound Marketing', 'Sponsorship'],
+              correctAnswer: 2,
+              date: today
             },
             {
-                industry: 'marketing',
-                question: 'What is a "lookalike audience" in digital advertising?',
-                options: [
-                    'A group of people who viewed your profile',
-                    'An audience that has unsubscribed',
-                    'New users similar to your existing customers based on behavioral patterns',
-                    'Anonymous users on a website'
-                ],
-                correctAnswer: 2,
-                date: 'Mon May 12 2025'
+              industry: 'marketing',
+              question: 'What does CLTV stand for?',
+              options: ['Click-Level Tracking Validation', 'Customer Lifetime Value', 'Consumer Lead Tracking Variable', 'Content Listing Time Variation'],
+              correctAnswer: 1,
+              date: today
             },
             {
-                industry: 'marketing',
-                question: 'In marketing automation, what does a lead scoring system do?',
-                options: [
-                    'Tracks leads’ location data',
-                    'Assigns values to leads based on behavior and potential to convert',
-                    'Estimates ad spend',
-                    'Creates social media posts'
-                ],
-                correctAnswer: 1,
-                date: 'Mon May 12 2025'
+              industry: 'marketing',
+              question: 'Which digital metric best indicates ad relevance to the audience?',
+              options: ['Bounce Rate', 'Conversion Rate', 'CTR (Click-Through Rate)', 'Page Load Speed'],
+              correctAnswer: 2,
+              date: today
             }
         ]);
-        
 
         console.log('Marketing quiz questions seeded successfully for', today);
     } catch (error) {
