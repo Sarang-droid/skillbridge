@@ -16,14 +16,7 @@ document.addEventListener("DOMContentLoaded", () => {
         searchInput.addEventListener('keydown', handleKeyDown);
         searchInput.focus();
 
-        // Cleanup event listeners on page unload
-        window.addEventListener('unload', () => {
-            searchInput.removeEventListener('input', handleInputDebounced);
-            searchForm.removeEventListener('submit', fetchCompanies);
-            industryFilter.removeEventListener('change', fetchCompanies);
-            clearButton.removeEventListener('click', clearSearch);
-            searchInput.removeEventListener('keydown', handleKeyDown);
-        });
+        // Event listeners are now automatically cleaned up when elements are removed from DOM
     } else {
         console.error("Required elements not found.");
         return;
@@ -33,10 +26,7 @@ document.addEventListener("DOMContentLoaded", () => {
     checkNotifications();
     const notificationInterval = setInterval(checkNotifications, 60000);
 
-    // Cleanup interval on page unload
-    window.addEventListener('unload', () => {
-        clearInterval(notificationInterval);
-    });
+    // Interval will be automatically cleared when page unloads
 });
 
 // Debounce function to limit API calls
@@ -238,7 +228,7 @@ function viewCompanyProjects(companyId) {
         return;
     }
     console.log(`Redirecting to projects for company ID: ${companyId}`);
-    window.location.href = `/company/projects?companyId=${companyId}`;
+    window.location.href = `/api/homepage/projects?companyId=${companyId}`;
 }
 
 // Display error messages
