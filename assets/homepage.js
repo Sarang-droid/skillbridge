@@ -227,8 +227,9 @@ function viewCompanyProjects(companyId) {
         displayError("Invalid company ID");
         return;
     }
-    console.log(`Redirecting to projects for company ID: ${companyId}`);
-    window.location.href = `/company?companyId=${encodeURIComponent(companyId)}`;
+    const redirectUrl = `/company/${encodeURIComponent(companyId)}`;
+    console.log(`Redirecting to: ${redirectUrl}`);
+    window.location.href = redirectUrl;
 }
 
 // Render project cards (kept for potential future use)

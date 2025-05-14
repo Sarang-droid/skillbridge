@@ -1,15 +1,15 @@
 document.addEventListener("DOMContentLoaded", function() {
     const projectsContainer = document.getElementById('projects-container');
     
-    // Ensure the correct part of the path is used for companyId
-    const urlParams = new URLSearchParams(window.location.search);
-    const companyId = urlParams.get('companyId');
+    // Extract companyId from the URL path (e.g., /company/67d933ab0f4d75fd55de7159)
+    const pathSegments = window.location.pathname.split('/');
+    const companyId = pathSegments[pathSegments.length - 1]; // Last segment is the companyId
     console.log('Company ID:', companyId);
     
-    // Check if the companyId is valid
-    if (!companyId) {
+    // Check if the companyId is valid (24-character hexadecimal for MongoDB ObjectId)
+    if (!companyId || !/^[0-9a-fA-F]{24}$/.test(companyId)) {
         projectsContainer.innerHTML = '<p>Invalid company ID. Please provide a valid company ID.</p>';
-        console.error('No company ID found in the URL.');
+        console.error('Invalid company ID:', companyId);
         return;
     }
 
@@ -52,44 +52,43 @@ document.addEventListener("DOMContentLoaded", function() {
         }
 
         // Populate the projects container with project cards
-       // Inside the projects.forEach loop where you create the project card
-projects.forEach(project => {
-    const projectCard = document.createElement('div');
-    projectCard.className = 'project-card';
-    projectCard.innerHTML = `
-        <div class="project-title">${project.title}</div>
-        <div class="project-description">${project.description}</div>
-        <div class="project-details">
-            Deadline: ${new Date(project.submissionDeadline).toLocaleDateString()}<br>
-            Applicants: ${project.applicants}
-        </div>
-        <button class="start-project" data-project-id="${project._id}">Start Project</button>
-    `;
-    projectsContainer.appendChild(projectCard);
-});
+        projects.forEach(project => {
+            const projectCard = document.createElement('div');
+            projectCard.className = 'project-card';
+            projectCard.innerHTML = `
+                <div class="project-title">${project.title}</div>
+                <div class="project-description">${project.description}</div>
+                <div class="project-details">
+                    Deadline: ${new Date(project.submissionDeadline).toLocaleDateString()}<br>
+                    Applicants: ${project.applicants}
+                </div>
+                <button class="start-project" data-project-id="${project._id}">Start Project</button>
+            `;
+            projectsContainer.appendChild(projectCard);
+        });
 
-// Event listener for 'Start Project' button click
-projectsContainer.addEventListener('click', function(e) {
-    if (e.target.classList.contains('start-project')) {
-        const projectId = e.target.getAttribute('data-project-id');
-        
-        // Debugging: Log the projectId
-        console.log('Starting project with ID:', projectId);
-        
-        if (!projectId) {
-            console.error('Project ID is missing!');
-            return;
-        }
+        // Event listener for 'Start Project' button click
+        projectsContainer.addEventListener('click', function(e) {
+            if (e.target.classList.contains('start-project')) {
+                const projectId = e.target.getAttribute('data-project-id');
+                
+                // Debugging: Log the projectId
+                console.log('Starting project with ID:', projectId);
+                
+                if (!projectId) {
+                    console.error('Project ID is missing!');
+                    return;
+                }
 
-        // Redirect to the workspace page with the projectId and companyId in the query string
-        const redirectUrl = `/workspace?projectId=${encodeURIComponent(projectId)}&companyId=${encodeURIComponent(companyId)}`;
-        console.log('Redirecting to:', redirectUrl); // Debugging: Log the redirect URL
-        window.location.href = redirectUrl;
-    }
-});
+                // Redirect to the workspace page with the projectId and companyId in the query string
+                const redirectUrl = `/workspace?projectId=${encodeURIComponent(projectId)}&companyId=${encodeURIComponent(companyId)}`;
+                console.log('Redirecting to:', redirectUrl); // Debugging: Log the redirect URL
+                window.location.href = redirectUrl;
+            }
+        });
     })
     .catch(error => {
-        console.error('Error fetching projects:', error);
-        projectsContainer.innerHTML = '<p>Error loading projects.</p>';
+        console.error('Error fetching projects:', error.message, error.stack);
+        projectsContainer.innerHTML = `<p>Error loading projects: ${error.message}</p>`;
     });
 });
