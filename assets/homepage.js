@@ -15,8 +15,6 @@ document.addEventListener("DOMContentLoaded", () => {
         clearButton.addEventListener('click', clearSearch);
         searchInput.addEventListener('keydown', handleKeyDown);
         searchInput.focus();
-
-        // Event listeners are now automatically cleaned up when elements are removed from DOM
     } else {
         console.error("Required elements not found.");
         return;
@@ -25,8 +23,6 @@ document.addEventListener("DOMContentLoaded", () => {
     fetchCompanyCards();
     checkNotifications();
     const notificationInterval = setInterval(checkNotifications, 60000);
-
-    // Interval will be automatically cleared when page unloads
 });
 
 // Debounce function to limit API calls
@@ -194,7 +190,7 @@ function renderCompanyCards(companies) {
     }
 
     companies.forEach(company => {
-        if (!company || !company._id) return; // Skip invalid company data
+        if (!company || !company._id) return;
 
         const card = document.createElement('div');
         card.classList.add('company-card');
@@ -221,14 +217,80 @@ function renderCompanyCards(companies) {
     });
 }
 
-// Redirect to view projects for a company
-function viewCompanyProjects(companyId) {
+// Fetch and display projects for a company
+async function viewCompanyProjects(companyId) {
     if (!companyId) {
         console.error("Invalid company ID");
         return;
     }
-    console.log(`Redirecting to projects for company ID: ${companyId}`);
-    window.location.href = `/api/homepage/projects?companyId=${companyId}`;
+    console.log(`Fetching projects for company ID: ${companyId}`);
+
+    const projectsContainer = document.getElementById('projectsContainer');
+    projectsContainer.innerHTML = '<div class="loading">Loading projects...</div>';
+
+    try {
+        const response = await fetch(`/api/homepage/projects?companyId=${encodeURIComponent(companyId)}`);
+        if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+        const projects = await response.json();
+        console.log("Fetched projects:", projects);
+        renderProjectCards(projects);
+    } catch (error) {
+        console.error("Error fetching projects:", error);
+        projectsContainer.innerHTML = '<div class="error">Failed to load projects. Please try again.</div>';
+    }
+}
+
+// Render project cards
+function renderProjectCards(projects) {
+    const container = document.getElementById('projectsContainer');
+
+    if (!container) {
+        console.error("Element with ID 'projectsContainer' not found.");
+        return;
+    }
+
+    container.innerHTML = '';
+
+    if (!projects || projects.length === 0) {
+        container.innerHTML = '<p>No projects found for this company.</p>';
+        return;
+    }
+
+    projects.forEach(project => {
+        if (!project || !project._id) return;
+
+        const card = document.createElement('div');
+        card.classList.add('project-card');
+
+        const title = document.createElement('h4');
+        title.textContent = project.title || 'Untitled Project';
+
+        const description = document.createElement('p');
+        description.textContent = `Description: ${project.description || 'No description available'}`;
+
+        const companyName = document.createElement('p');
+        companyName.textContent = `Company: ${project.companyId?.name || 'Unknown Company'}`;
+
+        const button = document.createElement('button');
+        button.textContent = 'View Details';
+        button.addEventListener('click', () => viewProjectDetails(project._id));
+
+        card.appendChild(title);
+        card.appendChild(description);
+        card.appendChild(companyName);
+        card.appendChild(button);
+
+        container.appendChild(card);
+    });
+}
+
+// Placeholder for viewing project details
+function viewProjectDetails(projectId) {
+    console.log(`Viewing details for project ID: ${projectId}`);
+    // Implement navigation or modal display for project details
+    // Example: window.location.href = `/projects/details/${projectId}`;
 }
 
 // Display error messages
@@ -306,7 +368,6 @@ function updateNotificationBadge(notifications) {
 
 // Placeholder for refreshToken (assumed to exist elsewhere)
 async function refreshToken() {
-    // Implementation depends on your auth system
     console.warn('refreshToken not implemented');
     return null;
 }
