@@ -30,19 +30,43 @@ exports.getCompanies = async (req, res) => {
 exports.getProjects = async (req, res) => {
     const companyId = req.query.companyId;
 
-    console.log("Received companyId:", companyId);
+    console.log('Request query:', req.query);
+    console.log('Received companyId:', companyId);
 
     if (!companyId) {
+        console.error('No companyId provided');
         return res.status(400).json({ error: "Company ID is required." });
     }
 
     try {
-        const projects = await Project.find({ companyId: companyId }).populate('companyId', 'name');
-        console.log("Found projects:", projects);
+        // Log the query details
+        console.log('Querying projects with:', { companyId });
+
+        const projects = await Project.find({ companyId: companyId })
+            .populate('companyId', 'name')
+            .lean(); // Use lean for faster query
+
+        console.log('Database query result:', {
+            projectCount: projects.length,
+            firstProject: projects[0] || 'No projects found'
+        });
+
+        if (projects.length === 0) {
+            console.warn(`No projects found for company ID: ${companyId}`);
+        }
+
         res.status(200).json(projects);
     } catch (error) {
-        console.error("Error fetching projects:", error);
-        res.status(500).json({ error: 'Internal server error', details: error.message });
+        console.error("Error fetching projects:", {
+            message: error.message,
+            stack: error.stack,
+            companyId: companyId
+        });
+        res.status(500).json({
+            error: 'Internal server error', 
+            details: error.message,
+            companyId: companyId
+        });
     }
 };
 
