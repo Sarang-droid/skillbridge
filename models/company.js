@@ -20,7 +20,7 @@ const companySchema = new mongoose.Schema({
     industry: {
         type: String,
         required: true,
-        enum: ['IT', 'Marketing', 'Finance', 'E-commerce'],
+        enum: ['IT', 'Marketing', 'Finance', 'E-commerce', 'EdTech'],
     },
     companyType: {
         type: String,
