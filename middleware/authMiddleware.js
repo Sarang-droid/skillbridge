@@ -30,8 +30,8 @@ const protect = async (req, res, next) => {
         const user = await User.findById(decoded.id).select('_id name email');
         if (!user) {
             console.error('User not found for ID:', decoded.id);
-            return res.status(404).json({ 
-                message: 'User not found.',
+            return res.status(401).json({ 
+                message: 'User not found or session expired. Please log in again.',
                 code: 'USER_NOT_FOUND'
             });
         }
@@ -49,25 +49,12 @@ const protect = async (req, res, next) => {
         console.error('Token verification error:', error.message);
         console.error('Error stack:', error.stack);
 
-        if (error.name === 'TokenExpiredError') {
-            console.warn('Token has expired');
-            return res.status(401).json({
-                message: 'Token has expired. Please refresh your token or log in again.',
-                code: 'TOKEN_EXPIRED'
-            });
-        } else if (error.name === 'JsonWebTokenError') {
-            console.error('Invalid token received:', token);
-            return res.status(401).json({ 
-                message: 'Invalid token. Please log in again.',
-                code: 'INVALID_TOKEN'
-            });
-        }
-
-        console.error('Unexpected error during token verification:', error);
-        return res.status(500).json({
-            message: 'Internal server error during authentication',
-            code: 'AUTH_ERROR',
-            error: error.message
+        // Return 401 for all token-related errors
+        return res.status(401).json({
+            message: error.name === 'TokenExpiredError' 
+                ? 'Token has expired. Please log in again.' 
+                : 'Invalid token. Please log in again.',
+            code: error.name === 'TokenExpiredError' ? 'TOKEN_EXPIRED' : 'INVALID_TOKEN'
         });
     }
 };
