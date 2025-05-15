@@ -24,7 +24,7 @@ async function seedEdTechQuizzes() {
                 question: 'Which machine learning architecture is best for modeling sequential learning behavior?',
                 options: ['CNN', 'SVM', 'RNN', 'Random Forest'],
                 correctAnswer: 2,
-                date: 'Wed May 14 2025'
+                date: 'Thu May 15 2025'
             },
             {
                 industry: 'edtech',
@@ -37,42 +37,42 @@ async function seedEdTechQuizzes() {
                 ],
                 
                 correctAnswer: 1,
-                date: 'Wed May 14 2025'
+                date: 'Thu May 15 2025'
             },
             {
                 industry: 'edtech',
                 question: 'Which programming language is most commonly used in building interactive EdTech tools?',
                 options: ['Ruby', 'Python', 'C++', 'Assembly'],
                 correctAnswer: 1,
-                date: 'Mon May 12 2025'
+                date: 'Thu May 15 2025'
             },
             {
                 industry: 'edtech',
                 question: 'Which protocol is used in xAPI to track learning records?',
                 options: ['HTTP', 'LRS', 'RESTful APIs', 'FTP'],
                 correctAnswer: 2,
-                date: 'Wed May 14 2025'
+                date: 'Thu May 15 2025'
             },
             {
                 industry: 'edtech',
                 question: 'Which approach best supports differentiated learning in digital classrooms?',
                 options: ['Fixed syllabus', 'Standardized testing', 'Adaptive learning systems', 'Long lectures'],
                 correctAnswer: 2,
-                date: 'Wed May 14 2025'
+                date: 'Thu May 15 2025'
             },
             {
                 industry: 'edtech',
                 question: 'Which cloud service is most useful for EdTech platforms during peak exam seasons?',
                 options: ['Static hosting', 'Load balancer with autoscaling', 'Edge computing', 'IoT hubs'],
                 correctAnswer: 1,
-                date: 'Wed May 14 2025'
+                date: 'Thu May 15 2025'
             },
             {
                 industry: 'edtech',
                 question: 'Which EdTech standard enables reuse and interoperability of content modules?',
                 options: ['JSON', 'XML', 'SCORM', 'HTML5'],
                 correctAnswer: 2,
-                date: 'Wed May 14 2025'
+                date: 'Thu May 15 2025'
             },
             {
                 industry: 'edtech',
@@ -84,21 +84,21 @@ async function seedEdTechQuizzes() {
                     'To schedule virtual exams'
                 ],
                 correctAnswer: 2,
-                date: 'Wed May 14 2025'
+                date: 'Thu May 15 2025'
             },
             {
                 industry: 'edtech',
                 question: 'What challenge does FERPA compliance address in EdTech?',
                 options: ['Engagement', 'Content distribution', 'Student data privacy', 'UI/UX design'],
                 correctAnswer: 2,
-                date: 'Wed May 14 2025'
+                date: 'Thu May 15 2025'
             },
             {
                 industry: 'edtech',
                 question: 'Which analytical technique is most suitable for evaluating course effectiveness?',
                 options: ['Regression analysis', 'Image recognition', 'Encryption', 'Pathfinding algorithms'],
                 correctAnswer: 0,
-                date: 'Wed May 14 2025'
+                date: 'Thu May 15 2025'
             }
         ])
         console.log('EdTech quiz questions seeded successfully for', today);
