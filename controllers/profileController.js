@@ -12,7 +12,7 @@ exports.getProfile = async (req, res) => {
         }
 
         const profilePicturePath = user.profilePicture 
-            ? `/uploads/${path.basename(user.profilePicture)}` // Use basename to ensure clean path
+            ? `/uploads/profile-pictures/${path.basename(user.profilePicture)}` // Use basename to ensure clean path
             : null;
 
         res.status(200).json({
@@ -62,7 +62,7 @@ exports.updateProfile = async (req, res) => {
         await user.save();
 
         const profilePicturePath = user.profilePicture 
-            ? `/uploads/${user.profilePicture}` // Consistent path format
+            ? `/uploads/profile-pictures/${user.profilePicture}` // Consistent path format
             : null;
 
         res.status(200).json({
@@ -99,7 +99,7 @@ exports.getPublicProfile = async (req, res) => {
         }
 
         const profilePicturePath = user.profilePicture 
-            ? `https://skillexa.in/uploads/${path.basename(user.profilePicture)}` // Full URL for public access
+            ? `https://skillexa.in/uploads/profile-pictures/${path.basename(user.profilePicture)}` // Full URL for public access
             : 'https://skillexa.in/assets/default-profile.png'; // Default image URL
 
         const shareableUrl = `https://skillexa.in/profile/${user._id}`;
