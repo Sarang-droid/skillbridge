@@ -11,7 +11,11 @@ const protect = async (req, res, next) => {
     }
 
     try {
-        const token = req.headers.authorization?.split(' ')[1];
+        // Check for token in Authorization header or cookies
+        let token = req.headers.authorization?.split(' ')[1];
+        if (!token && req.cookies && req.cookies.token) {
+            token = req.cookies.token;
+        }
         console.log('Token:', token);
 
         if (!token) {

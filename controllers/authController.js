@@ -177,7 +177,13 @@ exports.refreshToken = async (req, res) => {
 // Google OAuth callback controller
 exports.googleCallback = (req, res) => {
     if (req.user) {
-        // You can issue a JWT here if needed
+        const token = jwt.sign({ id: req.user._id }, process.env.JWT_SECRET, { expiresIn: '1h' });
+        res.cookie('token', token, {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === 'production',
+            sameSite: 'lax',
+            maxAge: 3600000 // 1 hour
+        });
         return res.redirect('/homepage');
     } else {
         return res.redirect('/login?error=GoogleAuthFailed');
