@@ -60,7 +60,7 @@ exports.registerUser  = async (req, res) => {
                 `Welcome ${name} to Skillexa - Your Personalized Path to Growth!
 We're thrilled to have you on board. Get started by taking your Personality Test to unlock tailored career insights and build your Professional Profile that showcases your strengths and aspirations.
 Discover skills aligned with your unique potential and explore curated learning paths designed just for you.
-Need help? Our support team is just a message away. Let’s grow together!`,
+Need help? Our support team is just a message away. Let's grow together!`,
                 false // Set to false for user-specific notification
             );
             console.log('Welcome notification created for user:', newUser._id);
@@ -171,5 +171,15 @@ exports.refreshToken = async (req, res) => {
         }
         console.error('Error during refresh token:', error.message);
         res.status(500).json({ message: 'Server error', error: error.message });
+    }
+};
+
+// Google OAuth callback controller
+exports.googleCallback = (req, res) => {
+    if (req.user) {
+        // You can issue a JWT here if needed
+        return res.redirect('/homepage');
+    } else {
+        return res.redirect('/login?error=GoogleAuthFailed');
     }
 };

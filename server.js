@@ -6,7 +6,9 @@ const session = require('express-session');
 const WebSocket = require('ws');
 const cookieParser = require('cookie-parser');
 const path = require('path');
+const passport = require('passport');
 require('dotenv').config();
+require('./utils/passport');
 
 const { protect } = require('./middleware/authMiddleware');
 
@@ -49,6 +51,8 @@ app.use(
         saveUninitialized: true,
     })
 );
+app.use(passport.initialize());
+app.use(passport.session());
 
 app.use((req, res, next) => {
     console.log(`Received request for: ${req.url}`);
