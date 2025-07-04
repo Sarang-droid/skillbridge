@@ -254,66 +254,37 @@ document.addEventListener("DOMContentLoaded", function () {
             return true; // Default to true (unanswered) if check fails
         }
     }
-function renderProjectData(project) {
-    document.getElementById('project-title').innerText = `Project: ${project.title}`;
-    document.getElementById('project-description').innerText = project.description || 'No description provided.';
-    document.getElementById('project-status').innerText = `Status: ${project.status}`;
 
-    taskList.innerHTML = '';
-    if (project.tasks?.length) {
-        project.tasks.forEach(task => {
-            const taskItem = document.createElement('div');
-            taskItem.className = 'task';
-            taskItem.dataset.taskId = task.taskId; // Use taskId instead of _id
+    function renderProjectData(project) {
+        document.getElementById('project-title').innerText = `Project: ${project.title}`;
+        document.getElementById('project-description').innerText = project.description || 'No description provided.';
+        document.getElementById('project-status').innerText = `Status: ${project.status}`;
 
-            const checkbox = document.createElement('input');
-            checkbox.type = 'checkbox';
-            checkbox.checked = task.completed;
-            checkbox.id = `task-${task.taskId}`;
-            checkbox.className = 'task-checkbox';
+        taskList.innerHTML = '';
+        if (project.tasks?.length) {
+            project.tasks.forEach(task => {
+                const taskItem = document.createElement('div');
+                taskItem.className = 'task';
+                taskItem.dataset.taskId = task.taskId; // Use taskId instead of _id
 
-            const label = document.createElement('label');
-            label.htmlFor = `task-${task.taskId}`;
-            label.textContent = task.taskName;
+                const checkbox = document.createElement('input');
+                checkbox.type = 'checkbox';
+                checkbox.checked = task.completed;
+                checkbox.id = `task-${task.taskId}`;
+                checkbox.className = 'task-checkbox';
 
-            taskItem.appendChild(checkbox);
-            taskItem.appendChild(label);
-            taskList.appendChild(taskItem);
-        });
-    } else {
-        taskList.innerHTML = '<p>No tasks found.</p>';
+                const label = document.createElement('label');
+                label.htmlFor = `task-${task.taskId}`;
+                label.textContent = task.taskName;
+
+                taskItem.appendChild(checkbox);
+                taskItem.appendChild(label);
+                taskList.appendChild(taskItem);
+            });
+        } else {
+            taskList.innerHTML = '<p>No tasks found.</p>';
+        }
     }
-}
-function renderProjectData(project) {
-    document.getElementById('project-title').innerText = `Project: ${project.title}`;
-    document.getElementById('project-description').innerText = project.description || 'No description provided.';
-    document.getElementById('project-status').innerText = `Status: ${project.status}`;
-
-    taskList.innerHTML = '';
-    if (project.tasks?.length) {
-        project.tasks.forEach(task => {
-            const taskItem = document.createElement('div');
-            taskItem.className = 'task';
-            taskItem.dataset.taskId = task.taskId; // Use taskId instead of _id
-
-            const checkbox = document.createElement('input');
-            checkbox.type = 'checkbox';
-            checkbox.checked = task.completed;
-            checkbox.id = `task-${task.taskId}`;
-            checkbox.className = 'task-checkbox';
-
-            const label = document.createElement('label');
-            label.htmlFor = `task-${task.taskId}`;
-            label.textContent = task.taskName;
-
-            taskItem.appendChild(checkbox);
-            taskItem.appendChild(label);
-            taskList.appendChild(taskItem);
-        });
-    } else {
-        taskList.innerHTML = '<p>No tasks found.</p>';
-    }
-}
 
     function startCountdown(deadline) {
         const countdown = setInterval(() => {
@@ -538,10 +509,17 @@ function renderProjectData(project) {
             });
             if (!response.ok) {
                 const errorData = await response.json();
+                // Show specific error if missing GitHub link
+                if (errorData.message && errorData.message.includes('GitHub repository link')) {
+                    submitWarning.textContent = errorData.message;
+                    submitWarning.style.display = 'block';
+                    return;
+                }
                 throw new Error(errorData.message || 'Project submission failed');
             }
             const data = await response.json();
-            alert('Project submitted successfully! Awaiting evaluation.');
+            // Show the required message after successful submission
+            alert('Your project will be evaluated within 24 hours and points will be awarded to you on the basis of quality of your project. You will be notified.');
             // Optionally redirect or update UI
         } catch (error) {
             console.error('Error submitting project:', error);

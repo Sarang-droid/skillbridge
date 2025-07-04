@@ -165,6 +165,14 @@ const submitProject = async (req, res) => {
             return res.status(400).json({ message: 'Project already submitted' });
         }
 
+        // --- GITHUB LINK CHECK ---
+        // Prevent submission if user has not submitted a GitHub link for this project
+        const githubUpload = await Upload.findOne({ projectId, userId: req.user._id, githubLink: { $exists: true, $ne: null } });
+        if (!githubUpload) {
+            return res.status(400).json({ message: 'You must submit your GitHub repository link before submitting the project.' });
+        }
+        // --- END GITHUB LINK CHECK ---
+
         // Update project status
         project.status = 'submitted';
 
@@ -209,6 +217,7 @@ const submitProject = async (req, res) => {
         res.status(500).json({ message: 'Internal server error', error: error.message });
     }
 };
+
 // Fetch project resources
 const getProjectResources = async (req, res) => {
     console.log('Fetching resources for Project ID:', req.params.projectId);
