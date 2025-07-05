@@ -2,6 +2,7 @@ const Project = require('../models/project');
 const User = require('../models/user');
 const Upload = require('../models/upload');
 const mongoose = require('mongoose');
+const { createNotification } = require('./notificationController');
 
 console.log('Workspace controller loaded');
 
@@ -208,6 +209,22 @@ const submitProject = async (req, res) => {
             });
             await user.save();
             console.log('User updated with completed project:', user);
+        }
+
+        // Send notification to user about project submission
+        try {
+            await createNotification(
+                req.user._id,
+                'Project Submitted Successfully! 🎉',
+                `Your project "${project.title}" has been submitted and will be evaluated shortly. You will receive a notification once the evaluation is complete. Keep an eye on your profile for updates!`,
+                [], // no attachments
+                [], // no links
+                false // user-specific notification
+            );
+            console.log('Project submission notification created for user:', req.user._id);
+        } catch (notificationError) {
+            console.error('Error creating project submission notification:', notificationError);
+            // Don't fail the submission if notification fails
         }
 
         console.log('Project submitted successfully:', projectId);

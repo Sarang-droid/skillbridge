@@ -4,6 +4,7 @@ const User = require('../models/user');
 const NodeCache = require('node-cache');
 const Joi = require('joi');
 const winston = require('winston');
+const { createNotification } = require('./notificationController');
 
 // Initialize cache (1-hour TTL, 10-min check period)
 const projectEvaluationCache = new NodeCache({ stdTTL: 3600, checkperiod: 600 });
@@ -192,6 +193,22 @@ exports.evaluateProject = async (project) => {
 
             // Check and unlock badges
             await checkAndUnlockBadges(user._id);
+
+            // Send notification to user about project evaluation completion
+            try {
+                await createNotification(
+                    user._id,
+                    'Project Evaluation Complete! 🎯',
+                    `Your project "${fetchedProject.title}" has been evaluated! You earned ${qualityScore} points. Your total points are now ${user.points}. Check your profile to see your updated score and any new badges you may have unlocked!`,
+                    [], // no attachments
+                    [], // no links
+                    false // user-specific notification
+                );
+                logger.info('Project evaluation notification created for user:', user._id);
+            } catch (notificationError) {
+                logger.error('Error creating project evaluation notification:', notificationError);
+                // Don't fail the evaluation if notification fails
+            }
         }
 
         // Log evaluation process

@@ -89,8 +89,8 @@ document.addEventListener('DOMContentLoaded', function () {
                 notificationList.innerHTML = '<li>No new notifications</li>';
             } else {
                 data.notifications.forEach(notification => {
-                    // Filter to show only user-specific welcome messages
-                    if (!notification.global && notification.title === 'Welcome to Skillexa! 🎉' && notification.message.includes(localStorage.getItem('userName'))) {
+                    // Show all user-specific notifications (not just welcome messages)
+                    if (!notification.global) {
                         const notificationItem = document.createElement('li');
                         notificationItem.className = 'notification-item';
                         notificationItem.innerHTML = `

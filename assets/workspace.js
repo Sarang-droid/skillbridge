@@ -91,7 +91,7 @@ document.addEventListener("DOMContentLoaded", function () {
             }
 
             const data = await response.json();
-            alert('Project submitted successfully! Awaiting evaluation.');
+            alert('Project submitted successfully! Awaiting evaluation. Check your notifications for updates!');
             // Optionally redirect to another page or update UI
         } catch (error) {
             console.error('Error submitting project:', error);
@@ -129,7 +129,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 throw new Error(`Submission failed: ${response.status} - ${errorText}`);
             }
             const data = await response.json();
-            submissionResult.innerHTML = 'GitHub link submitted successfully! Awaiting analysis.';
+            submissionResult.innerHTML = 'GitHub link submitted successfully! Awaiting analysis. Check your notifications for updates.';
             githubLinkInput.value = '';
         } catch (error) {
             console.error('Error submitting GitHub link:', error);
@@ -519,7 +519,7 @@ document.addEventListener("DOMContentLoaded", function () {
             }
             const data = await response.json();
             // Show the required message after successful submission
-            alert('Your project will be evaluated within 24 hours and points will be awarded to you on the basis of quality of your project. You will be notified.');
+            alert('Your project will be evaluated within 24 hours and points will be awarded to you on the basis of quality of your project. You will be notified. Check your notifications for updates!');
             // Optionally redirect or update UI
         } catch (error) {
             console.error('Error submitting project:', error);
