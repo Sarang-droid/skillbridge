@@ -15,8 +15,45 @@
             padding: 20px;
             min-height: 100vh;
             display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
+        }
+
+        .center-stack {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            gap: 32px;
+        }
+
+        .intro-section {
+            max-width: 440px;
+            width: 100%;
+            margin: auto;
+            padding: 32px;
+            background: #262626;
+            border-radius: 16px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+            border: 1px solid #333;
+            margin-bottom: 0;
+            text-align: center;
+            animation: slideUp 0.6s ease-out;
+        }
+        .intro-section h1 {
+            color: #f4c542;
+            font-size: 2.25rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+            letter-spacing: -0.02em;
+        }
+        .intro-section p {
+            color: #b3b3b3;
+            font-size: 1.1rem;
+            margin: 8px 0;
+            font-style: italic;
         }
 
         .container {
@@ -270,196 +307,206 @@
     </style>
 </head>
 <body>
-    <div class="container">
-        <h2>Register</h2>
-        <p class="tagline">Skillexa: Real Skills, Real Projects</p>
-        <form id="registerForm">
-            <label for="name">Name:</label>
-            <input type="text" id="name" required>
+    <div class="center-stack">
+        <div class="intro-section">
+            <h1>Skillexa</h1>
+            <p>-Skillexa empowers you to stand out in an AI-driven world.</p>
+            <p>-Work on real-world projects from top companies</p>
+            <p>-Earn badges and build skills that get you hired.</p>
+            <p>-Powered by AI insights and gamified learning,
+                we connect your talent to industry needs—fast. </p>
+        </div>
+        <div class="container">
+            <h2>Register</h2>
+            <p class="tagline">Skillexa: Real Skills, Real Projects</p>
+            <form id="registerForm">
+                <label for="name">Name:</label>
+                <input type="text" id="name" required>
 
-            <label for="email">Email:</label>
-            <input type="email" id="email" required>
+                <label for="email">Email:</label>
+                <input type="email" id="email" required>
 
-            <label for="phone">Phone Number:</label>
-            <input type="tel" id="phone" required>
+                <label for="phone">Phone Number:</label>
+                <input type="tel" id="phone" required>
 
-            <label for="password">Password:</label>
-            <div class="password-wrapper">
-                <input type="password" id="password" required>
-                <i class="fas fa-eye" id="togglePassword"></i>
-            </div>
-
-            <label for="confirmPassword">Confirm Password:</label>
-            <div class="password-wrapper">
-                <input type="password" id="confirmPassword" required>
-                <i class="fas fa-eye" id="toggleConfirmPassword"></i>
-            </div>
-
-            <!-- Skills Section -->
-            <label for="skills">Skills:</label>
-            <div class="collapsible-list">
-                <div class="list-header" onclick="toggleList('skillsList')">
-                    <span>Select Skills</span>
-                    <span class="arrow">▼</span>
+                <label for="password">Password:</label>
+                <div class="password-wrapper">
+                    <input type="password" id="password" required>
+                    <i class="fas fa-eye" id="togglePassword"></i>
                 </div>
-                <div id="skillsList" class="list-content">
-                    <div>
-                        <input type="checkbox" id="skillPython" value="Python">
-                        <label for="skillPython">Python</label>
-                    </div>
-                    <div>
-                        <input type="checkbox" id="skillJava" value="Java">
-                        <label for="skillJava">Java</label>
-                    </div>
-                    <div>
-                        <input type="checkbox" id="skillCpp" value="C++">
-                        <label for="skillCpp">C++</label>
-                    </div>
-                    <div>
-                        <input type="checkbox" id="skillJavaScript" value="JavaScript">
-                        <label for="skillJavaScript">JavaScript</label>
-                    </div>
-                    <div>
-                        <input type="checkbox" id="skillReact" value="React.js">
-                        <label for="skillReact">React.js</label>
-                    </div>
-                    <div>
-                        <input type="checkbox" id="skillNode" value="Node.js">
-                        <label for="skillNode">Node.js</label>
-                    </div>
-                    <div>
-                        <input type="checkbox" id="skillMedicalCoding" value="Medical Coding">
-                        <label for="skillMedicalCoding">Medical Coding</label>
-                    </div>
-                    <div>
-                        <input type="checkbox" id="skillEHR" value="EHR Management">
-                        <label for="skillEHR">EHR Management</label>
-                    </div>
-                    <div>
-                        <input type="checkbox" id="skillFinancialModeling" value="Financial Modeling">
-                        <label for="skillFinancialModeling">Financial Modeling</label>
-                    </div>
-                    <div>
-                        <input type="checkbox" id="skillBlockchain" value="Blockchain Technology">
-                        <label for="skillBlockchain">Blockchain Technology</label>
-                    </div>
-                    <div>
-                        <input type="checkbox" id="skillLMS" value="Learning Management Systems">
-                        <label for="skillLMS">Learning Management Systems</label>
-                    </div>
-                    <div>
-                        <input type="checkbox" id="skillInstructionalDesign" value="Instructional Design">
-                        <label for="skillInstructionalDesign">Instructional Design</label>
-                    </div>
-                    <div>
-                        <input type="checkbox" id="skillCloud" value="Cloud Computing">
-                        <label for="skillCloud">Cloud Computing</label>
-                    </div>
-                    <div>
-                        <input type="checkbox" id="skillCybersecurity" value="Cybersecurity">
-                        <label for="skillCybersecurity">Cybersecurity</label>
-                    </div>
-                    <div>
-                        <input type="checkbox" id="skillPaymentGateway" value="Payment Gateway Integration">
-                        <label for="skillPaymentGateway">Payment Gateway Integration</label>
-                    </div>
-                    <div>
-                        <input type="checkbox" id="skillSmartContracts" value="Smart Contract Development">
-                        <label for="skillSmartContracts">Smart Contract Development</label>
-                    </div>
-                </div>
-            </div>
-            <div id="selectedSkills" class="selected-items"></div>
 
-            <!-- Interests Section -->
-            <label for="interests">Interests:</label>
-            <div class="collapsible-list">
-                <div class="list-header" onclick="toggleList('interestsList')">
-                    <span>Select Interests</span>
-                    <span class="arrow">▼</span>
+                <label for="confirmPassword">Confirm Password:</label>
+                <div class="password-wrapper">
+                    <input type="password" id="confirmPassword" required>
+                    <i class="fas fa-eye" id="toggleConfirmPassword"></i>
                 </div>
-                <div id="interestsList" class="list-content">
-                    <div>
-                        <input type="checkbox" id="interestTech" value="Technology">
-                        <label for="interestTech">Technology</label>
+
+                <!-- Skills Section -->
+                <label for="skills">Skills:</label>
+                <div class="collapsible-list">
+                    <div class="list-header" onclick="toggleList('skillsList')">
+                        <span>Select Skills</span>
+                        <span class="arrow">▼</span>
                     </div>
-                    <div>
-                        <input type="checkbox" id="interestAI" value="Artificial Intelligence">
-                        <label for="interestAI">Artificial Intelligence</label>
-                    </div>
-                    <div>
-                        <input type="checkbox" id="interestML" value="Machine Learning">
-                        <label for="interestML">Machine Learning</label>
-                    </div>
-                    <div>
-                        <input type="checkbox" id="interestWebDev" value="Web Development">
-                        <label for="interestWebDev">Web Development</label>
-                    </div>
-                    <div>
-                        <input type="checkbox" id="interestCloud" value="Cloud Computing">
-                        <label for="interestCloud">Cloud Computing</label>
-                    </div>
-                    <div>
-                        <input type="checkbox" id="interestPrecisionMedicine" value="Precision Medicine">
-                        <label for="interestPrecisionMedicine">Precision Medicine</label>
-                    </div>
-                    <div>
-                        <input type="checkbox" id="interestHealthInformatics" value="Health Informatics">
-                        <label for="interestHealthInformatics">Health Informatics</label>
-                    </div>
-                    <div>
-                        <input type="checkbox" id="interestQuantFinance" value="Quantitative Finance">
-                        <label for="interestQuantFinance">Quantitative Finance</label>
-                    </div>
-                    <div>
-                        <input type="checkbox" id="interestAlgoTrading" value="Algorithmic Trading">
-                        <label for="interestAlgoTrading">Algorithmic Trading</label>
-                    </div>
-                    <div>
-                        <input type="checkbox" id="interestEdTech" value="EdTech Innovation">
-                        <label for="interestEdTech">EdTech Innovation</label>
-                    </div>
-                    <div>
-                        <input type="checkbox" id="interestSTEM" value="STEM Education">
-                        <label for="interestSTEM">STEM Education</label>
-                    </div>
-                    <div>
-                        <input type="checkbox" id="interestIoT" value="Internet of Things">
-                        <label for="interestIoT">Internet of Things</label>
-                    </div>
-                    <div>
-                        <input type="checkbox" id="interestBigData" value="Big Data">
-                        <label for="interestBigData">Big Data</label>
-                    </div>
-                    <div>
-                        <input type="checkbox" id="interestDeFi" value="Decentralized Finance">
-                        <label for="interestDeFi">Decentralized Finance</label>
-                    </div>
-                    <div>
-                        <input type="checkbox" id="interestDigitalBanking" value="Digital Banking">
-                        <label for="interestDigitalBanking">Digital Banking</label>
+                    <div id="skillsList" class="list-content">
+                        <div>
+                            <input type="checkbox" id="skillPython" value="Python">
+                            <label for="skillPython">Python</label>
+                        </div>
+                        <div>
+                            <input type="checkbox" id="skillJava" value="Java">
+                            <label for="skillJava">Java</label>
+                        </div>
+                        <div>
+                            <input type="checkbox" id="skillCpp" value="C++">
+                            <label for="skillCpp">C++</label>
+                        </div>
+                        <div>
+                            <input type="checkbox" id="skillJavaScript" value="JavaScript">
+                            <label for="skillJavaScript">JavaScript</label>
+                        </div>
+                        <div>
+                            <input type="checkbox" id="skillReact" value="React.js">
+                            <label for="skillReact">React.js</label>
+                        </div>
+                        <div>
+                            <input type="checkbox" id="skillNode" value="Node.js">
+                            <label for="skillNode">Node.js</label>
+                        </div>
+                        <div>
+                            <input type="checkbox" id="skillMedicalCoding" value="Medical Coding">
+                            <label for="skillMedicalCoding">Medical Coding</label>
+                        </div>
+                        <div>
+                            <input type="checkbox" id="skillEHR" value="EHR Management">
+                            <label for="skillEHR">EHR Management</label>
+                        </div>
+                        <div>
+                            <input type="checkbox" id="skillFinancialModeling" value="Financial Modeling">
+                            <label for="skillFinancialModeling">Financial Modeling</label>
+                        </div>
+                        <div>
+                            <input type="checkbox" id="skillBlockchain" value="Blockchain Technology">
+                            <label for="skillBlockchain">Blockchain Technology</label>
+                        </div>
+                        <div>
+                            <input type="checkbox" id="skillLMS" value="Learning Management Systems">
+                            <label for="skillLMS">Learning Management Systems</label>
+                        </div>
+                        <div>
+                            <input type="checkbox" id="skillInstructionalDesign" value="Instructional Design">
+                            <label for="skillInstructionalDesign">Instructional Design</label>
+                        </div>
+                        <div>
+                            <input type="checkbox" id="skillCloud" value="Cloud Computing">
+                            <label for="skillCloud">Cloud Computing</label>
+                        </div>
+                        <div>
+                            <input type="checkbox" id="skillCybersecurity" value="Cybersecurity">
+                            <label for="skillCybersecurity">Cybersecurity</label>
+                        </div>
+                        <div>
+                            <input type="checkbox" id="skillPaymentGateway" value="Payment Gateway Integration">
+                            <label for="skillPaymentGateway">Payment Gateway Integration</label>
+                        </div>
+                        <div>
+                            <input type="checkbox" id="skillSmartContracts" value="Smart Contract Development">
+                            <label for="skillSmartContracts">Smart Contract Development</label>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div id="selectedInterests" class="selected-items"></div>
+                <div id="selectedSkills" class="selected-items"></div>
 
-            <label for="degree">Degree:</label>
-            <input type="text" id="degree" required>
+                <!-- Interests Section -->
+                <label for="interests">Interests:</label>
+                <div class="collapsible-list">
+                    <div class="list-header" onclick="toggleList('interestsList')">
+                        <span>Select Interests</span>
+                        <span class="arrow">▼</span>
+                    </div>
+                    <div id="interestsList" class="list-content">
+                        <div>
+                            <input type="checkbox" id="interestTech" value="Technology">
+                            <label for="interestTech">Technology</label>
+                        </div>
+                        <div>
+                            <input type="checkbox" id="interestAI" value="Artificial Intelligence">
+                            <label for="interestAI">Artificial Intelligence</label>
+                        </div>
+                        <div>
+                            <input type="checkbox" id="interestML" value="Machine Learning">
+                            <label for="interestML">Machine Learning</label>
+                        </div>
+                        <div>
+                            <input type="checkbox" id="interestWebDev" value="Web Development">
+                            <label for="interestWebDev">Web Development</label>
+                        </div>
+                        <div>
+                            <input type="checkbox" id="interestCloud" value="Cloud Computing">
+                            <label for="interestCloud">Cloud Computing</label>
+                        </div>
+                        <div>
+                            <input type="checkbox" id="interestPrecisionMedicine" value="Precision Medicine">
+                            <label for="interestPrecisionMedicine">Precision Medicine</label>
+                        </div>
+                        <div>
+                            <input type="checkbox" id="interestHealthInformatics" value="Health Informatics">
+                            <label for="interestHealthInformatics">Health Informatics</label>
+                        </div>
+                        <div>
+                            <input type="checkbox" id="interestQuantFinance" value="Quantitative Finance">
+                            <label for="interestQuantFinance">Quantitative Finance</label>
+                        </div>
+                        <div>
+                            <input type="checkbox" id="interestAlgoTrading" value="Algorithmic Trading">
+                            <label for="interestAlgoTrading">Algorithmic Trading</label>
+                        </div>
+                        <div>
+                            <input type="checkbox" id="interestEdTech" value="EdTech Innovation">
+                            <label for="interestEdTech">EdTech Innovation</label>
+                        </div>
+                        <div>
+                            <input type="checkbox" id="interestSTEM" value="STEM Education">
+                            <label for="interestSTEM">STEM Education</label>
+                        </div>
+                        <div>
+                            <input type="checkbox" id="interestIoT" value="Internet of Things">
+                            <label for="interestIoT">Internet of Things</label>
+                        </div>
+                        <div>
+                            <input type="checkbox" id="interestBigData" value="Big Data">
+                            <label for="interestBigData">Big Data</label>
+                        </div>
+                        <div>
+                            <input type="checkbox" id="interestDeFi" value="Decentralized Finance">
+                            <label for="interestDeFi">Decentralized Finance</label>
+                        </div>
+                        <div>
+                            <input type="checkbox" id="interestDigitalBanking" value="Digital Banking">
+                            <label for="interestDigitalBanking">Digital Banking</label>
+                        </div>
+                    </div>
+                </div>
+                <div id="selectedInterests" class="selected-items"></div>
 
-            <label for="experience">Experience (in years):</label>
-            <input type="number" id="experience" min="0" required>
+                <label for="degree">Degree:</label>
+                <input type="text" id="degree" required>
 
-            <div id="errorMessage" class="error"></div>
+                <label for="experience">Experience (in years):</label>
+                <input type="number" id="experience" min="0" required>
 
-            <button type="button" onclick="window.location.href='/api/auth/google'" style="width:100%;margin-top:12px;background:#fff;color:#444;border:1px solid #ccc;display:flex;align-items:center;justify-content:center;gap:8px;">
-                <img src="https://developers.google.com/identity/images/g-logo.png" alt="Google" style="height:20px;vertical-align:middle;">
-                Sign in with Google
-            </button>
+                <div id="errorMessage" class="error"></div>
 
-            <button type="submit">Register</button>
-        </form>
+                <button type="button" onclick="window.location.href='/api/auth/google'" style="width:100%;margin-top:12px;background:#fff;color:#444;border:1px solid #ccc;display:flex;align-items:center;justify-content:center;gap:8px;">
+                    <img src="https://developers.google.com/identity/images/g-logo.png" alt="Google" style="height:20px;vertical-align:middle;">
+                    Sign in with Google
+                </button>
 
-        <button id="loginButton" class="login-button">Already have an account? Login</button>
+                <button type="submit">Register</button>
+            </form>
+
+            <button id="loginButton" class="login-button">Already have an account? Login</button>
+        </div>
     </div>
 
     <script src="/assets/register.js"></script>

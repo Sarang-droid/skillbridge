@@ -145,9 +145,57 @@
                 font-size: 0.9rem;
             }
         }
+        .value-journey {
+    max-width: 2000px;
+    margin-bottom: 60px;    
+    padding: 20px;
+    background: #2b2b2b;
+    border: 2px dashed #e8b923;
+    border-radius: 12px;
+    color: #f5f5f5;
+    text-align: left;
+    box-shadow: 0 0 15px rgba(232, 185, 35, 0.1);
+    animation: fadeIn 1s ease-in;
+}
+
+.value-journey h3 {
+    color: #e8b923;
+    margin-bottom: 10px;
+    font-size: 1.4rem;
+}
+
+.value-journey ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.value-journey ul li {
+    margin: 8px 0;
+    font-size: 1rem;
+    line-height: 1.5;
+}
+
+.value-journey .cta {
+    margin-top: 12px;
+    font-weight: bold;
+    color: #d9a413;
+    text-align: center;
+}
+
     </style>
 </head>
 <body>
+    <div class="value-journey">
+        <h3>🚀 Your Skillexa Journey</h3>
+        <ul>
+            <li>✅ Earn points by completing real-world projects</li>
+            <li>💼 Gain job-ready experience, not just theory</li>
+            <li>🌍 Join a community of builders, thinkers, doers</li>
+        </ul>
+        <p class="cta">Start your journey. Build your future. 💡</p>
+    </div>
+    
     <form id="loginForm">
         <h2>Login</h2>
         <button type="button" onclick="window.location.href='/api/auth/google'" style="width:100%;margin-top:12px;background:#fff;color:#444;border:1px solid #ccc;display:flex;align-items:center;justify-content:center;gap:8px;">
