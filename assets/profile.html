@@ -466,6 +466,9 @@
             <p><strong><i class="fas fa-graduation-cap"></i> Education:</strong> <span id="profile-education">User Education</span></p>
             <p><strong><i class="fas fa-star"></i> Points:</strong> <span id="profile-points">0</span></p>
             <p><strong><i class="fas fa-medal"></i> Badges:</strong> <span id="profile-badges-count">0</span></p>
+            <p><strong><i class="fab fa-linkedin"></i> LinkedIn:</strong> <span id="profile-linkedin"><a href="#" target="_blank">Not set</a></span></p>
+            <p><strong><i class="fas fa-code"></i> LeetCode:</strong> <span id="profile-leetcode"><a href="#" target="_blank">Not set</a></span></p>
+            <p><strong><i class="fab fa-github"></i> GitHub:</strong> <span id="profile-github"><a href="#" target="_blank">Not set</a></span></p>
         </div>
     </div>
 
@@ -498,6 +501,13 @@
             
             <label for="education">Education:</label>
             <input type="text" id="education" name="education">
+            
+            <label for="linkedin">LinkedIn Profile URL:</label>
+            <input type="url" id="linkedin" name="linkedin" placeholder="https://linkedin.com/in/yourprofile">
+            <label for="leetcode">LeetCode Profile URL:</label>
+            <input type="url" id="leetcode" name="leetcode" placeholder="https://leetcode.com/yourprofile">
+            <label for="github">GitHub Profile URL:</label>
+            <input type="url" id="github" name="github" placeholder="https://github.com/yourprofile">
             
             <button type="submit">Save Changes</button>
         </form>

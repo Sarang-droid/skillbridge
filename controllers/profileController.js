@@ -22,6 +22,9 @@ exports.getProfile = async (req, res) => {
             bio: user.bio,
             school: user.school,
             education: user.education,
+            linkedin: user.linkedin,
+            leetcode: user.leetcode,
+            github: user.github,
             profilePicture: profilePicturePath,
             points: user.points,
             badges: user.badges,
@@ -47,6 +50,9 @@ exports.updateProfile = async (req, res) => {
         user.bio = req.body.bio || user.bio;
         user.school = req.body.school || user.school;
         user.education = req.body.education || user.education;
+        user.linkedin = req.body.linkedin || user.linkedin;
+        user.leetcode = req.body.leetcode || user.leetcode;
+        user.github = req.body.github || user.github;
 
         // Handle profile picture upload
         if (req.file) {
@@ -72,6 +78,9 @@ exports.updateProfile = async (req, res) => {
             bio: user.bio,
             school: user.school,
             education: user.education,
+            linkedin: user.linkedin,
+            leetcode: user.leetcode,
+            github: user.github,
             profilePicture: profilePicturePath,
             points: user.points,
             badges: user.badges,
@@ -93,7 +102,7 @@ exports.getPublicProfile = async (req, res) => {
             return res.status(400).json({ message: 'Invalid user ID' });
         }
 
-        const user = await User.findById(userId).select('name bio school education profilePicture points badges completedProjects');
+        const user = await User.findById(userId).select('name bio school education linkedin leetcode github profilePicture points badges completedProjects');
         if (!user) {
             return res.status(404).json({ message: 'User not found' });
         }
@@ -109,6 +118,9 @@ exports.getPublicProfile = async (req, res) => {
             bio: user.bio,
             school: user.school,
             education: user.education,
+            linkedin: user.linkedin,
+            leetcode: user.leetcode,
+            github: user.github,
             profilePicture: profilePicturePath,
             points: user.points,
             badges: user.badges,

@@ -36,6 +36,9 @@ async function loadProfileData(token) {
             document.getElementById('profile-badges-count').textContent = data.badges ? data.badges.length : 0;
             document.getElementById('profile-school').textContent = data.school || '';
             document.getElementById('profile-education').textContent = data.education || '';
+            document.getElementById('profile-linkedin').innerHTML = data.linkedin ? `<a href="${data.linkedin}" target="_blank">${data.linkedin}</a>` : '<a href="#" target="_blank">Not set</a>';
+            document.getElementById('profile-leetcode').innerHTML = data.leetcode ? `<a href="${data.leetcode}" target="_blank">${data.leetcode}</a>` : '<a href="#" target="_blank">Not set</a>';
+            document.getElementById('profile-github').innerHTML = data.github ? `<a href="${data.github}" target="_blank">${data.github}</a>` : '<a href="#" target="_blank">Not set</a>';
 
             const profileImageElement = document.getElementById('profile-image');
             if (profileImageElement) {
@@ -62,6 +65,9 @@ async function loadProfileData(token) {
             document.getElementById('bio').value = data.bio || '';
             document.getElementById('school').value = data.school || '';
             document.getElementById('education').value = data.education || '';
+            document.getElementById('linkedin').value = data.linkedin || '';
+            document.getElementById('leetcode').value = data.leetcode || '';
+            document.getElementById('github').value = data.github || '';
             console.log('Form fields populated');
         } else if (response.status === 401) {
             console.log('Unauthorized, attempting token refresh');
@@ -170,6 +176,9 @@ document.getElementById('profile-form').addEventListener('submit', async (event)
     formData.append('bio', document.getElementById('bio').value);
     formData.append('school', document.getElementById('school').value);
     formData.append('education', document.getElementById('education').value);
+    formData.append('linkedin', document.getElementById('linkedin').value);
+    formData.append('leetcode', document.getElementById('leetcode').value);
+    formData.append('github', document.getElementById('github').value);
 
     const profilePictureFile = document.getElementById('profile-picture-upload').files[0];
     if (profilePictureFile) {

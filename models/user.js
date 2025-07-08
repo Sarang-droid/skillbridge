@@ -108,6 +108,9 @@ const userSchema = new mongoose.Schema({
         enum: ['Technology', 'Healthcare', 'Finance', 'Education', 'IT Services', 'Fintech'],
     }],
     isGoogleUser: { type: Boolean, default: false },
+    linkedin: { type: String, default: '' },
+    leetcode: { type: String, default: '' },
+    github: { type: String, default: '' },
 });
 
 // Export the User model
