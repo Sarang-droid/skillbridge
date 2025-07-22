@@ -10,9 +10,14 @@ exports.registerUser  = async (req, res) => {
     const { name, email, phone, password, confirmPassword, degree, experience, skills, interests, recaptchaToken } = req.body;
     console.log('Registration attempt with email:', email);
 
+    const logAndSendError = (message) => {
+        console.error('Validation failed:', message); // Log the specific error
+        return res.status(400).json({ message });
+    };
+
     // --- reCAPTCHA verification ---
     if (!recaptchaToken) {
-        return res.status(400).json({ message: 'Please complete the reCAPTCHA.' });
+        return logAndSendError('Please complete the reCAPTCHA.');
     }
     try {
         const recaptchaRes = await axios.post('https://www.google.com/recaptcha/api/siteverify', null, {
@@ -22,44 +27,44 @@ exports.registerUser  = async (req, res) => {
             }
         });
         if (!recaptchaRes.data.success) {
-            return res.status(400).json({ message: 'reCAPTCHA verification failed. Please try again.' });
+            return logAndSendError('reCAPTCHA verification failed. Please try again.');
         }
     } catch (err) {
-        return res.status(400).json({ message: 'reCAPTCHA verification error.' });
+        return logAndSendError('reCAPTCHA verification error.');
     }
 
     // --- Strong Validation ---
     if (!name || !email || !phone || !password || !degree || experience === undefined) {
-        return res.status(400).json({ message: 'All fields are required.' });
+        return logAndSendError('All fields are required.');
     }
     if (password !== confirmPassword) {
-        return res.status(400).json({ message: 'Passwords do not match.' });
+        return logAndSendError('Passwords do not match.');
     }
     if (!validator.isLength(name, { min: 2, max: 30 }) || !/^[A-Za-z\s]+$/.test(name)) {
-        return res.status(400).json({ message: 'Invalid full name. Use only letters, 2-30 chars.' });
+        return logAndSendError('Invalid full name. Use only letters, 2-30 chars.');
     }
     if (!validator.isEmail(email)) {
-        return res.status(400).json({ message: 'Invalid email address.' });
+        return logAndSendError('Invalid email address.');
     }
     if (!/^\+?\d{10,15}$/.test(phone)) {
-        return res.status(400).json({ message: 'Invalid phone number. Use 10-15 digits, may start with +.' });
+        return logAndSendError('Invalid phone number. Use 10-15 digits, may start with +.');
     }
     const passwordRegex = /^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
     if (!passwordRegex.test(password)) {
-        return res.status(400).json({ message: 'Password must be 8+ chars, 1 uppercase, 1 number, 1 special.' });
+        return logAndSendError('Password must be 8+ chars, 1 uppercase, 1 number, 1 special.');
     }
     if (!degree.trim()) {
-        return res.status(400).json({ message: 'Degree is required.' });
+        return logAndSendError('Degree is required.');
     }
     const parsedExperience = parseInt(experience, 10);
     if (isNaN(parsedExperience) || parsedExperience < 0) {
-        return res.status(400).json({ message: 'Experience must be a non-negative number.' });
+        return logAndSendError('Experience must be a non-negative number.');
     }
     if (!Array.isArray(skills) || skills.length === 0 || !skills.some(Boolean)) {
-        return res.status(400).json({ message: 'Select at least one skill.' });
+        return logAndSendError('Select at least one skill.');
     }
     if (!Array.isArray(interests) || interests.length === 0 || !interests.some(Boolean)) {
-        return res.status(400).json({ message: 'Select at least one interest.' });
+        return logAndSendError('Select at least one interest.');
     }
 
     try {
@@ -67,7 +72,7 @@ exports.registerUser  = async (req, res) => {
         const existingUser  = await User.findOne({ email });
         if (existingUser ) {
             console.log('User  already exists');
-            return res.status(400).json({ message: 'User  already exists.' });
+            return logAndSendError('User  already exists.');
         }
 
         // Hash the password
