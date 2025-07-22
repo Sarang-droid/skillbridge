@@ -79,19 +79,137 @@ interestsCheckboxes.forEach(checkbox => {
     checkbox.addEventListener('change', () => updateSelectedItems(interestsCheckboxes, selectedInterests));
 });
 
+// --- Validation Regexes ---
+const nameRegex = /^[A-Za-z\s]{2,30}$/;
+const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+const phoneRegex = /^\+?\d{10,15}$/;
+const passwordRegex = /^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+
+// --- Helper to show error below a field ---
+function showFieldError(fieldId, message) {
+    let errorDiv = document.getElementById(fieldId + '-error');
+    if (!errorDiv) {
+        errorDiv = document.createElement('div');
+        errorDiv.id = fieldId + '-error';
+        errorDiv.className = 'error';
+        errorDiv.style.marginTop = '-8px';
+        errorDiv.style.marginBottom = '8px';
+        const field = document.getElementById(fieldId);
+        field.parentNode.insertBefore(errorDiv, field.nextSibling);
+    }
+    errorDiv.textContent = message;
+}
+function clearFieldError(fieldId) {
+    const errorDiv = document.getElementById(fieldId + '-error');
+    if (errorDiv) errorDiv.textContent = '';
+}
+
+// --- Instant Validation Handlers ---
+document.getElementById('name').addEventListener('input', function() {
+    if (!nameRegex.test(this.value.trim())) {
+        showFieldError('name', 'Please enter a valid full name (only letters, 2-30 chars).');
+    } else {
+        clearFieldError('name');
+    }
+});
+document.getElementById('email').addEventListener('input', function() {
+    if (!emailRegex.test(this.value.trim())) {
+        showFieldError('email', 'Please enter a valid email address.');
+    } else {
+        clearFieldError('email');
+    }
+});
+document.getElementById('phone').addEventListener('input', function() {
+    if (!phoneRegex.test(this.value.trim())) {
+        showFieldError('phone', 'Please enter a valid phone number (10-15 digits, may start with +).');
+    } else {
+        clearFieldError('phone');
+    }
+});
+document.getElementById('password').addEventListener('input', function() {
+    if (!passwordRegex.test(this.value)) {
+        showFieldError('password', 'Password must be 8+ chars, 1 uppercase, 1 number, 1 special.');
+    } else {
+        clearFieldError('password');
+    }
+});
+document.getElementById('confirmPassword').addEventListener('input', function() {
+    if (this.value !== document.getElementById('password').value) {
+        showFieldError('confirmPassword', 'Passwords do not match.');
+    } else {
+        clearFieldError('confirmPassword');
+    }
+});
+document.getElementById('degree').addEventListener('input', function() {
+    if (!this.value.trim()) {
+        showFieldError('degree', 'Degree is required.');
+    } else {
+        clearFieldError('degree');
+    }
+});
+document.getElementById('experience').addEventListener('input', function() {
+    const val = this.value.trim();
+    if (val === '' || isNaN(val) || Number(val) < 0) {
+        showFieldError('experience', 'Experience must be a non-negative number.');
+    } else {
+        clearFieldError('experience');
+    }
+});
+
+// --- Skills/Interests Validation ---
+function validateSkills() {
+    const checked = Array.from(skillsCheckboxes).some(cb => cb.checked);
+    if (!checked) {
+        showFieldError('selectedSkills', 'Select at least one skill.');
+    } else {
+        clearFieldError('selectedSkills');
+    }
+}
+function validateInterests() {
+    const checked = Array.from(interestsCheckboxes).some(cb => cb.checked);
+    if (!checked) {
+        showFieldError('selectedInterests', 'Select at least one interest.');
+    } else {
+        clearFieldError('selectedInterests');
+    }
+}
+skillsCheckboxes.forEach(cb => cb.addEventListener('change', validateSkills));
+interestsCheckboxes.forEach(cb => cb.addEventListener('change', validateInterests));
+
 // Handle form submission
 document.getElementById('registerForm').addEventListener('submit', async function(event) {
     event.preventDefault();
-
-    // Get form values
+    let valid = true;
     const name = document.getElementById('name').value.trim();
     const email = document.getElementById('email').value.trim();
     const phone = document.getElementById('phone').value.trim();
-    const password = document.getElementById('password').value.trim();
-    const confirmPassword = document.getElementById('confirmPassword').value.trim();
+    const password = document.getElementById('password').value;
+    const confirmPassword = document.getElementById('confirmPassword').value;
     const degree = document.getElementById('degree').value.trim();
     const experience = document.getElementById('experience').value.trim();
-    const errorMessage = document.getElementById('errorMessage');
+    // Validate all fields
+    if (!nameRegex.test(name)) { showFieldError('name', 'Please enter a valid full name (only letters, 2-30 chars).'); valid = false; }
+    if (!emailRegex.test(email)) { showFieldError('email', 'Please enter a valid email address.'); valid = false; }
+    if (!phoneRegex.test(phone)) { showFieldError('phone', 'Please enter a valid phone number (10-15 digits, may start with +).'); valid = false; }
+    if (!passwordRegex.test(password)) { showFieldError('password', 'Password must be 8+ chars, 1 uppercase, 1 number, 1 special.'); valid = false; }
+    if (password !== confirmPassword) { showFieldError('confirmPassword', 'Passwords do not match.'); valid = false; }
+    if (!degree) { showFieldError('degree', 'Degree is required.'); valid = false; }
+    if (experience === '' || isNaN(experience) || Number(experience) < 0) { showFieldError('experience', 'Experience must be a non-negative number.'); valid = false; }
+    if (!Array.from(skillsCheckboxes).some(cb => cb.checked)) { showFieldError('selectedSkills', 'Select at least one skill.'); valid = false; }
+    if (!Array.from(interestsCheckboxes).some(cb => cb.checked)) { showFieldError('selectedInterests', 'Select at least one interest.'); valid = false; }
+    if (!valid) return;
+
+    // --- reCAPTCHA check ---
+    let recaptchaToken = '';
+    if (window.grecaptcha) {
+        recaptchaToken = grecaptcha.getResponse();
+    }
+    if (!recaptchaToken) {
+        showFieldError('errorMessage', 'Please complete the reCAPTCHA.');
+        return;
+    } else {
+        clearFieldError('errorMessage');
+    }
 
     // Get selected skills and interests
     const skills = Array.from(skillsCheckboxes)
@@ -103,22 +221,6 @@ document.getElementById('registerForm').addEventListener('submit', async functio
 
     // Clear previous errors
     errorMessage.textContent = '';
-
-    // Basic validation
-    if (!/\S+@\S+\.\S+/.test(email)) {
-        errorMessage.textContent = 'Please enter a valid email address.';
-        return;
-    }
-
-    if (password.length < 8) {
-        errorMessage.textContent = 'Password must be at least 8 characters.';
-        return;
-    }
-
-    if (password !== confirmPassword) {
-        errorMessage.textContent = 'Passwords do not match.';
-        return;
-    }
 
     // Log the payload before sending the request
     console.log('Payload:', {
@@ -147,7 +249,8 @@ document.getElementById('registerForm').addEventListener('submit', async functio
                 skills,
                 interests,
                 degree,
-                experience
+                experience,
+                recaptchaToken
             })
         });
 

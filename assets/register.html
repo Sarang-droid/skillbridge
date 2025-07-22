@@ -317,29 +317,37 @@
                 we connect your talent to industry needs—fast. </p>
         </div>
         <div class="container">
+            <p style="color: #f4c542; background: #222; border-radius: 8px; padding: 10px 16px; margin-bottom: 18px; font-size: 15px; text-align: center; border: 1px solid #f4c542;">
+              ⚠️ Please fill out this form with <b>genuine details only</b>. Fake names, emails, or phone numbers will result in account removal.
+            </p>
             <h2>Register</h2>
             <p class="tagline">Skillexa: Real Skills, Real Projects</p>
             <form id="registerForm">
                 <label for="name">Name:</label>
-                <input type="text" id="name" required>
+                <input type="text" id="name" required placeholder="Full Name (e.g. Rohan Sharma)">
+                <div class="helper-text" style="color:#b3b3b3;font-size:0.92rem;margin-top:-12px;margin-bottom:10px;">Please use your real name. This will appear on your certificates.</div>
 
                 <label for="email">Email:</label>
-                <input type="email" id="email" required>
+                <input type="email" id="email" required placeholder="e.g. rohan.sharma@email.com">
+                <div class="helper-text" style="color:#b3b3b3;font-size:0.92rem;margin-top:-12px;margin-bottom:10px;">Use a valid email address. You’ll need to verify it.</div>
 
                 <label for="phone">Phone Number:</label>
-                <input type="tel" id="phone" required>
+                <input type="tel" id="phone" required placeholder="e.g. +91 9876543210">
+                <div class="helper-text" style="color:#b3b3b3;font-size:0.92rem;margin-top:-12px;margin-bottom:10px;">Enter your real, active phone number.</div>
 
                 <label for="password">Password:</label>
                 <div class="password-wrapper">
-                    <input type="password" id="password" required>
+                    <input type="password" id="password" required placeholder="At least 8 chars, 1 uppercase, 1 number, 1 special">
                     <i class="fas fa-eye" id="togglePassword"></i>
                 </div>
+                <div class="helper-text" style="color:#b3b3b3;font-size:0.92rem;margin-top:-12px;margin-bottom:10px;">Minimum 8 characters, 1 uppercase, 1 number, 1 special character.</div>
 
                 <label for="confirmPassword">Confirm Password:</label>
                 <div class="password-wrapper">
-                    <input type="password" id="confirmPassword" required>
+                    <input type="password" id="confirmPassword" required placeholder="Re-enter your password">
                     <i class="fas fa-eye" id="toggleConfirmPassword"></i>
                 </div>
+                <div class="helper-text" style="color:#b3b3b3;font-size:0.92rem;margin-top:-12px;margin-bottom:10px;">Must match the password above.</div>
 
                 <!-- Skills Section -->
                 <label for="skills">Skills:</label>
@@ -416,6 +424,7 @@
                     </div>
                 </div>
                 <div id="selectedSkills" class="selected-items"></div>
+                <div class="helper-text" style="color:#b3b3b3;font-size:0.92rem;margin-top:-12px;margin-bottom:10px;">Select at least one skill you are proficient in.</div>
 
                 <!-- Interests Section -->
                 <label for="interests">Interests:</label>
@@ -488,14 +497,23 @@
                     </div>
                 </div>
                 <div id="selectedInterests" class="selected-items"></div>
+                <div class="helper-text" style="color:#b3b3b3;font-size:0.92rem;margin-top:-12px;margin-bottom:10px;">Choose your main professional interests.</div>
 
                 <label for="degree">Degree:</label>
-                <input type="text" id="degree" required>
+                <input type="text" id="degree" required placeholder="e.g. B.Tech in Computer Science">
+                <div class="helper-text" style="color:#b3b3b3;font-size:0.92rem;margin-top:-12px;margin-bottom:10px;">Enter your highest completed degree.</div>
 
                 <label for="experience">Experience (in years):</label>
-                <input type="number" id="experience" min="0" required>
+                <input type="number" id="experience" min="0" required placeholder="e.g. 2">
+                <div class="helper-text" style="color:#b3b3b3;font-size:0.92rem;margin-top:-12px;margin-bottom:10px;">Enter your total years of professional experience (0 if none).</div>
 
                 <div id="errorMessage" class="error"></div>
+
+                <!-- Google reCAPTCHA -->
+                <div style="margin: 18px 0 8px 0; text-align: center;">
+                  <div class="g-recaptcha" data-sitekey="6LdKW4srAAAAAO4oXC5umakxqW1Rhs8_nfA6jhCh"></div>
+                  <div class="helper-text" style="color:#b3b3b3;font-size:0.92rem;margin-top:6px;">This helps us prevent fake registrations.</div>
+                </div>
 
                 <button type="button" onclick="window.location.href='/api/auth/google'" style="width:100%;margin-top:12px;background:#fff;color:#444;border:1px solid #ccc;display:flex;align-items:center;justify-content:center;gap:8px;">
                     <img src="https://developers.google.com/identity/images/g-logo.png" alt="Google" style="height:20px;vertical-align:middle;">
@@ -510,6 +528,7 @@
     </div>
 
     <script src="/assets/register.js"></script>
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
     <script>
         function toggleList(listId) {
             const listContent = document.getElementById(listId);

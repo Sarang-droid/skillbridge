@@ -2,23 +2,61 @@ const User = require('../models/user');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const { createNotification } = require('./notificationController');
+const validator = require('validator');
+const axios = require('axios');
 
 // User Registration
 exports.registerUser  = async (req, res) => {
-    const { name, email, phone, password, degree, experience, skills, interests } = req.body;
+    const { name, email, phone, password, degree, experience, skills, interests, recaptchaToken } = req.body;
     console.log('Registration attempt with email:', email);
 
-    // Basic validation
-    if (!name || !email || !phone || !password || !degree || !experience) {
-        console.log('Validation failed: missing fields');
-        return res.status(400).json({ message: 'All fields are required.' });
+    // --- reCAPTCHA verification ---
+    if (!recaptchaToken) {
+        return res.status(400).json({ message: 'Please complete the reCAPTCHA.' });
+    }
+    try {
+        const recaptchaRes = await axios.post('https://www.google.com/recaptcha/api/siteverify', null, {
+            params: {
+                secret: process.env.RECAPTCHA_SECRET,
+                response: recaptchaToken
+            }
+        });
+        if (!recaptchaRes.data.success) {
+            return res.status(400).json({ message: 'reCAPTCHA verification failed. Please try again.' });
+        }
+    } catch (err) {
+        return res.status(400).json({ message: 'reCAPTCHA verification error.' });
     }
 
-    // Validate experience is a valid number
+    // --- Strong Validation ---
+    if (!name || !email || !phone || !password || !degree || experience === undefined) {
+        return res.status(400).json({ message: 'All fields are required.' });
+    }
+    if (!validator.isLength(name, { min: 2, max: 30 }) || !/^[A-Za-z\s]+$/.test(name)) {
+        return res.status(400).json({ message: 'Invalid full name. Use only letters, 2-30 chars.' });
+    }
+    if (!validator.isEmail(email)) {
+        return res.status(400).json({ message: 'Invalid email address.' });
+    }
+    if (!/^\+?\d{10,15}$/.test(phone)) {
+        return res.status(400).json({ message: 'Invalid phone number. Use 10-15 digits, may start with +.' });
+    }
+    const passwordRegex = /^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+    if (!passwordRegex.test(password)) {
+        return res.status(400).json({ message: 'Password must be 8+ chars, 1 uppercase, 1 number, 1 special.' });
+    }
+    if (!degree.trim()) {
+        return res.status(400).json({ message: 'Degree is required.' });
+    }
     const parsedExperience = parseInt(experience, 10);
-    if (isNaN(parsedExperience)) {
-        console.log('Validation failed: experience must be a valid number');
-        return res.status(400).json({ message: 'Experience must be a valid number.' });
+    if (isNaN(parsedExperience) || parsedExperience < 0) {
+        return res.status(400).json({ message: 'Experience must be a non-negative number.' });
+    }
+    if (!Array.isArray(skills) || skills.length === 0 || !skills.some(Boolean)) {
+        return res.status(400).json({ message: 'Select at least one skill.' });
+    }
+    if (!Array.isArray(interests) || interests.length === 0 || !interests.some(Boolean)) {
+        return res.status(400).json({ message: 'Select at least one interest.' });
     }
 
     try {
@@ -93,6 +131,9 @@ exports.loginUser  = async (req, res) => {
         if (!user) {
             console.log('User  not found');
             return res.status(400).json({ message: 'Invalid email or password.' });
+        }
+        if (!user.isVerified) {
+            return res.status(401).json({ message: 'Please verify your email before logging in.' });
         }
 
         const isMatch = await bcrypt.compare(password, user.password);
