@@ -7,7 +7,7 @@ const axios = require('axios');
 
 // User Registration
 exports.registerUser  = async (req, res) => {
-    const { name, email, phone, password, degree, experience, skills, interests, recaptchaToken } = req.body;
+    const { name, email, phone, password, confirmPassword, degree, experience, skills, interests, recaptchaToken } = req.body;
     console.log('Registration attempt with email:', email);
 
     // --- reCAPTCHA verification ---
@@ -31,6 +31,9 @@ exports.registerUser  = async (req, res) => {
     // --- Strong Validation ---
     if (!name || !email || !phone || !password || !degree || experience === undefined) {
         return res.status(400).json({ message: 'All fields are required.' });
+    }
+    if (password !== confirmPassword) {
+        return res.status(400).json({ message: 'Passwords do not match.' });
     }
     if (!validator.isLength(name, { min: 2, max: 30 }) || !/^[A-Za-z\s]+$/.test(name)) {
         return res.status(400).json({ message: 'Invalid full name. Use only letters, 2-30 chars.' });
