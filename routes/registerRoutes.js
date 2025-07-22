@@ -2,9 +2,10 @@
 
 const express = require('express');
 const router = express.Router();
-const { registerUser } = require('../controllers/authController'); // Import from authController
+const { registerUser } = require('../controllers/authController'); // Corrected path
 
-// POST route for user registration
-router.post('/', registerUser); // Directly use the registerUser function
+// Route to handle user registration
+// This now points to the secure registration logic in authController
+router.post('/', registerUser);
 
 module.exports = router;
