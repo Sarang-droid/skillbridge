@@ -20,7 +20,12 @@ if (process.env.NODE_ENV !== 'production') {
 }
 
 // Verify required environment variables
-const requiredEnvVars = ['MONGO_URI', 'JWT_SECRET', 'SESSION_SECRET', 'RECAPTCHA_SECRET'];
+const requiredEnvVars = ['MONGO_URI', 'JWT_SECRET', 'SESSION_SECRET', 'RECAPTCHA_SECRET_KEY'];
+
+// Map RECAPTCHA_SECRET_KEY to RECAPTCHA_SECRET for backward compatibility
+if (process.env.RECAPTCHA_SECRET_KEY && !process.env.RECAPTCHA_SECRET) {
+    process.env.RECAPTCHA_SECRET = process.env.RECAPTCHA_SECRET_KEY;
+}
 const missingVars = requiredEnvVars.filter(varName => !process.env[varName]);
 
 if (missingVars.length > 0) {
@@ -31,7 +36,8 @@ if (missingVars.length > 0) {
 
 console.log('Environment variables loaded successfully');
 console.log('NODE_ENV:', process.env.NODE_ENV || 'development');
-console.log('reCAPTCHA_SECRET exists:', !!process.env.RECAPTCHA_SECRET);
+console.log('RECAPTCHA_SECRET_KEY exists:', !!process.env.RECAPTCHA_SECRET_KEY);
+console.log('RECAPTCHA_SECRET mapped:', !!process.env.RECAPTCHA_SECRET);
 
 require('./utils/passport');
 
