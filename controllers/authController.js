@@ -15,34 +15,60 @@ exports.registerUser  = async (req, res) => {
         return res.status(400).json({ message });
     };
 
-    // --- reCAPTCHA verification ---
+    // --- reCAPTCHA v2 verification ---
     if (!recaptchaToken) {
         console.error('No reCAPTCHA token provided');
-        return logAndSendError('Please complete the reCAPTCHA.');
+        return logAndSendError('Please complete the reCAPTCHA verification.');
     }
     
     try {
+        // Verify reCAPTCHA with Google
+        const verificationUrl = 'https://www.google.com/recaptcha/api/siteverify';
         const params = new URLSearchParams();
         params.append('secret', process.env.RECAPTCHA_SECRET);
         params.append('response', recaptchaToken);
-        
-        const recaptchaRes = await axios.post('https://www.google.com/recaptcha/api/siteverify', params, {
+        params.append('remoteip', req.ip);
+
+        const recaptchaRes = await axios.post(verificationUrl, params, {
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded'
             }
         });
+
+        const { success, hostname, 'error-codes': errorCodes = [] } = recaptchaRes.data;
         
         console.log('reCAPTCHA verification response:', {
-            success: recaptchaRes.data.success,
-            hostname: recaptchaRes.data.hostname,
-            challenge_ts: recaptchaRes.data['challenge_ts'],
-            'error-codes': recaptchaRes.data['error-codes']
+            success,
+            hostname,
+            errorCodes
         });
-        
-        if (!recaptchaRes.data.success) {
-            console.error('reCAPTCHA verification failed:', recaptchaRes.data['error-codes']);
-            return logAndSendError('reCAPTCHA verification failed. Please try again.');
+
+        if (!success) {
+            console.error('reCAPTCHA verification failed:', errorCodes);
+            
+            // Provide more specific error messages based on the error code
+            if (errorCodes.includes('invalid-input-secret') || errorCodes.includes('missing-input-secret')) {
+                console.error('reCAPTCHA secret key is invalid or missing');
+                return logAndSendError('Server configuration error. Please contact support.');
+            } else if (errorCodes.includes('invalid-input-response') || errorCodes.includes('missing-input-response')) {
+                return logAndSendError('Invalid reCAPTCHA. Please complete the verification again.');
+            } else if (errorCodes.includes('timeout-or-duplicate')) {
+                return logAndSendError('reCAPTCHA verification expired. Please try again.');
+            } else {
+                return logAndSendError('reCAPTCHA verification failed. Please try again.');
+            }
         }
+        
+        // Verify the hostname matches your domain (optional but recommended)
+        const expectedHostname = process.env.NODE_ENV === 'production' 
+            ? 'skillexa.in' 
+            : 'localhost';
+            
+        if (hostname !== expectedHostname && hostname !== `www.${expectedHostname}`) {
+            console.error(`reCAPTCHA hostname verification failed. Expected: ${expectedHostname}, Got: ${hostname}`);
+            return logAndSendError('Invalid request source.');
+        }
+        
     } catch (err) {
         console.error('reCAPTCHA verification error:', err.message);
         return logAndSendError('Error verifying reCAPTCHA. Please try again.');

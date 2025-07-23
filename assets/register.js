@@ -200,8 +200,8 @@ document.getElementById('registerForm').addEventListener('submit', async functio
     if (!valid) return;
 
     // --- reCAPTCHA check ---
-    let recaptchaToken = grecaptcha.getResponse();
-    if (!recaptchaToken) {
+    const recaptchaResponse = grecaptcha.getResponse();
+    if (!recaptchaResponse) {
         showFieldError('errorMessage', 'Please complete the reCAPTCHA.');
         return;
     }
@@ -248,7 +248,7 @@ document.getElementById('registerForm').addEventListener('submit', async functio
                 interests,
                 degree,
                 experience: Number(experience),
-                recaptchaToken
+                recaptchaToken: recaptchaResponse
             })
         });
 

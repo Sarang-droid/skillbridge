@@ -509,9 +509,9 @@
 
                 <div id="errorMessage" class="error"></div>
 
-                <!-- Google reCAPTCHA -->
+                <!-- Google reCAPTCHA v2 -->
                 <div style="margin: 18px 0 8px 0; text-align: center;">
-                  <div id="recaptcha-element" class="g-recaptcha" data-sitekey="6LfnYYsrAAAAAHwt1gGBaOAqutGxw1SCuA7cj-Sm"></div>
+                  <div class="g-recaptcha" data-sitekey="6LfnYYsrAAAAAHwt1gGBaOAqutGxw1SCuA7cj-Sm" data-callback="onRecaptchaSuccess" data-expired-callback="onRecaptchaExpired"></div>
                   <div class="helper-text" style="color:#b3b3b3;font-size:0.92rem;margin-top:6px;">This helps us prevent fake registrations.</div>
                 </div>
 
@@ -527,18 +527,20 @@
         </div>
     </div>
 
-    <script src="/assets/register.js"></script>
+    <!-- Load reCAPTCHA v2 API -->
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
     <script>
-      var onRecaptchaLoad = function() {
-        grecaptcha.render('recaptcha-element', {
-          'sitekey': '6LfnYYsrAAAAAHwt1gGBaOAqutGxw1SCuA7cj-Sm',
-          'callback': function(response) {
-            console.log("reCAPTCHA completed with response:", response);
-          }
-        });
-      };
+      // reCAPTCHA v2 callbacks
+      function onRecaptchaSuccess(token) {
+        console.log('reCAPTCHA verified:', token);
+      }
+      
+      function onRecaptchaExpired() {
+        console.log('reCAPTCHA expired');
+        grecaptcha.reset();
+      }
     </script>
-    <script src="https://www.google.com/recaptcha/api.js?onload=onRecaptchaLoad&render=explicit" async defer></script>
+    <script src="/assets/register.js"></script>
     <script>
         function toggleList(listId) {
             const listContent = document.getElementById(listId);
