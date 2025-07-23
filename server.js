@@ -8,12 +8,15 @@ const cookieParser = require('cookie-parser');
 const path = require('path');
 const passport = require('passport');
 const dotenv = require('dotenv');
-const result = dotenv.config();
 
-// Check for .env file errors
-if (result.error) {
-    console.error('Error loading .env file:', result.error);
-    process.exit(1);
+// Only load .env file in development
+if (process.env.NODE_ENV !== 'production') {
+    const result = dotenv.config();
+    if (result.error) {
+        console.warn('Warning: Could not load .env file. Using environment variables from system.');
+    } else {
+        console.log('Local .env file loaded successfully');
+    }
 }
 
 // Verify required environment variables
@@ -22,11 +25,12 @@ const missingVars = requiredEnvVars.filter(varName => !process.env[varName]);
 
 if (missingVars.length > 0) {
     console.error('Missing required environment variables:', missingVars.join(', '));
-    console.log('Current environment variables:', JSON.stringify(process.env, null, 2));
+    console.log('Current environment variables:', Object.keys(process.env).join(', '));
     process.exit(1);
 }
 
 console.log('Environment variables loaded successfully');
+console.log('NODE_ENV:', process.env.NODE_ENV || 'development');
 console.log('reCAPTCHA_SECRET exists:', !!process.env.RECAPTCHA_SECRET);
 
 require('./utils/passport');
