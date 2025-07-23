@@ -7,7 +7,28 @@ const WebSocket = require('ws');
 const cookieParser = require('cookie-parser');
 const path = require('path');
 const passport = require('passport');
-require('dotenv').config();
+const dotenv = require('dotenv');
+const result = dotenv.config();
+
+// Check for .env file errors
+if (result.error) {
+    console.error('Error loading .env file:', result.error);
+    process.exit(1);
+}
+
+// Verify required environment variables
+const requiredEnvVars = ['MONGO_URI', 'JWT_SECRET', 'SESSION_SECRET', 'RECAPTCHA_SECRET'];
+const missingVars = requiredEnvVars.filter(varName => !process.env[varName]);
+
+if (missingVars.length > 0) {
+    console.error('Missing required environment variables:', missingVars.join(', '));
+    console.log('Current environment variables:', JSON.stringify(process.env, null, 2));
+    process.exit(1);
+}
+
+console.log('Environment variables loaded successfully');
+console.log('reCAPTCHA_SECRET exists:', !!process.env.RECAPTCHA_SECRET);
+
 require('./utils/passport');
 
 const { protect } = require('./middleware/authMiddleware');
@@ -31,7 +52,7 @@ const industryRoutes = require('./routes/industryRoutes'); // Assuming this exis
 const pilotRoutes = require('./routes/pilotRoutes'); // New
 
 const app = express();
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 5001;
 
 const corsOptions = {
     origin: ['http://localhost:3000', 'http://127.0.0.1:3000', 'https://skillexa.in', 'http://skillexa.in'],

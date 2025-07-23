@@ -189,6 +189,8 @@ exports.registerUser  = async (req, res) => {
 We're thrilled to have you on board. Get started by taking your Personality Test to unlock tailored career insights and build your Professional Profile that showcases your strengths and aspirations.
 Discover skills aligned with your unique potential and explore curated learning paths designed just for you.
 Need help? Our support team is just a message away. Let's grow together!`,
+                [], // Empty attachments array
+                [], // Empty links array
                 false // Set to false for user-specific notification
             );
             console.log('Welcome notification created for user:', newUser._id);
