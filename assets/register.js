@@ -200,15 +200,10 @@ document.getElementById('registerForm').addEventListener('submit', async functio
     if (!valid) return;
 
     // --- reCAPTCHA check ---
-    let recaptchaToken = '';
-    if (window.grecaptcha) {
-        recaptchaToken = grecaptcha.getResponse();
-    }
+    let recaptchaToken = grecaptcha.getResponse();
     if (!recaptchaToken) {
         showFieldError('errorMessage', 'Please complete the reCAPTCHA.');
         return;
-    } else {
-        clearFieldError('errorMessage');
     }
 
     // Get selected skills and interests
@@ -239,7 +234,10 @@ document.getElementById('registerForm').addEventListener('submit', async functio
         // Send registration request to the server
         const response = await fetch('/api/register', {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            headers: { 
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            },
             body: JSON.stringify({
                 name,
                 email,
@@ -249,7 +247,7 @@ document.getElementById('registerForm').addEventListener('submit', async functio
                 skills,
                 interests,
                 degree,
-                experience,
+                experience: Number(experience),
                 recaptchaToken
             })
         });

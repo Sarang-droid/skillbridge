@@ -17,21 +17,35 @@ exports.registerUser  = async (req, res) => {
 
     // --- reCAPTCHA verification ---
     if (!recaptchaToken) {
+        console.error('No reCAPTCHA token provided');
         return logAndSendError('Please complete the reCAPTCHA.');
     }
+    
     try {
-        const recaptchaRes = await axios.post('https://www.google.com/recaptcha/api/siteverify', null, {
-            params: {
-                secret: process.env.RECAPTCHA_SECRET,
-                response: recaptchaToken
+        const params = new URLSearchParams();
+        params.append('secret', process.env.RECAPTCHA_SECRET);
+        params.append('response', recaptchaToken);
+        
+        const recaptchaRes = await axios.post('https://www.google.com/recaptcha/api/siteverify', params, {
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
             }
         });
-        console.error('reCAPTCHA response from Google:', recaptchaRes.data);
+        
+        console.log('reCAPTCHA verification response:', {
+            success: recaptchaRes.data.success,
+            hostname: recaptchaRes.data.hostname,
+            challenge_ts: recaptchaRes.data['challenge_ts'],
+            'error-codes': recaptchaRes.data['error-codes']
+        });
+        
         if (!recaptchaRes.data.success) {
+            console.error('reCAPTCHA verification failed:', recaptchaRes.data['error-codes']);
             return logAndSendError('reCAPTCHA verification failed. Please try again.');
         }
     } catch (err) {
-        return logAndSendError('reCAPTCHA verification error.');
+        console.error('reCAPTCHA verification error:', err.message);
+        return logAndSendError('Error verifying reCAPTCHA. Please try again.');
     }
 
     // --- Strong Validation ---
