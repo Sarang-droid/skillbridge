@@ -511,7 +511,8 @@
 
                 <!-- Google reCAPTCHA v2 -->
                 <div style="margin: 18px 0 8px 0; text-align: center;">
-                  <div class="g-recaptcha" data-sitekey="6LfnYYsrAAAAAHwt1gGBaOAqutGxw1SCuA7cj-Sm" data-callback="onRecaptchaSuccess" data-expired-callback="onRecaptchaExpired"></div>
+                  <div id="recaptcha-container" class="g-recaptcha" data-sitekey="6LfnYYsrAAAAAHwt1gGBaOAqutGxw1SCuA7cj-Sm" data-callback="onRecaptchaSuccess" data-expired-callback="onRecaptchaExpired"></div>
+                  <input type="hidden" id="recaptcha-token" name="recaptcha-token">
                   <div class="helper-text" style="color:#b3b3b3;font-size:0.92rem;margin-top:6px;">This helps us prevent fake registrations.</div>
                 </div>
 
@@ -528,16 +529,29 @@
     </div>
 
     <!-- Load reCAPTCHA v2 API -->
-    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+    <script src="https://www.google.com/recaptcha/api.js?onload=onRecaptchaLoad&render=explicit" async defer></script>
     <script>
       // reCAPTCHA v2 callbacks
+      var recaptchaWidgetId;
+      
+      function onRecaptchaLoad() {
+        // Render the reCAPTCHA widget
+        recaptchaWidgetId = grecaptcha.render('recaptcha-container', {
+          'sitekey': '6LfnYYsrAAAAAHwt1gGBaOAqutGxw1SCuA7cj-Sm',
+          'callback': onRecaptchaSuccess,
+          'expired-callback': onRecaptchaExpired
+        });
+      }
+      
       function onRecaptchaSuccess(token) {
         console.log('reCAPTCHA verified:', token);
+        document.getElementById('recaptcha-token').value = token;
       }
       
       function onRecaptchaExpired() {
         console.log('reCAPTCHA expired');
-        grecaptcha.reset();
+        document.getElementById('recaptcha-token').value = '';
+        grecaptcha.reset(recaptchaWidgetId);
       }
     </script>
     <script src="/assets/register.js"></script>

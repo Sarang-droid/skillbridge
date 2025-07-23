@@ -200,9 +200,13 @@ document.getElementById('registerForm').addEventListener('submit', async functio
     if (!valid) return;
 
     // --- reCAPTCHA check ---
-    const recaptchaResponse = grecaptcha.getResponse();
+    const recaptchaResponse = document.getElementById('recaptcha-token').value;
     if (!recaptchaResponse) {
-        showFieldError('errorMessage', 'Please complete the reCAPTCHA.');
+        showFieldError('errorMessage', 'Please complete the reCAPTCHA verification.');
+        // Reset the reCAPTCHA widget
+        if (typeof grecaptcha !== 'undefined' && window.recaptchaWidgetId !== undefined) {
+            grecaptcha.reset(window.recaptchaWidgetId);
+        }
         return;
     }
 
