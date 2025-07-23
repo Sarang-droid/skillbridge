@@ -26,6 +26,7 @@ exports.registerUser  = async (req, res) => {
                 response: recaptchaToken
             }
         });
+        console.error('reCAPTCHA response from Google:', recaptchaRes.data);
         if (!recaptchaRes.data.success) {
             return logAndSendError('reCAPTCHA verification failed. Please try again.');
         }
