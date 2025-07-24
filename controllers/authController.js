@@ -224,9 +224,7 @@ exports.loginUser  = async (req, res) => {
             console.log('User  not found');
             return res.status(400).json({ message: 'Invalid email or password.' });
         }
-        if (!user.isVerified) {
-            return res.status(401).json({ message: 'Please verify your email before logging in.' });
-        }
+        // Email verification check removed to allow login without verification
 
         const isMatch = await bcrypt.compare(password, user.password);
         if (!isMatch) {
