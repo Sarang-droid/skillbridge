@@ -20,7 +20,7 @@ if (process.env.NODE_ENV !== 'production') {
 }
 
 // Verify required environment variables
-const requiredEnvVars = ['MONGO_URI', 'JWT_SECRET', 'SESSION_SECRET', 'RECAPTCHA_SECRET_KEY'];
+const requiredEnvVars = ['MONGO_URI', 'JWT_SECRET', 'SESSION_SECRET', 'RECAPTCHA_SECRET'];
 
 // Map RECAPTCHA_SECRET_KEY to RECAPTCHA_SECRET for backward compatibility
 if (process.env.RECAPTCHA_SECRET_KEY && !process.env.RECAPTCHA_SECRET) {
@@ -112,8 +112,8 @@ mongoose.connect(process.env.MONGO_URI, {
 
 // Routes
 app.use('/api/auth', authRoutes);
-app.use('/api/company', protect, companyRoutes);
-app.use('/api/notification', notificationRoutes);
+app.use('/api/company', companyRoutes);
+app.use('/api/notifications', notificationRoutes);
 app.use('/api/profile', profileRoutes);
 app.use('/api/qa', qaRoutes);
 app.use('/api/register', registerRoutes);
@@ -121,13 +121,13 @@ app.use('/api/settings', settingsRoutes);
 app.use('/api/workspace', workspaceRoutes);
 app.use('/api/homepage', homepageRoutes);
 app.use('/api/projects', projectRoutes);
-app.use('/api/evaluation', evaluationRoutes);
+app.use('/api/evaluations', evaluationRoutes);
 app.use('/api/matches', matchRoutes);
 app.use('/api/badges', badgeRoutes);
-app.use('/api/mbti', mbtiRoutes);
 app.use('/api/personality', personalityRoutes);
-app.use('/api/quizzes', industryRoutes);
-app.use('/api/pilot', pilotRoutes); // New
+app.use('/api/industry', industryRoutes);
+app.use('/api/pilot', pilotRoutes);
+app.use('/mbti', mbtiRoutes); // Mount MBTI routes under /mbti // New
 
 // Static page routes
 const pages = ['/', '/homepage', '/register', '/login', '/settings', '/notification', '/personality', '/result', '/industry_quiz', '/pilot', '/join-pilot']; // Added /pilot and /join-pilot
