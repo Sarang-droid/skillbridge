@@ -55,7 +55,6 @@ const workspaceRoutes = require('./routes/workspaceRoutes');
 const homepageRoutes = require('./routes/homepageRoutes');
 const projectRoutes = require('./routes/projectRoutes');
 const evaluationRoutes = require('./routes/evaluationRoutes');
-const mbtiRoutes = require('./routes/MBTIRoutes');
 const matchRoutes = require('./routes/matchRoutes');
 const badgeRoutes = require('./routes/badgeRoutes'); // Assuming this exists
 const personalityRoutes = require('./routes/personalityRoutes'); // Assuming this exists
