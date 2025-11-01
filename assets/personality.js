@@ -297,19 +297,35 @@ let currentSlide = 0;
     }
   
     try {
-      const response = await makeAuthenticatedRequest('/api/mbti/submit', {
+      const response = await makeAuthenticatedRequest('/mbti/submit', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ answers }),
+        body: JSON.stringify({ answers, userId }), // Include userId in the request
+        signal: AbortSignal.timeout(10000) // Add timeout to prevent hanging
+      }).catch(err => {
+        if (err.name === 'AbortError') {
+          throw new Error('Request timed out. Please check your connection and try again.');
+        }
+        throw err;
       });
-  
-      if (!response.ok) {
-        throw new Error('Failed to submit MBTI test');
+
+      if (!response) {
+        throw new Error('No response received from server');
       }
-  
-      const data = await response.json();
+
+      let data;
+      try {
+        data = await response.json();
+      } catch (e) {
+        console.error('Failed to parse response:', e);
+        throw new Error('Invalid response from server');
+      }
+
+      if (!response.ok) {
+        throw new Error(data.message || 'Failed to submit MBTI test');
+      }
       if (data.success) {
         alert('MBTI results submitted successfully!');
         localStorage.setItem('mbtiToken', data.token);
