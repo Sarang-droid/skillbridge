@@ -48,6 +48,7 @@ const companyRoutes = require('./routes/companyRoutes');
 const notificationRoutes = require('./routes/notificationRoutes');
 const profileRoutes = require('./routes/profileRoutes');
 const qaRoutes = require('./routes/qaRoutes');
+const mbtiRoutes = require('./routes/MBTIRoutes');
 const registerRoutes = require('./routes/registerRoutes');
 const settingsRoutes = require('./routes/settingsRoutes');
 const workspaceRoutes = require('./routes/workspaceRoutes');

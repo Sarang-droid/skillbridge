@@ -27,7 +27,7 @@ const shareButton = document.getElementById('shareButton');
 // Fetch MBTI Results
 async function fetchResults() {
   try {
-    const response = await fetch(`/api/mbti/result/${token}`, {
+    const response = await fetch(`/mbti/result/${token}`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',

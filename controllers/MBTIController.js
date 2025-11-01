@@ -473,8 +473,24 @@ const storeResult = async (req, res) => {
             token: newToken
         });
     } catch (err) {
-        console.error('Error in storeResult:', err);
-        res.status(500).json({ message: 'Server Error', error: err.message });
+        console.error('Error in storeResult:', {
+            message: err.message,
+            stack: err.stack,
+            requestBody: req.body,
+            token: req.headers.authorization ? 'Token present' : 'No token provided',
+            env: {
+                NODE_ENV: process.env.NODE_ENV,
+                JWT_SECRET: process.env.JWT_SECRET ? 'Set' : 'Missing',
+                DB_CONNECTED: mongoose.connection.readyState === 1 ? 'Connected' : 'Disconnected'
+            }
+        });
+        
+        res.status(500).json({ 
+            success: false,
+            message: 'Server Error',
+            error: process.env.NODE_ENV === 'development' ? err.message : 'Internal server error',
+            requestId: req.id || Date.now()
+        });
     }
 };
 
