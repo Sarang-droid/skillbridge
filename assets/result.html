@@ -223,6 +223,74 @@
       height: 200%;
     }
   
+    /* MBTI Type headline */
+    .type-code {
+      font-size: 2.4rem;
+      font-weight: bold;
+      color: #e8b923;
+      letter-spacing: 3px;
+      text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+    }
+
+    .confidence-line {
+      margin-top: 8px;
+      font-size: 0.95rem;
+      color: #b0b0b0;
+    }
+
+    .confidence-line strong { color: #e8b923; }
+
+    /* Trait Breakdown bars */
+    .trait {
+      margin-bottom: 18px;
+    }
+
+    .trait-head {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.85rem;
+      color: #b0b0b0;
+      margin-bottom: 6px;
+    }
+
+    .trait-track {
+      position: relative;
+      height: 12px;
+      background-color: #3c3c3c;
+      border-radius: 6px;
+      border: 1px solid #555;
+      overflow: hidden;
+    }
+
+    .trait-fill {
+      position: absolute;
+      top: 0;
+      height: 100%;
+      transition: all 0.8s ease;
+    }
+
+    .trait-fill.right { background-color: #e8b923; }
+    .trait-fill.left  { background-color: #5a8dee; }
+
+    .trait-center {
+      position: absolute;
+      top: -2px;
+      left: 50%;
+      width: 2px;
+      height: 16px;
+      background-color: #888;
+      transform: translateX(-50%);
+      z-index: 1;
+    }
+
+    .trait-verdict {
+      margin-top: 6px;
+      font-size: 0.9rem;
+      color: #d3d3d3;
+      text-align: center;
+      font-weight: bold;
+    }
+
     @media (max-width: 768px) {
       .cards-container {
         flex-direction: column;
@@ -264,7 +332,12 @@
       <h1>Your MBTI Results</h1>
       <div class="result-item">
         <h2>Your MBTI Type</h2>
-        <p id="mbtiType"></p>
+        <p><span id="mbtiType" class="type-code"></span></p>
+        <p class="confidence-line">Confidence: <strong id="confidence"></strong></p>
+      </div>
+      <div class="result-item">
+        <h2>Trait Breakdown</h2>
+        <div id="traitBreakdown"></div>
       </div>
       <div class="result-item">
         <h2>Description</h2>

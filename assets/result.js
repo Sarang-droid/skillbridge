@@ -3,6 +3,8 @@ const token = localStorage.getItem('mbtiToken');
 
 // DOM Elements
 const mbtiTypeElement = document.getElementById('mbtiType');
+const confidenceElement = document.getElementById('confidence');
+const traitBreakdownElement = document.getElementById('traitBreakdown');
 const descriptionElement = document.getElementById('description');
 const psychologicalScoreElement = document.getElementById('psychologicalScore');
 const strengthsListElement = document.getElementById('strengthsList');
@@ -24,6 +26,52 @@ const projectListElement = document.getElementById('projectList');
 const selfImprovementTipElement = document.getElementById('selfImprovementTip');
 const shareButton = document.getElementById('shareButton');
 
+// Axis config — the right side is each dimension's POSITIVE pole, matching the
+// normalizedScores convention in controllers/MBTIController.js (-100..+100).
+const axisConfig = [
+  { key: 'mind',     left: 'E', right: 'I', leftName: 'Extrovert',  rightName: 'Introvert' },
+  { key: 'energy',   left: 'S', right: 'N', leftName: 'Sensing',    rightName: 'Intuitive' },
+  { key: 'nature',   left: 'T', right: 'F', leftName: 'Thinking',   rightName: 'Feeling' },
+  { key: 'tactics',  left: 'J', right: 'P', leftName: 'Judging',    rightName: 'Prospecting' },
+  { key: 'identity', left: 'A', right: 'T', leftName: 'Assertive',  rightName: 'Turbulent' }
+];
+
+// Render a labeled, centered bar for each personality axis.
+function renderTraitBreakdown(scores) {
+  if (!scores) {
+    traitBreakdownElement.innerHTML = '<p>No breakdown available</p>';
+    return;
+  }
+
+  traitBreakdownElement.innerHTML = axisConfig.map(axis => {
+    const raw = Number(scores[axis.key]) || 0;          // -100..+100
+    const score = Math.max(-100, Math.min(100, raw));
+    const leansRight = score >= 0;
+    const dominant = leansRight ? axis.rightName : axis.leftName;
+    const pct = Math.round(50 + Math.abs(score) / 2);   // 50-100% toward dominant pole
+
+    // Fill grows from the center toward the leaning side.
+    const half = Math.abs(score) / 2;
+    const fillStyle = leansRight
+      ? `left:50%;width:${half}%;`
+      : `left:${50 - half}%;width:${half}%;`;
+
+    return `
+      <div class="trait">
+        <div class="trait-head">
+          <span>${axis.leftName} (${axis.left})</span>
+          <span>${axis.rightName} (${axis.right})</span>
+        </div>
+        <div class="trait-track">
+          <div class="trait-fill ${leansRight ? 'right' : 'left'}" style="${fillStyle}"></div>
+          <div class="trait-center"></div>
+        </div>
+        <div class="trait-verdict">${pct}% ${dominant}</div>
+      </div>
+    `;
+  }).join('');
+}
+
 // Fetch MBTI Results
 async function fetchResults() {
   try {
@@ -43,7 +91,11 @@ async function fetchResults() {
     console.log('Fetched Data:', data);
 
     // Display Results
-    mbtiTypeElement.textContent = data.type || 'N/A';
+    mbtiTypeElement.textContent = data.fullType || data.type || 'N/A';
+    confidenceElement.textContent = (data.confidence !== undefined && data.confidence !== null)
+      ? `${data.confidence}%`
+      : 'N/A';
+    renderTraitBreakdown(data.normalizedScores);
     descriptionElement.textContent = data.personalityDetails?.description || 'No description available';
     psychologicalScoreElement.textContent = data.psychologicalScore || 'N/A';
     strengthsListElement.innerHTML = data.personalityDetails?.strengths?.map(strength => `<li>${strength}</li>`).join('') || '<li>No strengths available</li>';
