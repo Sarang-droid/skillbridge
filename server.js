@@ -91,7 +91,9 @@ app.use((req, res, next) => {
 });
 
 // Serve static files
+app.use(express.static(path.join(__dirname, 'public')));
 app.use('/assets', express.static(path.join(__dirname, 'assets')));
+app.use('/css', express.static(path.join(__dirname, 'assets/css')));
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 // MongoDB Connection

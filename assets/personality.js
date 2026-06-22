@@ -1,128 +1,125 @@
-const questions = [
-    // Section 1: Mind (Introvert vs Extrovert)
+  /*
+   * Each graded question declares the `dimension` it measures and labels both poles.
+   *  - `negative` = the answer that pushes the score toward the dimension's NEGATIVE pole
+   *  - `positive` = the answer that pushes it toward the POSITIVE pole
+   * The Likert scale runs left (strongly negative) -> right (strongly positive),
+   * producing a signed value of -2..+2. This must stay in sync with the convention in
+   * controllers/MBTIController.js:
+   *    mind: I(+)/E(-)  energy: N(+)/S(-)  nature: F(+)/T(-)
+   *    tactics: P(+)/J(-)  identity: T(+)/A(-)
+   */
+  const questions = [
+    // Section 1: Mind — Introvert (+) vs Extrovert (-)
     {
-        section: "Section 1: Mind (Introvert vs Extrovert)",
-        question: " 1 .You're walking alone in a park and spot a friendly dog wagging its tail at you. What is your instinctive reaction?",
-        options: [
-            "Approach the dog, try to pet it, maybe even chat with the owner.",
-            "Smile from a distance, appreciate the moment, but continue walking."
-        ]
+        section: "Section 1: Mind — Introvert vs Extrovert",
+        dimension: "mind",
+        question: "1. You're walking alone in a park and spot a friendly dog wagging its tail at you. What's your instinctive reaction?",
+        negative: "Approach the dog, pet it, maybe chat with the owner",
+        positive: "Smile from a distance, enjoy the moment, keep walking"
     },
     {
+        dimension: "mind",
         question: "2. You're at a small house party with a group of close friends. What would you prefer to do?",
-        options: [
-            "Be the one starting the games and conversations, making sure everyone is having fun.",
-            "Sit in a comfortable corner with 2-3 people and have deep conversations."
-        ]
+        negative: "Start the games and conversations, keeping everyone entertained",
+        positive: "Settle into a corner with 2-3 people for a deeper conversation"
     },
     {
-        question: " 3. You're at a cafe waiting for your order. There's someone sitting nearby reading a book you're interested in. What would you do?",
-        options: [
-            "Strike up a conversation about the book.",
-            "Notice the book but enjoy your own time without interrupting."
-        ]
+        dimension: "mind",
+        question: "3. You're at a cafe waiting for your order and notice someone reading a book you love. What do you do?",
+        negative: "Strike up a conversation about the book",
+        positive: "Notice it but happily enjoy your own time without interrupting"
     },
-  
-    // Section 2: Energy (Intuitive vs Observant)
+
+    // Section 2: Energy — Intuitive (+) vs Sensing/Observant (-)
     {
-        section: "Section 2: Energy (Intuitive vs Observant)",
-        question: " 4. You're stuck in heavy rain without an umbrella. What's your first thought?",
-        options: [
-            "This will be an interesting story to tell later. Maybe I should enjoy the moment.",
-            "I need to find shelter or call someone to pick me up."
-        ]
+        section: "Section 2: Energy — Intuitive vs Observant",
+        dimension: "energy",
+        question: "4. You're stuck in heavy rain without an umbrella. What's your first thought?",
+        negative: "I need to find shelter or call someone to pick me up",
+        positive: "This'll make an interesting story — maybe I should enjoy the moment"
     },
     {
-        question: "5.You're watching a movie with a complicated plot. What makes you enjoy it more?",
-        options: [
-            "The hidden meanings and symbolism behind the story.",
-            "The storyline, characters, and how everything fits logically."
-        ]
+        dimension: "energy",
+        question: "5. You're watching a movie with a complicated plot. What makes you enjoy it more?",
+        negative: "The storyline, characters, and how everything fits together logically",
+        positive: "The hidden meanings and symbolism behind the story"
     },
     {
-        question: "6.If I give you a random word — 'Wanderlust' — what comes to your mind first?",
-        options: [
-            "The feeling of exploring unknown places and writing your own story.",
-            "Planning the perfect trip with a list of things to see and do."
-        ]
+        dimension: "energy",
+        question: "6. I give you a random word — 'Wanderlust'. What comes to mind first?",
+        negative: "Planning the perfect trip with a list of things to see and do",
+        positive: "The feeling of exploring unknown places and writing your own story"
     },
-  
-    // Section 3: Nature (Thinking vs Feeling)
+
+    // Section 3: Nature — Feeling (+) vs Thinking (-)
     {
-        section: "Section 3: Nature (Thinking vs Feeling)",
-        question: "7.You're watching a movie where one character makes a terrible decision that causes a disaster. What's your first reaction?",
-        options: [
-            "Why would they do something so stupid? They should have thought this through better.",
-            "I feel bad for them... they must have been under a lot of pressure."
-        ]
+        section: "Section 3: Nature — Thinking vs Feeling",
+        dimension: "nature",
+        question: "7. In a movie, a character makes a terrible decision that causes a disaster. Your first reaction?",
+        negative: "Why would they do something so reckless? They should've thought it through",
+        positive: "I feel bad for them — they must have been under a lot of pressure"
     },
     {
-        question: "8.Your friend is asking for advice on quitting their job to start something on their own. What would your advice sound like?",
-        options: [
-            "List out the pros and cons and guide them on practical next steps.",
-            "Ask them how they feel about it and whether it makes them happy."
-        ]
+        dimension: "nature",
+        question: "8. A friend asks whether they should quit their job to start something of their own. Your advice sounds like?",
+        negative: "Let's list the pros and cons and figure out the practical next steps",
+        positive: "How do you feel about it? Would it genuinely make you happier?"
     },
     {
-        question: "9.A teammate isn't performing well on a group project. How do you naturally react?",
-        options: [
-            "Suggest ways they can improve their work directly.",
-            "Try to understand what's holding them back emotionally before offering help."
-        ]
+        dimension: "nature",
+        question: "9. A teammate isn't performing well on a group project. How do you naturally react?",
+        negative: "Suggest concrete ways they can improve their work directly",
+        positive: "Try to understand what's holding them back emotionally first"
     },
-  
-    // Section 4: Tactics (Judging vs Prospecting)
+
+    // Section 4: Tactics — Prospecting (+) vs Judging (-)
     {
-        section: "Section 4: Tactics (Judging vs Prospecting)",
-        question: "10.You're traveling to a new city for the first time. How would you explore the city?",
-        options: [
-            "Plan the whole itinerary in advance with fixed places to visit.",
-            "Just explore freely without any fixed plan, letting each day unfold naturally."
-        ]
+        section: "Section 4: Tactics — Judging vs Prospecting",
+        dimension: "tactics",
+        question: "10. You're visiting a new city for the first time. How do you explore it?",
+        negative: "Plan the whole itinerary in advance with fixed places to visit",
+        positive: "Explore freely with no fixed plan, letting each day unfold"
     },
     {
-        question: "11.You've got 10 days to finish an important project. How do you approach it?",
-        options: [
-            "Break the project down into small tasks and finish each day by crossing off items from your to-do list.",
-            "Work in bursts of inspiration, sometimes procrastinating but delivering everything at the last moment."
-        ]
+        dimension: "tactics",
+        question: "11. You've got 10 days to finish an important project. How do you approach it?",
+        negative: "Break it into small tasks and cross items off a to-do list each day",
+        positive: "Work in bursts of inspiration, delivering it all near the deadline"
     },
     {
-        question: "12.You're asked to organize a surprise party for your best friend. How would you handle it?",
-        options: [
-            "Create a checklist, assign responsibilities, and plan every detail in advance.",
-            "Make a rough plan but let things flow naturally, trusting everything will fall into place."
-        ]
+        dimension: "tactics",
+        question: "12. You're organizing a surprise party for your best friend. How do you handle it?",
+        negative: "Create a checklist, assign roles, and plan every detail in advance",
+        positive: "Make a rough plan and let things flow, trusting it'll come together"
     },
-  
-    // Section 5: Identity (Assertive vs Turbulent)
+
+    // Section 5: Identity — Turbulent (+) vs Assertive (-)
     {
-        section: "Section 5: Identity (Assertive vs Turbulent)",
-        question: "13.Your friend challenges you to climb a mountain without preparation. What would your first thought be?",
-        options: [
-            "Hell yes! I'm confident I can figure it out on the way.",
-            "Wait... shouldn't we at least plan or practice first?"
-        ]
+        section: "Section 5: Identity — Assertive vs Turbulent",
+        dimension: "identity",
+        question: "13. A friend dares you to climb a mountain without preparation. Your first thought?",
+        negative: "Hell yes! I'm confident I can figure it out on the way",
+        positive: "Wait... shouldn't we at least plan or practice first?"
     },
     {
-        question: "14.You're preparing for a big presentation tomorrow. How do you feel the night before?",
-        options: [
-            "Excited, confident that everything will go well.",
-            "Nervous, constantly thinking if there's anything you've missed."
-        ]
+        dimension: "identity",
+        question: "14. It's the night before a big presentation. How do you feel?",
+        negative: "Excited and confident that everything will go well",
+        positive: "Nervous, constantly wondering if I've missed something"
     },
     {
-        question: "15.You're in a debate with someone who strongly disagrees with you. What do you feel deep down?",
-        options: [
-            "It's just a discussion — I don't take it personally.",
-            "I need to convince them or it will feel like I've lost."
-        ]
+        dimension: "identity",
+        question: "15. You're in a debate with someone who strongly disagrees with you. Deep down you feel?",
+        negative: "It's just a discussion — I don't take it personally",
+        positive: "I need to convince them, or it'll feel like I've lost"
     },
-  
-    // Final Question (Viral Psychological Twist)
+
+    // Final Question (Viral Psychological Twist) — special multi-choice
     {
-        section: "Final Question (Viral Psychological Twist)",
-        question: "16.If you were an animal in your next life, which one would you choose and why?",
+        section: "Final Question",
+        dimension: "final",
+        type: "choice",
+        question: "16. If you were an animal in your next life, which would you choose and why?",
         options: [
             "Wolf – Independent, strategic, but loyal to the pack.",
             "Dolphin – Playful, intelligent, and thrives in social circles.",
@@ -143,29 +140,69 @@ let currentSlide = 0;
   const totalSlides = questions.length;
   const answers = JSON.parse(localStorage.getItem('mbtiAnswers')) || [];
   
+  // Render a 5-point Likert scale (values 0..4 -> signed -2..+2)
+  function renderLikert(q, index) {
+    // strength class + side, in display order from strongly-negative to strongly-positive
+    const points = [
+        { value: 0, cls: 's2 left' },
+        { value: 1, cls: 's1 left' },
+        { value: 2, cls: 's0' },
+        { value: 3, cls: 's1 right' },
+        { value: 4, cls: 's2 right' }
+    ];
+    return `
+        <div class="likert">
+            <div class="poles">
+                <span class="pole-left">${q.negative}</span>
+                <span class="pole-right">${q.positive}</span>
+            </div>
+            <div class="scale">
+                ${points.map(p => `
+                    <label class="dot ${p.cls}">
+                        <input type="radio" name="q${index}" value="${p.value}">
+                        <span class="bubble"></span>
+                    </label>
+                `).join('')}
+            </div>
+            <div class="scale-hint">
+                <span>Strongly</span>
+                <span>Neutral</span>
+                <span>Strongly</span>
+            </div>
+        </div>
+    `;
+  }
+
+  // Render the multi-choice final question
+  function renderChoice(q, index) {
+    return q.options.map((option, i) => `
+        <label class="option">
+            <input type="radio" name="q${index}" value="${i}">
+            <span class="option-text">${option}</span>
+        </label>
+    `).join('');
+  }
+
   // Render Questions
   function renderQuestions() {
     slider.innerHTML = questions.map((q, index) => {
-        // Skip rendering if options are missing or empty
-        if (!q.options || q.options.length === 0) {
-            console.warn(`Question ${index + 1} has no options. Skipping...`);
-            return '';
-        }
-  
+        const body = q.type === 'choice' ? renderChoice(q, index) : renderLikert(q, index);
         return `
         <div class="slide">
             ${q.section ? `<h3 class="section-title">${q.section}</h3>` : ''}
             <div class="question">${q.question}</div>
-            ${q.options.map((option, i) => `
-                <label class="option">
-                    <input type="radio" name="q${index}" value="${i}">
-                    <span class="option-text">${option}</span>
-                </label>
-            `).join('')}
+            ${body}
         </div>
         `;
     }).join('');
-  
+
+    // Restore any previously saved selections
+    answers.forEach((value, index) => {
+        if (value === undefined || value === null) return;
+        const input = document.querySelector(`input[name="q${index}"][value="${value}"]`);
+        if (input) input.checked = true;
+    });
+
     // Initialize the first slide as active
     goToSlide(0);
   }
@@ -176,6 +213,11 @@ let currentSlide = 0;
     progress.style.width = `${progressPercent}%`;
   }
   
+  // Is the question on a given slide answered yet?
+  function isAnswered(index) {
+    return !!document.querySelector(`input[name="q${index}"]:checked`);
+  }
+
   // Navigate to Slide
   function goToSlide(index) {
     document.querySelectorAll('.slide').forEach((slide, i) => {
@@ -185,17 +227,18 @@ let currentSlide = 0;
     currentSlide = index;
     updateProgress();
     prevBtn.disabled = index === 0;
-    nextBtn.disabled = index === totalSlides - 1;
+    // Block "Next" until the current question is answered
+    nextBtn.disabled = index === totalSlides - 1 || !isAnswered(index);
     submitBtn.classList.toggle('hidden', index !== totalSlides - 1);
   }
-  
+
   // Save Answer
   function saveAnswer() {
     const selectedOption = document.querySelector(`input[name="q${currentSlide}"]:checked`);
     if (selectedOption) {
         answers[currentSlide] = parseInt(selectedOption.value);
         localStorage.setItem('mbtiAnswers', JSON.stringify(answers));
-        nextBtn.disabled = false;
+        nextBtn.disabled = currentSlide === totalSlides - 1;
     } else {
         nextBtn.disabled = true;
     }
@@ -289,20 +332,37 @@ let currentSlide = 0;
   
   // Submit MBTI Test
   submitBtn.addEventListener('click', async () => {
-    const answers = JSON.parse(localStorage.getItem('mbtiAnswers')) || [];
-    console.log('Answers before submission:', answers);// Debug log
-    if (answers.length !== questions.length) {
+    const savedAnswers = JSON.parse(localStorage.getItem('mbtiAnswers')) || [];
+    console.log('Answers before submission:', savedAnswers);// Debug log
+
+    // Every question (including the final choice) must be answered
+    const allAnswered = questions.every((q, i) =>
+        savedAnswers[i] !== undefined && savedAnswers[i] !== null
+    );
+    if (!allAnswered) {
       alert('Please complete all questions before submitting.');
       return;
     }
-  
+
+    // Build the graded payload. For Likert questions, map the 0..4 choice to a
+    // signed intensity of -2..+2 (positive = toward the dimension's positive pole).
+    const responses = [];
+    let finalAnswer;
+    questions.forEach((q, i) => {
+      if (q.type === 'choice') {
+        finalAnswer = savedAnswers[i];
+      } else {
+        responses.push({ dimension: q.dimension, value: savedAnswers[i] - 2 });
+      }
+    });
+
     try {
       const response = await makeAuthenticatedRequest('/mbti/submit', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ answers, userId }), // Include userId in the request
+        body: JSON.stringify({ responses, finalAnswer, userId }), // graded payload
         signal: AbortSignal.timeout(10000) // Add timeout to prevent hanging
       }).catch(err => {
         if (err.name === 'AbortError') {

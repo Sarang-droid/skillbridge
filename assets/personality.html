@@ -143,6 +143,93 @@
       opacity: 1;
     }
 
+    /* Likert Scale */
+    .likert {
+      margin-top: 15px;
+    }
+
+    .poles {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+
+    .poles span {
+      flex: 1;
+      font-size: 0.95rem;
+      color: #d3d3d3;
+      line-height: 1.3;
+    }
+
+    .poles .pole-left { text-align: left; }
+    .poles .pole-right { text-align: right; }
+
+    .scale {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+      padding: 0 6px;
+    }
+
+    .dot {
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .dot input {
+      position: absolute;
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+
+    .dot .bubble {
+      display: block;
+      border-radius: 50%;
+      border: 2px solid #777;
+      background-color: #4a4a4a;
+      transition: all 0.25s ease;
+    }
+
+    .dot.s2 .bubble { width: 38px; height: 38px; }
+    .dot.s1 .bubble { width: 28px; height: 28px; }
+    .dot.s0 .bubble { width: 20px; height: 20px; }
+
+    .dot:hover .bubble {
+      border-color: #e8b923;
+      transform: scale(1.1);
+    }
+
+    .dot.left input:checked + .bubble {
+      background-color: #5a8dee;
+      border-color: #5a8dee;
+      box-shadow: 0 0 12px rgba(90, 141, 238, 0.6);
+    }
+
+    .dot.right input:checked + .bubble {
+      background-color: #e8b923;
+      border-color: #e8b923;
+      box-shadow: 0 0 12px rgba(232, 185, 35, 0.6);
+    }
+
+    .dot.s0 input:checked + .bubble {
+      background-color: #bbb;
+      border-color: #bbb;
+      box-shadow: 0 0 12px rgba(187, 187, 187, 0.5);
+    }
+
+    .scale-hint {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 10px;
+      font-size: 0.75rem;
+      color: #888;
+    }
+
     /* Navigation Buttons */
     .navigation {
       margin-top: 25px;
@@ -223,6 +310,11 @@
       .section-title {
         font-size: 1.3rem;
       }
+
+      .poles span { font-size: 0.8rem; }
+      .dot.s2 .bubble { width: 30px; height: 30px; }
+      .dot.s1 .bubble { width: 23px; height: 23px; }
+      .dot.s0 .bubble { width: 17px; height: 17px; }
     }
   </style>
 </head>

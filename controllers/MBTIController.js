@@ -1,22 +1,30 @@
+const mongoose = require('mongoose');
 const MBTI = require('../models/MBTI');
 const { findBestMatches } = require('./matchController');
 const jwt = require('jsonwebtoken');
 const Personality = require('../models/personalityModel');
 
 // Hidden Psychological Influence Points
+// (per-dimension weighting — tune these to make a dimension count for more/less)
 const psychologicalWeights = {
-    mind: 1.0,    // I vs E
-    energy: 1.0,  // N vs S
-    nature: 1.0,  // F vs T
-    tactics: 1.0, // P vs J
-    identity: 1.0 // T vs A (optional)
+    mind: 1.0,    // I (+) vs E (-)
+    energy: 1.0,  // N (+) vs S (-)
+    nature: 1.0,  // F (+) vs T (-)
+    tactics: 1.0, // P (+) vs J (-)
+    identity: 1.0 // T (+) vs A (-)
 };
 
 // Multiplier for amplifying standard question scores
 const hiddenMultiplier = 1.2;
 
-// Bonus weight for the final question (animal choice)
+// Bonus weight for the final question (animal choice). Kept light so it only
+// nudges/breaks ties rather than overpowering the 15 graded answers.
 const bonusWeight = 1;
+
+// Max signed intensity a single Likert answer can carry (-2..+2)
+const maxScorePerQuestion = 2;
+
+const clamp = (n, lo, hi) => Math.max(lo, Math.min(hi, n));
 
 // Predefined personality traits for all 16 MBTI types
 const personalityTraits = {
@@ -342,73 +350,82 @@ const personalityTraits = {
     }
 };
 
-// Calculate MBTI Type
-function calculateMBTI(answers) {
-    let scores = {
-        mind: 0,      // Positive = Introvert, Negative = Extrovert
-        energy: 0,    // Positive = Intuitive, Negative = Sensing
-        nature: 0,    // Positive = Feeling, Negative = Thinking
-        tactics: 0,   // Positive = Prospecting, Negative = Judging
-        identity: 0   // Positive = Turbulent, Negative = Assertive
-    };
+// Animal bonus: each choice nudges a coherent set of dimensions (sign follows the
+// per-dimension convention below — positive pole listed in the comment).
+const animalBias = {
+    0: { mind: +bonusWeight, energy: +bonusWeight, tactics: -bonusWeight }, // Wolf:    I, N, J
+    1: { mind: -bonusWeight, nature: +bonusWeight, tactics: +bonusWeight }, // Dolphin: E, F, P
+    2: { mind: +bonusWeight, energy: -bonusWeight },                        // Owl:     I, S
+    3: { nature: -bonusWeight, tactics: -bonusWeight, identity: -bonusWeight } // Tiger: T, J, Assertive
+};
 
-    const sections = ['mind', 'energy', 'nature', 'tactics', 'identity'];
-    const questionsPerSection = 3;
-    const maxScorePerQuestion = 2;
+const dimensionOrder = ['mind', 'energy', 'nature', 'tactics'];
 
-    // Calculate scores for the first 15 questions
-    for (let index = 0; index < Math.min(15, answers.length); index++) {
-        const section = sections[Math.floor(index / questionsPerSection)];
-        const baseScore = answers[index] === 0 ? -1 : 1;
-        const mappedScore = baseScore * psychologicalWeights[section] * hiddenMultiplier;
-        scores[section] += mappedScore;
-        console.log(`Question ${index}, Answer: ${answers[index]}, Section: ${section}, Mapped Score: ${mappedScore}, Running Score: ${scores[section]}`);
+/**
+ * Calculate the MBTI type from graded (Likert) responses.
+ *
+ * @param {Array<{dimension: string, value: number}>} responses
+ *        One entry per question. `value` is a signed intensity in [-2, +2] where a
+ *        POSITIVE value leans toward that dimension's positive pole:
+ *          mind:    + = Introvert (I)   | - = Extrovert (E)
+ *          energy:  + = Intuitive (N)   | - = Sensing   (S)
+ *          nature:  + = Feeling   (F)   | - = Thinking  (T)
+ *          tactics: + = Prospecting (P) | - = Judging   (J)
+ *          identity:+ = Turbulent  (T)  | - = Assertive (A)
+ * @param {number} [finalAnswer] Index (0-3) of the animal choice (optional bonus).
+ */
+function calculateMBTI(responses, finalAnswer) {
+    const scores = { mind: 0, energy: 0, nature: 0, tactics: 0, identity: 0 };
+    const counts = { mind: 0, energy: 0, nature: 0, tactics: 0, identity: 0 };
+
+    // Score each graded response against the dimension it explicitly declares,
+    // so the question order on the client can never desync from the scoring here.
+    (Array.isArray(responses) ? responses : []).forEach((r) => {
+        if (!r || !(r.dimension in scores)) return;
+        const value = clamp(Number(r.value) || 0, -maxScorePerQuestion, maxScorePerQuestion);
+        scores[r.dimension] += value * psychologicalWeights[r.dimension] * hiddenMultiplier;
+        counts[r.dimension] += 1;
+    });
+
+    // Final question (animal choice) — light nudge across coherent dimensions.
+    const bias = animalBias[finalAnswer];
+    if (bias) {
+        Object.keys(bias).forEach((dim) => { scores[dim] += bias[dim]; });
+    } else if (finalAnswer !== undefined && finalAnswer !== null) {
+        console.warn('Invalid final answer:', finalAnswer);
     }
 
-    // Handle the final question (animal choice)
-    if (answers.length > 15) {
-        const finalAnswer = answers[15];
-        console.log('Final Answer:', finalAnswer);
-        switch (finalAnswer) {
-            case 0: // Introvert
-                scores.mind += bonusWeight;
-                break;
-            case 1: // Extrovert
-                scores.mind -= bonusWeight;
-                break;
-            case 2: // Intuitive
-                scores.energy += bonusWeight;
-                break;
-            case 3: // Judging
-                scores.tactics -= bonusWeight;
-                break;
-            default:
-                console.warn('Invalid final answer:', finalAnswer);
-        }
-        console.log('Scores after final adjustment:', scores);
-    }
-
-    const maxPossibleScore = questionsPerSection * maxScorePerQuestion * hiddenMultiplier;
+    // Normalize each dimension against how many questions it actually had, so a
+    // dimension answered with fewer/more questions still maps cleanly to -100..100.
     const normalizedScores = {};
     Object.keys(scores).forEach((key) => {
         scores[key] = isNaN(scores[key]) ? 0 : scores[key];
-        normalizedScores[key] = (scores[key] / maxPossibleScore) * 100;
+        const questionCount = counts[key] || 3;
+        const maxPossible = questionCount * maxScorePerQuestion * psychologicalWeights[key] * hiddenMultiplier;
+        const pct = maxPossible ? (scores[key] / maxPossible) * 100 : 0;
+        normalizedScores[key] = clamp(Math.round(pct), -100, 100);
     });
 
-    const type = `${normalizedScores.mind >= 0 ? 'I' : 'E'}${normalizedScores.energy >= 0 ? 'N' : 'S'}${normalizedScores.nature >= 0 ? 'F' : 'T'}${normalizedScores.tactics >= 0 ? 'P' : 'J'}`;
+    const type =
+        `${normalizedScores.mind    >= 0 ? 'I' : 'E'}` +
+        `${normalizedScores.energy  >= 0 ? 'N' : 'S'}` +
+        `${normalizedScores.nature  >= 0 ? 'F' : 'T'}` +
+        `${normalizedScores.tactics >= 0 ? 'P' : 'J'}`;
 
-    const confidence = Math.floor(
-        Object.values(normalizedScores)
-            .slice(0, 4)
-            .reduce((sum, score) => sum + Math.abs(score), 0) / 4
+    const identity = normalizedScores.identity >= 0 ? 'T' : 'A'; // Turbulent / Assertive
+    const fullType = `${type}-${identity}`;
+
+    // Confidence = how strongly the four core letters lean, on average (0-100).
+    const confidence = Math.round(
+        dimensionOrder.reduce((sum, k) => sum + Math.abs(normalizedScores[k]), 0) / dimensionOrder.length
     );
 
-    const psychologicalScore = Math.floor(
-        Object.values(scores).slice(0, 4).reduce((sum, score) => sum + Math.abs(score), 0)
+    const psychologicalScore = Math.round(
+        dimensionOrder.reduce((sum, k) => sum + Math.abs(scores[k]), 0)
     );
 
-    console.log('Debug: Normalized Scores:', normalizedScores, 'Type:', type, 'Confidence:', confidence, 'Score:', psychologicalScore);
-    return { type, psychologicalScore, confidence, normalizedScores };
+    console.log('Debug:', { type, fullType, normalizedScores, confidence, psychologicalScore });
+    return { type, fullType, identity, psychologicalScore, confidence, normalizedScores };
 }
 
 // Store MBTI Result
@@ -421,14 +438,27 @@ const storeResult = async (req, res) => {
 
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
         const userId = decoded.id;
-        const { answers } = req.body;
-        console.log('Received answers:', answers);
+        const { responses, finalAnswer, answers } = req.body;
 
-        if (!answers || !Array.isArray(answers) || answers.length < 15) {
-            return res.status(400).json({ message: 'Invalid or incomplete answers' });
+        // Prefer the new graded payload; fall back to a legacy `answers` array of
+        // {dimension, value} objects if that's what was sent.
+        const gradedResponses = Array.isArray(responses)
+            ? responses
+            : (Array.isArray(answers) ? answers : null);
+        console.log('Received responses:', gradedResponses, 'finalAnswer:', finalAnswer);
+
+        const isValid = gradedResponses
+            && gradedResponses.length >= 15
+            && gradedResponses.every((r) => r && typeof r === 'object' && 'dimension' in r);
+
+        if (!isValid) {
+            return res.status(400).json({
+                message: 'Invalid or incomplete answers. Expected at least 15 graded responses.'
+            });
         }
 
-        const { type, psychologicalScore, confidence, normalizedScores } = calculateMBTI(answers);
+        const { type, fullType, identity, psychologicalScore, confidence, normalizedScores } =
+            calculateMBTI(gradedResponses, finalAnswer);
         const newToken = jwt.sign({ userId, type }, process.env.JWT_SECRET, { expiresIn: '1h' });
 
         let personalityDetails = await Personality.findOne({ type });
@@ -450,13 +480,16 @@ const storeResult = async (req, res) => {
         const mbti = new MBTI({
             userId,
             mbtiType: type,
+            fullType,
+            identity,
             psychologicalScore,
             famousMatches: personalityDetails.famousPersonalities,
             token: newToken,
             normalizedScores,
             confidence,
             projectMatches: topProjects.slice(0, 3).map(project => project.projectId),
-            answers // Save answers for debugging
+            answers: gradedResponses, // Save graded responses for debugging
+            finalAnswer
         });
 
         await mbti.save();
@@ -466,6 +499,8 @@ const storeResult = async (req, res) => {
         res.json({
             success: true,
             type,
+            fullType,
+            identity,
             psychologicalScore,
             confidence,
             normalizedScores,
@@ -517,6 +552,8 @@ const getResult = async (req, res) => {
         res.json({
             success: true,
             type: mbti.mbtiType,
+            fullType: mbti.fullType || mbti.mbtiType,
+            identity: mbti.identity,
             psychologicalScore: mbti.psychologicalScore,
             confidence: mbti.confidence,
             normalizedScores: mbti.normalizedScores,
